@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <a href="popup.html">
+        <svg class="Icon" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 500 511.61"><path fill-rule="nonzero" d="m234.04 148.39-15.5 101.27c45.53-4.54 96.06-15.77 138.72-45.89 47.72-33.69 86.31-91.72 98.25-191.8.87-7.43 7.62-12.75 15.06-11.87 5.73.68 10.21 4.85 11.55 10.13 10.87 32.61 16.46 63.43 17.63 92.35 3.27 79.4-26.39 144.21-70.18 193.61-43.36 48.92-100.66 82.64-153.32 100.33-20.18 6.79-39.8 11.27-57.77 13.36l15.44 85.83c1.31 7.33-3.57 14.37-10.91 15.69-4.07.72-8.04-.46-11-2.9L4.91 337.19c-5.76-4.76-6.57-13.32-1.8-19.08l1.54-1.58 207.06-180.39c5.64-4.92 14.22-4.32 19.14 1.32 2.72 3.12 3.75 7.13 3.19 10.93z"/></svg>
+    </a>
+    <h1>Options d'affichage</h1>
+    <form id="optionsForm">    
+        <label for="ForegroundOption">Pastille:</label>
+        <input type="checkbox" id="ForegroundOption" name="ColorOption" />
+    
+        <br />
+
+        <label for="BackgroundOption">Surligner:</label>
+        <input type="checkbox" id="BackgroundOption" name="ColorOption" />
+    </form>
+    
+    <form id="optionsForm">
+        <label for="UEOption">Colorer les UE:</label>
+        <input type="checkbox" id="UEOption" name="ElementsToColorOption" />
+    
+        <br />
+    
+        <label for="ResOption">Colorer les Ressources:</label>
+        <input type="checkbox" id="ResOption" name="ElementsToColorOption" />
+    </form>
+
+    <script src="../Model/options.js"></script>
+</body>
+</html>

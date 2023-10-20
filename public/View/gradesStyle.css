@@ -1,0 +1,52 @@
+.UE, .R, .Semester{
+    font-weight: bold;
+    padding-inline: 10px;
+    text-align: center;
+    font-size:10pt;
+    
+    --angle: -45deg;
+    --foreground: #00000000;
+    --background: #00000000;
+}
+.R{
+    --angle: 45deg;
+}
+
+
+.Green{
+    --opaque: #00CC00;
+    --transprent: #00CC001A;
+}
+.Red{
+    --opaque: #EE0000;
+    --transprent: #EE00001A;
+}
+.Orange{
+    --opaque: #CCCC00;
+    --transprent: #CCCC0020;
+}
+
+
+.Background.Main-UE .UE,
+.Background.Main-R .R,
+.Background .Semester{
+    --background: var(--transprent);
+    --foreground: var(--transprent);
+}
+.Foreground.Main-UE .UE,
+.Foreground.Main-R .R,
+.Foreground .Semester{
+    --foreground: var(--opaque);
+}
+.Main-UE .UE,
+.Main-R .R,
+.Semester{
+    background-origin: border-box;
+    background: linear-gradient(var(--angle), var(--background) calc(100% - 7px), var(--foreground) 7px);
+    background-clip: padding-box;
+    overflow: hidden;
+}
+
+body:has(.Ignore) tr > .Ignore{
+    display: none;
+}
