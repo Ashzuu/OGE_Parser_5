@@ -1,0 +1,19 @@
+{
+    "explorerExclude.backup": {},
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        ".vscode": true,
+        "dist": true,
+        "webpack": true,
+        "node*": true,
+        "pack*": true,
+        ".git*": true,
+        "READ*": true,
+        "tscon*": true
+    }
+}

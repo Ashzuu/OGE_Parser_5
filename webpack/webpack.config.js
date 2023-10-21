@@ -6,7 +6,7 @@ module.exports = {
       background: path.resolve(__dirname, "..", "src", "ContentScript.ts"),
    },
    output: {
-      path: path.join(__dirname, "../dist"),
+      path: path.join(__dirname, "../dist/Model"),
       filename: "bundle.js",
    },
    resolve: {
