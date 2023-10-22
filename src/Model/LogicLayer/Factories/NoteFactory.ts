@@ -1,6 +1,6 @@
-import { IElementFactory } from "../../Model/Interfaces/IElementFactory";
-import { Note } from "../../Model/Types/Grades/Elements/Note";
-import { GradeParser } from "../Parsing/GradeParser";
+import { IElementFactory } from "../../Interfaces/IElementFactory";
+import { Note } from "../../Types/Grades/Elements/Note";
+import { PageParser } from "../Parsing/PageParser";
 
 export class NoteFactory implements IElementFactory
 {
@@ -11,7 +11,7 @@ export class NoteFactory implements IElementFactory
     
     GetAllNotes(ueNumber: number, ressourceNumber: number, sectionNumber: number): Note[] {
         let ressourceList: Note[] = [];
-        let ueCount: number = GradeParser.Instance.GetNoteCount(ueNumber, ressourceNumber, sectionNumber);
+        let ueCount: number = PageParser.Instance.GetNoteCount(ueNumber, ressourceNumber, sectionNumber);
         for (let i = 0; i < ueCount; i++)
         {
             ressourceList.push(this.GetNote(ueNumber, ressourceNumber, sectionNumber, i));
@@ -20,7 +20,7 @@ export class NoteFactory implements IElementFactory
         return ressourceList;
     }
     GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): Note {
-        let grade: { grade: number; coefficient: number; } = GradeParser.Instance.GetNote(ueNumber, ressourceNumber, sectionNumber, noteNumber);
+        let grade: { grade: number; coefficient: number; } = PageParser.Instance.GetNote(ueNumber, ressourceNumber, sectionNumber, noteNumber);
         let note: Note = new Note(grade.grade, grade.coefficient);
 
         return note;

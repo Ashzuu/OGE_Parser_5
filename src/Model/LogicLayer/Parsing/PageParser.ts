@@ -1,6 +1,6 @@
 import { StringFormater } from "../StringFormater";
 
-export class GradeParser
+export class PageParser
 {   
     //#region Singleton
     private constructor()
@@ -8,7 +8,7 @@ export class GradeParser
         this._bodyElement = undefined;
         this._ueTables = undefined;
     }
-    private static _instance: GradeParser;
+    private static _instance: PageParser;
     
     /**Retourne l'instance du Parser de la page */
     public static get Instance() { return this._instance || (this._instance = new this()); }
@@ -33,22 +33,17 @@ export class GradeParser
     {
         if (!this._ueTables){
             this._ueTables = this.GetAllUETables();
-            // this._ueTables = [];
-
-            // let ueTablesDiv: HTMLElement = this.GetUETablesDiv();
-            // let ueCount: number = ueTablesDiv.childElementCount - 1;
-
-            // for (let i = 1; i < ueCount; i++){
-            //     let table: HTMLElement = this.GetChild(ueTablesDiv, [i, 0]);
-            //     this._ueTables!.push(table);
-            // }
         }
         
-        return this._ueTables!;
+        return this._ueTables;
     }
     public get UECount(): number
     {
         return this.UETables.length;
+    }
+    public get AreGradesShown(): boolean
+    {
+        return this.GetChild(this.UETables[0], [0, 0]).childElementCount > 1
     }
     //#endregion Properties
     

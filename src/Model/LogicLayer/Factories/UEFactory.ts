@@ -1,7 +1,7 @@
-import { IElementFactory } from "../../Model/Interfaces/IElementFactory";
-import { Ressource } from "../../Model/Types/Grades/Elements/Ressource";
-import { UE } from "../../Model/Types/Grades/Elements/UE";
-import { GradeParser } from "../Parsing/GradeParser";
+import { IElementFactory } from "../../Interfaces/IElementFactory";
+import { Ressource } from "../../Types/Grades/Elements/Ressource";
+import { UE } from "../../Types/Grades/Elements/UE";
+import { PageParser } from "../Parsing/PageParser";
 import { RessourceFactory } from "./RessourceFactory";
 
 export class UEFactory implements IElementFactory
@@ -14,7 +14,7 @@ export class UEFactory implements IElementFactory
     public GetAllUEs(): UE[]
     {
         let ueList: UE[] = [];
-        let ueCount: number = GradeParser.Instance.UECount;
+        let ueCount: number = PageParser.Instance.UECount;
         for (let i = 0; i < ueCount; i++){
             ueList.push(this.GetUE(i));
         }

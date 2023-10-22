@@ -1,6 +1,6 @@
-import { IElementFactory } from "../../Model/Interfaces/IElementFactory";
-import { Semestre } from "../../Model/Types/Grades/Elements/Semestre";
-import { UE } from "../../Model/Types/Grades/Elements/UE";
+import { IElementFactory } from "../../Interfaces/IElementFactory";
+import { Semestre } from "../../Types/Grades/Elements/Semestre";
+import { UE } from "../../Types/Grades/Elements/UE";
 import { UEFactory } from "./UEFactory";
 
 export class SemestreFactory implements IElementFactory

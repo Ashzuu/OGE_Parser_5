@@ -1,7 +1,7 @@
-import { Section } from "../../Model/Types/Grades/Elements/Section";
-import { IElementFactory } from "../../Model/Interfaces/IElementFactory";
-import { GradeParser } from "../Parsing/GradeParser";
-import { Note } from "../../Model/Types/Grades/Elements/Note";
+import { Section } from "../../Types/Grades/Elements/Section";
+import { IElementFactory } from "../../Interfaces/IElementFactory";
+import { PageParser } from "../Parsing/PageParser";
+import { Note } from "../../Types/Grades/Elements/Note";
 import { NoteFactory } from "./NoteFactory";
 
 export class SectionFactory implements IElementFactory
@@ -13,7 +13,7 @@ export class SectionFactory implements IElementFactory
 
     public GetAllRessourceSection(ueNumber: number, ressourceNumber: number): Section[] {
         let sectionList: Section[] = [];
-        let sectionCount: number = GradeParser.Instance.GetSectionCount(ueNumber, ressourceNumber);
+        let sectionCount: number = PageParser.Instance.GetSectionCount(ueNumber, ressourceNumber);
         for (let i = 1; i < sectionCount; i++){
             sectionList.push(this.GetSection(ueNumber, ressourceNumber, i));
         }
@@ -22,7 +22,7 @@ export class SectionFactory implements IElementFactory
     }
     public GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): Section{
         let grades: Note[] = NoteFactory.Instance.GetAllNotes(ueNumber, ressourceNumber, sectionNumber)
-        let coefficient: number = GradeParser.Instance.GetSectionCoefficient(ueNumber, ressourceNumber, sectionNumber);
+        let coefficient: number = PageParser.Instance.GetSectionCoefficient(ueNumber, ressourceNumber, sectionNumber);
         let section: Section = new Section(coefficient, grades);
 
         return section;
