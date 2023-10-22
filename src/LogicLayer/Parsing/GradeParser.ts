@@ -1,6 +1,6 @@
 import { StringFormater } from "../StringFormater";
 
-export class PageParser
+export class GradeParser
 {   
     //#region Singleton
     private constructor()
@@ -8,7 +8,7 @@ export class PageParser
         this._bodyElement = undefined;
         this._ueTables = undefined;
     }
-    private static _instance: PageParser;
+    private static _instance: GradeParser;
     
     /**Retourne l'instance du Parser de la page */
     public static get Instance() { return this._instance || (this._instance = new this()); }
@@ -63,12 +63,7 @@ export class PageParser
         
         return element;
     }
-    private GetUETablesDiv(): HTMLElement{
-        let bodyElement: HTMLElement = this.BodyElement;
-        let ueTableDiv: HTMLElement = this.GetChild(bodyElement, [0, 0, 2, 0, 2]);
 
-        return ueTableDiv;
-    }
     private GetAllUETables(): HTMLElement[]
     {
         return Array.from(this.BodyElement.querySelectorAll('table')) as HTMLElement[];
@@ -76,7 +71,8 @@ export class PageParser
     private GetUETable(tableNumber: number): HTMLElement{
         return this.UETables[tableNumber];
     }
-    public GetUERessourcesDiv(ueNumber: number): HTMLElement{
+
+    private GetUERessourcesDiv(ueNumber: number): HTMLElement{
         let ueTable: HTMLElement = this.GetUETable(ueNumber);
         let ressourceDiv: HTMLElement = this.GetChild(ueTable, [1]);
 
@@ -91,7 +87,7 @@ export class PageParser
 
         return ressourceDiv;
     }
-    public GetRessourceSectionDiv(ueNumber: number, ressourceNumber: number): HTMLElement{
+    private GetRessourceSectionDiv(ueNumber: number, ressourceNumber: number): HTMLElement{
         let ressourcesDiv: HTMLElement = this.GetUERessourcesDiv(ueNumber);
         let sectionDiv: HTMLElement = this.GetChild(ressourcesDiv, [ressourceNumber, 0])
         return sectionDiv;
@@ -140,7 +136,7 @@ export class PageParser
         return StringFormater.ClearCoefficient(coefficientSpan.innerText);
     }
 
-    public GetNoteList(ueNumber: number, ressourceNumber: number, sectionNumber: number): { grade: number; coefficient: number; }[]
+    private GetNoteList(ueNumber: number, ressourceNumber: number, sectionNumber: number): { grade: number; coefficient: number; }[]
     {
         let section: HTMLElement = this.GetSection(ueNumber, ressourceNumber, sectionNumber);
         return StringFormater.GetNotesFromSectionInnerText(section.innerText);
@@ -149,13 +145,9 @@ export class PageParser
     {
         return this.GetNoteList(ueNumber, ressourceNumber, sectionNumber).length;
     }
-    public GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): number
+    public GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): { grade: number; coefficient: number; }
     {
-        return this.GetNoteList(ueNumber, ressourceNumber, sectionNumber)[noteNumber].grade;
-    }
-    public GetNoteCoefficient(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): number
-    {
-        return this.GetNoteList(ueNumber, ressourceNumber, sectionNumber)[noteNumber].coefficient;
+        return this.GetNoteList(ueNumber, ressourceNumber, sectionNumber)[noteNumber];
     }
     //#endregion Methods   
 }

@@ -1,5 +1,5 @@
 import { SemestreFactory } from "./LogicLayer/Factories/SemestreFactory";
-import { PageParser } from "./LogicLayer/Parsing/PageParser";
+import { GradeParser } from "./LogicLayer/Parsing/GradeParser";
 import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
 
 let semester: Semestre = SemestreFactory.Instance.GetSemester();

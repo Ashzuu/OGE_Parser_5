@@ -1,6 +1,6 @@
 import { Ressource } from "../../Model/Types/Grades/Elements/Ressource";
 import { IElementFactory } from "../../Model/Interfaces/IElementFactory";
-import { PageParser } from "../Parsing/PageParser";
+import { GradeParser } from "../Parsing/GradeParser";
 import { Section } from "../../Model/Types/Grades/Elements/Section";
 import { SectionFactory } from "./SectionFactory";
 
@@ -13,7 +13,7 @@ export class RessourceFactory implements IElementFactory
     
     GetAllUERessources(ueNumber: number): Ressource[] {
         let ressourceList: Ressource[] = [];
-        let ressourceCount: number = PageParser.Instance.GetRessourceCount(ueNumber);
+        let ressourceCount: number = GradeParser.Instance.GetRessourceCount(ueNumber);
         for (let i = 0; i < ressourceCount; i++){
             try
             {
@@ -26,8 +26,8 @@ export class RessourceFactory implements IElementFactory
     }
     GetRessource(ueNumber: number, ressourceNumber: number): Ressource {
         let sections: Section[] = SectionFactory.Instance.GetAllRessourceSection(ueNumber, ressourceNumber)
-        let coefficient: number = PageParser.Instance.GetRessourceCoefficient(ueNumber, ressourceNumber);
-        let name: string = PageParser.Instance.GetRessourceName(ueNumber, ressourceNumber);
+        let coefficient: number = GradeParser.Instance.GetRessourceCoefficient(ueNumber, ressourceNumber);
+        let name: string = GradeParser.Instance.GetRessourceName(ueNumber, ressourceNumber);
         let ressource: Ressource = new Ressource(name, coefficient, sections);
 
         return ressource;
