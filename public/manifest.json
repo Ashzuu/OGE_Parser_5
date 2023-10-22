@@ -1,34 +1,35 @@
 {
-  "manifest_version": 3,
-  "name": "OGE Parser",
-  "version": "5.0",
-  "description": "J'en peux plus",
-  "icons": {
-    "16": "OGE-Parser-Logo.png",
-    "48": "OGE-Parser-Logo.png",
-    "128": "OGE-Parser-Logo.png"
-  },
-  "permissions": [
-    "tabs",
-    "storage",
-    "activeTab"
-  ],
-  "host_permissions": [
-    "https://localhost:7156/*"
-  ],
-  "action": {
-    "default_popup": "View/popup.html",
-    "default_title": "OGE Parser"
-  },
-  "options_ui": {
-    "page": "View/options.html",
-    "open_in_tab": true
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://iutdijon.u-bourgogne.fr/oge/stylesheets/etu/bilanEtu.xhtml"],
-      "js": ["Model/bundle.js"],
-      "css": ["View/gradesStyle.css"]
-    }
-  ]
+    "manifest_version": 3,
+    "name": "OGE Parser",
+    "version": "5.0",
+    "description": "J'en peux plus",
+    "icons": {
+      "16": "OGE-Parser-Logo.png",
+      "48": "OGE-Parser-Logo.png",
+      "128": "OGE-Parser-Logo.png"
+    },
+    "permissions": [
+      "tabs",
+      "storage",
+      "activeTab"
+    ],
+    "host_permissions": [
+      "https://localhost:7156/*"
+    ],
+    "action": {
+      "default_popup": "View/popup.html",
+      "default_title": "OGE Parser"
+    },
+    "options_ui": {
+      "page": "View/options.html",
+      "open_in_tab": true
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://iutdijon.u-bourgogne.fr/oge/stylesheets/etu/bilanEtu.xhtml"],
+        "js": ["Model/bundle.js"],
+        "css": ["View/gradesStyle.css"]
+      }
+    ]
 }
+  

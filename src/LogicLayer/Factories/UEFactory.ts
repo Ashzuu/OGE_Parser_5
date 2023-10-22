@@ -1,4 +1,8 @@
 import { IElementFactory } from "../../Model/Interfaces/IElementFactory";
+import { Ressource } from "../../Model/Types/Grades/Elements/Ressource";
+import { UE } from "../../Model/Types/Grades/Elements/UE";
+import { PageParser } from "../Parsing/PageParser";
+import { RessourceFactory } from "./RessourceFactory";
 
 export class UEFactory implements IElementFactory
 {
@@ -7,7 +11,21 @@ export class UEFactory implements IElementFactory
     
     public static get Instance() { return this._instance || (this._instance = new this()); }
     
-    GetElement(): Element {
-        throw new Error("Method not implemented.");
+    public GetAllUEs(): UE[]
+    {
+        let ueList: UE[] = [];
+        let ueCount: number = PageParser.Instance.UECount;
+        for (let i = 0; i < ueCount; i++){
+            ueList.push(this.GetUE(i));
+        }
+
+        return ueList;
+    }
+
+    private GetUE(ueNumber: number): UE {
+        let ressources: Ressource[] = RessourceFactory.Instance.GetAllUERessources(ueNumber);
+        let ue: UE = new UE(1, ressources);
+
+        return ue;
     }
 }

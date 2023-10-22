@@ -14,12 +14,11 @@ export class Semestre extends Element
     }
     /**
      * Constructeur par defaut d'un Semestre
-     * @param coefficient coefficient du semestre
      * @param ueList Liste des UE du semestre
      */
-    constructor(coefficient: number, ueList: Element[])
+    constructor(ueList: Element[])
     {
-        super(coefficient, ueList);
+        super(1, ueList);
         this._ueList = this._lowerElements as UE[];
     }
 }

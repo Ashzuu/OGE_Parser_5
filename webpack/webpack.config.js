@@ -1,13 +1,13 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
-   mode: "production",
+   mode: "development",
    entry: {
       background: path.resolve(__dirname, "..", "src", "ContentScript.ts"),
    },
    output: {
-      path: path.join(__dirname, "../dist/Model"),
-      filename: "bundle.js",
+      path: path.join(__dirname, "../dist"),
+      filename: "Model/bundle.js",
    },
    resolve: {
       extensions: [".ts", ".js"],
@@ -26,4 +26,5 @@ module.exports = {
          patterns: [{from: ".", to: ".", context: "public"}]
       }),
    ],
+    devtool: 'source-map'
 };

@@ -2,17 +2,19 @@ export abstract class Element{
     /**
      * Moyenne de l'element
      */
-    public get Average()
+    public get Average(): number
     {
         let totalAverage: number = 0;
         let totalCoef: number = 0;
 
         this._lowerElements.forEach(lowerEl => {
-            totalAverage += lowerEl.Average;
+            totalAverage += lowerEl.Average * lowerEl.Coefficient;
             totalCoef += lowerEl.Coefficient;
         })
-
+        
         let actualAverage = totalAverage / totalCoef;
+        if (totalCoef == 0)
+            actualAverage = 0;
         return actualAverage;
     }
     /**

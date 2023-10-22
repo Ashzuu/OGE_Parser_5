@@ -1,4 +1,7 @@
 import { IElementFactory } from "../../Model/Interfaces/IElementFactory";
+import { Semestre } from "../../Model/Types/Grades/Elements/Semestre";
+import { UE } from "../../Model/Types/Grades/Elements/UE";
+import { UEFactory } from "./UEFactory";
 
 export class SemestreFactory implements IElementFactory
 {
@@ -7,7 +10,10 @@ export class SemestreFactory implements IElementFactory
     
     public static get Instance() { return this._instance || (this._instance = new this()); }
     
-    GetElement(): Element {
-        throw new Error("Method not implemented.");
+    public GetSemester(): Semestre {
+        let ueList: UE[] = UEFactory.Instance.GetAllUEs();
+        let semester: Semestre = new Semestre(ueList);
+
+        return semester;
     }
 }

@@ -6,14 +6,9 @@ import { Element } from "../Element";
 export class Note extends Element
 {
     private _grade: number;
-    /**
-     * Note avec le coefficient prit en compte
-     */
-    public get Grade()
-    {
-        return this._grade * this.Coefficient;
+    public get Average(): number{
+        return this._grade;
     }
-
     /**
      * Constructeur par defaut d'une Note
      * @param grade valeur de la note

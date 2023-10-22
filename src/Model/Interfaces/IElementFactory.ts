@@ -1,3 +1,1 @@
-export interface IElementFactory{
-    GetElement(): Element;
-}
+export interface IElementFactory{}
