@@ -24,6 +24,7 @@ export class StringFormater {
         let pairs: { grade: number; coefficient: number; }[] = [];
         notes.forEach(n => {
             let split = n.split(" (");
+            if (split.length == 1) split.push("-1");
             pairs.push(
                 {
                     grade: this.NormalizeGrade(split[0]),

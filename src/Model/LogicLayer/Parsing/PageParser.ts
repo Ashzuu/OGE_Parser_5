@@ -26,7 +26,6 @@ export class PageParser
     private get BodyElement(): HTMLElement
     {
         if (!this._bodyElement) this._bodyElement = document.querySelectorAll("body")[0].cloneNode(true) as HTMLElement;
-        // if (!this._bodyElement) this._bodyElement = document.querySelectorAll("body")[0];
         return this._bodyElement;
     }
     private get UETables(): HTMLElement[]
