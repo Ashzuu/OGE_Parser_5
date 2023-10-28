@@ -1,4 +1,8 @@
+import { PageParser } from "../Model/LogicLayer/Parsing/PageParser";
+import { DetailedUEResult } from "../Model/Types/Grades/DetailedUEResult";
 import { Semestre } from "../Model/Types/Grades/Elements/Semestre";
+import { UE } from "../Model/Types/Grades/Elements/UE";
+import { MainPageGradeView } from "./MainPageGradeView";
 
 export class MainPageView
 {
@@ -29,35 +33,24 @@ export class MainPageView
         
         return this._ueTables;
     }
+    // private _gradeView: MainPageGradeView[];
+    // private get GradeView(): MainPageGradeView[] { return this._gradeView; }
+    // private get InsertionCellIndex(): number{ return 1; }
 
-    public AddResultsToPage(semester: Semestre)
+    public AddGradeResultsToPage(semester: Semestre)
     {
         let n: number = Math.min(semester.UEList.length, this.UETables.length);
         for (let i = 0; i < n; i++){
-            this.AddResult(
+            this.AddGradeResult(
                 this.UETables[i] as HTMLTableElement,
-                semester.UEList[i].Average
+                semester.UEList[i],
                 );
         }
     }
-    private AddResult(table: HTMLTableElement, grade: number){
-        let child: HTMLElement = this.CreateChild(grade);
-        table.tHead!.rows[0].appendChild(child);
-    }
-    CreateChild(grade: number): HTMLTableCellElement {
-        let child: HTMLTableCellElement = document.createElement("th");
-        child.innerHTML = grade.toFixed(2);
-        
-        return child;
-    }
-    private GetChild(htmlElement: HTMLElement, degree: number[]): HTMLElement{
-        let element: HTMLElement = htmlElement;
-        
-        degree.forEach(
-            deg => {
-                element = element.children[deg] as HTMLElement; 
-            });
-        
-        return element;
+    private AddGradeResult(table: HTMLTableElement, ueObject: UE){
+        new MainPageGradeView(
+            table,
+            ueObject.SAEIndex)
+            .AddGradeResultToPage(ueObject.GetDetailedResults);
     }
 }

@@ -48,7 +48,7 @@ export class PageParser
     //#endregion Properties
     
     //#region Private
-    private GetChild(htmlElement: HTMLElement, degree: number[]): HTMLElement{
+    public GetChild(htmlElement: HTMLElement, degree: number[]): HTMLElement{
         let element: HTMLElement = htmlElement;
         
         degree.forEach(
@@ -82,6 +82,42 @@ export class PageParser
 
         return ressourceDiv;
     }
+    
+    public GetCCAndSAESeparationIndex(ueNumber: number): number
+    {
+        let ueTable: HTMLElement = document.querySelectorAll('table')[ueNumber];
+        let ressourceDiv: HTMLElement = this.GetChild(ueTable, [1]);
+
+        let saeIndex = -1;
+        for (let i = 0; i < ressourceDiv.childElementCount; i++){
+            if (ressourceDiv.children[i].classList.contains('cell_BUT_SAE')){
+                saeIndex = i;
+                break;
+            }
+        }
+
+        return saeIndex;
+    }
+
+    private GetUERessourcesCCDiv(ueNumber: number): HTMLElement{
+        let ueTable: HTMLElement = this.GetUETable(ueNumber);
+        let ressourceDiv: HTMLElement = this.GetChild(ueTable, [1]);
+
+        let open: boolean = false;
+        let closed: boolean = false;
+        for(let i = 0; i < ressourceDiv.childElementCount && !closed; i++){
+            let child = ressourceDiv.children[i];
+            if (!open) { open = child.classList.contains('cell_BUT_RESSOURCE'); }
+            else
+            {
+
+                closed = child.classList.contains('cell_BUT_SAE');
+            }
+        }
+
+        return ressourceDiv;
+    }
+
     private GetRessourceSectionDiv(ueNumber: number, ressourceNumber: number): HTMLElement{
         let ressourcesDiv: HTMLElement = this.GetUERessourcesDiv(ueNumber);
         let sectionDiv: HTMLElement = this.GetChild(ressourcesDiv, [ressourceNumber, 0])

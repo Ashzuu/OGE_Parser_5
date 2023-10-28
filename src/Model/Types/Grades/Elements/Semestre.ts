@@ -8,7 +8,7 @@ export class Semestre extends Element
 {
     private _ueList: UE[];
     /**Liste des UE du semestre */
-    public get UEList()
+    public get UEList(): UE[]
     {
         return this._ueList;
     }

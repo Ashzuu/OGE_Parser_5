@@ -24,7 +24,8 @@ export class UEFactory implements IElementFactory
 
     private GetUE(ueNumber: number): UE {
         let ressources: Ressource[] = RessourceFactory.Instance.GetAllUERessources(ueNumber);
-        let ue: UE = new UE(1, ressources);
+        let saeIndex: number = PageParser.Instance.GetCCAndSAESeparationIndex(ueNumber);
+        let ue: UE = new UE(1, ressources, saeIndex);
 
         return ue;
     }
