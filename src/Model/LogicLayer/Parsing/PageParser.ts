@@ -46,8 +46,8 @@ export class PageParser
     }
     //#endregion Properties
     
-    //#region Private
-    public GetChild(htmlElement: HTMLElement, degree: number[]): HTMLElement{
+    public GetChild(htmlElement: HTMLElement, degree: number[]): HTMLElement
+    {
         let element: HTMLElement = htmlElement;
         
         degree.forEach(
@@ -57,16 +57,18 @@ export class PageParser
         
         return element;
     }
-
+    
+    //#region UE
     private GetAllUETables(): HTMLElement[]
     {
         return Array.from(this.BodyElement.querySelectorAll('table')) as HTMLElement[];
     }
-    private GetUETable(tableNumber: number): HTMLElement{
+    private GetUETable(tableNumber: number): HTMLElement
+    {
         return this.UETables[tableNumber];
     }
-
-    private GetUERessourcesDiv(ueNumber: number): HTMLElement{
+    private GetUERessourcesDiv(ueNumber: number): HTMLElement
+    {
         let ueTable: HTMLElement = this.GetUETable(ueNumber);
         let ressourceDiv: HTMLElement = this.GetChild(ueTable, [1]);
 
@@ -81,7 +83,6 @@ export class PageParser
 
         return ressourceDiv;
     }
-    
     public GetCCAndSAESeparationIndex(ueNumber: number): number
     {
         let ueTable: HTMLElement = document.querySelectorAll('table')[ueNumber];
@@ -97,34 +98,15 @@ export class PageParser
 
         return saeIndex;
     }
+    //#endregion UE
 
-    private GetUERessourcesCCDiv(ueNumber: number): HTMLElement{
-        let ueTable: HTMLElement = this.GetUETable(ueNumber);
-        let ressourceDiv: HTMLElement = this.GetChild(ueTable, [1]);
-
-        let open: boolean = false;
-        let closed: boolean = false;
-        for(let i = 0; i < ressourceDiv.childElementCount && !closed; i++){
-            let child = ressourceDiv.children[i];
-            if (!open) { open = child.classList.contains('cell_BUT_RESSOURCE'); }
-            else
-            {
-
-                closed = child.classList.contains('cell_BUT_SAE');
-            }
-        }
-
-        return ressourceDiv;
-    }
-
-    private GetRessourceSectionDiv(ueNumber: number, ressourceNumber: number): HTMLElement{
+    //#region Ressource
+    private GetRessourceSectionDiv(ueNumber: number, ressourceNumber: number): HTMLElement
+    {
         let ressourcesDiv: HTMLElement = this.GetUERessourcesDiv(ueNumber);
         let sectionDiv: HTMLElement = this.GetChild(ressourcesDiv, [ressourceNumber, 0])
         return sectionDiv;
-    }   
-    //#endregion Private
-     
-    //#region Methods
+    }
     public GetRessourceCount(ueNumber: number): number
     {
         return this.GetUERessourcesDiv(ueNumber).childElementCount;
@@ -146,7 +128,9 @@ export class PageParser
 
         return nameText;
     }
+    //#endregion Ressource
 
+    //#region Section
     private GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): HTMLElement
     {
         let sectionDiv: HTMLElement = this.GetRessourceSectionDiv(ueNumber, ressourceNumber);
@@ -165,7 +149,9 @@ export class PageParser
         
         return StringFormater.ClearCoefficient(coefficientSpan.innerText);
     }
-
+    //#endregion Section
+    
+    //#region Note
     private GetNoteList(ueNumber: number, ressourceNumber: number, sectionNumber: number): { grade: number; coefficient: number; }[]
     {
         let section: HTMLElement = this.GetSection(ueNumber, ressourceNumber, sectionNumber);
@@ -179,5 +165,5 @@ export class PageParser
     {
         return this.GetNoteList(ueNumber, ressourceNumber, sectionNumber)[noteNumber];
     }
-    //#endregion Methods   
+    //#endregion Note
 }

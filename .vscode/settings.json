@@ -14,6 +14,7 @@
         "pack*": true,
         ".git*": true,
         "READ*": true,
+        "public": true,
         "tscon*": true
     }
 }

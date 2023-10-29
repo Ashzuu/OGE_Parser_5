@@ -1,5 +1,3 @@
-import { PageParser } from "../Model/LogicLayer/Parsing/PageParser";
-import { DetailedUEResult } from "../Model/Types/Grades/DetailedUEResult";
 import { Semestre } from "../Model/Types/Grades/Elements/Semestre";
 import { UE } from "../Model/Types/Grades/Elements/UE";
 import { MainPageGradeView } from "./MainPageGradeView";
