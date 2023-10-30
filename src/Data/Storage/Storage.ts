@@ -3,15 +3,24 @@ import { SemesterNames } from "../../Model/LogicLayer/Parsing/SemesterNames";
 import { Semestre } from "../../Model/Types/Grades/Elements/Semestre";
 import { StoredSemester } from "../../Model/Types/Storage/StoredSemester";
 
-export class Storage /*implements IStorage*/
+export class Storage implements IStorage
 {
-    public static Save(semester: Semestre): void {
+    //#region Singleton
+    private constructor() {}
+    private static _instance: Storage;
+    public static get Instance() { return this._instance || (this._instance = new this()); }
+    //#endregion Singleton
+    
+    public Save(semester: Semestre): void {
         this.Load().then((savedSemesters) => {
             savedSemesters[SemesterNames.CurrentSemestre] = semester.ToStoredSemester();
             this.AsyncSave(savedSemesters);
         });
     }
-    public static async Load(): Promise<{ [id: string]: StoredSemester; }> {
+    public Load(): { [id: string]: StoredSemester; } {
+        throw new Error("Not impl");
+    }
+    public async AsyncLoad(): Promise<{ [id: string]: StoredSemester; }> {
         return new Promise((resolve) => {
             chrome.storage.local.get(["SavedSemesters"], function (result) {
                 resolve(result["SavedSemesters"] || {});
@@ -19,7 +28,7 @@ export class Storage /*implements IStorage*/
         });
     } 
     
-    private static async AsyncSave(semestersToSave: { [id: string]: StoredSemester; }): Promise<void> {
+    private async AsyncSave(semestersToSave: { [id: string]: StoredSemester; }): Promise<void> {
         chrome.storage.local.set({ "SavedSemesters": semestersToSave });
     }
 }
