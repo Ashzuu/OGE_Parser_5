@@ -25,7 +25,7 @@ export class ChromeStorage implements IStorage {
         // Assuming semester has an 'id' field that is a string
         this.cache[SemesterNames.CurrentSemestre] = semester.ToStoredSemester();
         // Save the cache asynchronously
-        this.AsyncSave();
+        this.AsyncSave(this.cache);
     }
 
     public Load(): { [id: string]: StoredSemester; } {
@@ -34,7 +34,15 @@ export class ChromeStorage implements IStorage {
 
     //#region Private
     private async initCache(): Promise<void> {
-        this.cache = await this.AsyncLoad();
+        console.log(">>initCache");
+        console.log(this.cache);
+        
+        let temp: { [id: string]: StoredSemester; } = await this.AsyncLoad();
+        for (let key in temp) {
+            this.cache[key] = temp[key];
+        }
+        console.log(this.cache);
+        console.log("<<initCache");
     }
 
     private async AsyncLoad(): Promise<{ [id: string]: StoredSemester; }> {
@@ -45,8 +53,8 @@ export class ChromeStorage implements IStorage {
         });
     }
 
-    private async AsyncSave(): Promise<void> {
-        chrome.storage.local.set({ "SavedSemesters": this.cache });
+    private async AsyncSave(semestersToSave: { [id: string]: StoredSemester}): Promise<void> {
+        chrome.storage.local.set({ "SavedSemesters": semestersToSave });
     }
     //#endregion Private
 }
