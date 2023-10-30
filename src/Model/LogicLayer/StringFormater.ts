@@ -2,7 +2,17 @@
  * Manager du format des titres
  * @remarks Utilisé pour normaliser le format des differents string utilisés dans le programme, surtout pour la partie IHM
  */
-export class StringFormater {
+export class StringFormater
+{
+    public static FormatSemesterName(baseName: string): string
+    {
+        let formatedName: string = baseName;
+            formatedName = formatedName.replace(/\d+.\d+-/g, '');
+            formatedName = formatedName.replace(/-.*Semestre /g, ' S');
+
+        return formatedName;
+    }
+
     public static ClearCoefficient(coefficientText: string): number
     {
         coefficientText = coefficientText.replace("(", "");
