@@ -9,9 +9,9 @@ import { StoredSemester } from "./Model/Types/Storage/StoredSemester";
 let semester: Semestre = SemestreFactory.Instance.GetSemester();
 // chrome.storage.local.clear();
 
-new ChromeStorage().Save(semester);
+ChromeStorage.Instance.Save(semester);
 
-console.log(new ChromeStorage().Load());
+console.log(ChromeStorage.Instance.Load());
 
 // if (!PageParser.Instance.AreGradesShown)
 // {

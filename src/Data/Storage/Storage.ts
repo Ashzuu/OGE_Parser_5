@@ -4,12 +4,22 @@ import { Semestre } from "../../Model/Types/Grades/Elements/Semestre";
 import { StoredSemester } from "../../Model/Types/Storage/StoredSemester";
 
 export class ChromeStorage implements IStorage {
-    private cache: { [id: string]: StoredSemester; } = {};
-
-    public constructor() {
+    //#region Singleton
+    private constructor() {
         // Initialize cache from Chrome's storage
         this.initCache();
     }
+
+    private static _instance: ChromeStorage;
+    public static get Instance(): ChromeStorage
+    {
+        if (!this._instance) this._instance = new this();
+        this._instance.initCache();
+
+        return this._instance;
+    }
+    //#endregion Singleton
+    private cache: { [id: string]: StoredSemester; } = {};
 
     public Save(semester: Semestre): void {
         // Assuming semester has an 'id' field that is a string
