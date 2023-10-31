@@ -3,15 +3,10 @@ import { PageParser } from "./Model/LogicLayer/Parsing/PageParser";
 import { SemesterNames } from "./Model/LogicLayer/Parsing/SemesterNames";
 import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
 import { MainPageView } from "./View/MainPageView";
-import { ChromeStorage } from "./Data/Storage/Storage";
+import { ChromeStorage } from "./Data/Storage/ChromeStorage";
 import { StoredSemester } from "./Model/Types/Storage/StoredSemester";
 
 let semester: Semestre = SemestreFactory.Instance.GetSemester();
-// chrome.storage.local.clear();
-
-ChromeStorage.Instance.Save(semester);
-
-console.log(ChromeStorage.Instance.Load());
 
 // if (!PageParser.Instance.AreGradesShown)
 // {
