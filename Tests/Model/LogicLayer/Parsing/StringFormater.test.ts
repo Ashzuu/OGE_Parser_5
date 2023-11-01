@@ -1,8 +1,8 @@
-import { StringParser } from "../../../src/Model/LogicLayer/Parsing/StringParser";
+import { StringParser } from "../../../../src/Model/LogicLayer/Parsing/StringParser";
 
 describe('StringParser', () => {
     describe('TestClearCoefficient', () => {
-        it('Test 1', () => {
+        test('Test 1', () => {
             let result: number;
             
             result = StringParser.ClearCoefficient("(1)");
@@ -12,7 +12,7 @@ describe('StringParser', () => {
             result = StringParser.ClearCoefficient("(01.00)");
             expect(result).toBe(1);
         });
-        it('Test 2', () => {
+        test('Test 2', () => {
             let result: number;
 
             result = StringParser.ClearCoefficient("(10)");
@@ -22,7 +22,7 @@ describe('StringParser', () => {
             result = StringParser.ClearCoefficient("(10.00)");
             expect(result).toBe(10);
         });
-        it('Test 3', () => {
+        test('Test 3', () => {
             let result: number;
             
             result = StringParser.ClearCoefficient("(0.1)");
@@ -32,7 +32,7 @@ describe('StringParser', () => {
             result = StringParser.ClearCoefficient("(00.11)");
             expect(result).toBe(0.11);
         });
-        it('Test 4', () => {
+        test('Test 4', () => {
             let result: number;
 
             result = StringParser.ClearCoefficient("(10.50)");
@@ -44,7 +44,7 @@ describe('StringParser', () => {
         });
     });
     describe('TestNormalizeGrade', () => {
-        it('Test 1', () => {
+        test('Test 1', () => {
             let result: number;
             
             result = (StringParser as any).NormalizeGrade("20/20");
@@ -54,7 +54,7 @@ describe('StringParser', () => {
             result = (StringParser as any).NormalizeGrade("50/50");
             expect(result).toBe(20);
         });
-        it('Test 2', () => {
+        test('Test 2', () => {
             let result: number;
         
             result = (StringParser as any).NormalizeGrade("10/20");
@@ -64,7 +64,7 @@ describe('StringParser', () => {
             result = (StringParser as any).NormalizeGrade("25/50");
             expect(result).toBe(10);
         });
-        it('Test 3', () => {
+        test('Test 3', () => {
             let result: number;
 
             result = (StringParser as any).NormalizeGrade("5/20");
@@ -74,7 +74,7 @@ describe('StringParser', () => {
             result = (StringParser as any).NormalizeGrade("12.5/50");
             expect(result).toBe(5);
         });
-        it('Test 4', () => {
+        test('Test 4', () => {
             let result: number;
 
             result = (StringParser as any).NormalizeGrade("0/20");
@@ -86,7 +86,7 @@ describe('StringParser', () => {
         });
     });
     describe('TestGetNotesFromSectionInnerText', () => {
-        it('Test 1', () => {
+        test('Test 1', () => {
             let testString: string;
             let result: {grade: number; coefficient: number; }[];
 
@@ -98,7 +98,7 @@ describe('StringParser', () => {
             expect(result[1].grade).toBe(16);
             expect(result[1].coefficient).toBe(3);
         });
-        it('Test 2', () => {
+        test('Test 2', () => {
             let testString: string;
             let result: {grade: number; coefficient: number; }[];
             testString = '\n                                            TD1 Transactions [\n                                            \n                                                    18.00/20.0\n                                                    (1.0)\n                                            ] (1.0)\n                                        ';
@@ -110,7 +110,7 @@ describe('StringParser', () => {
 
     });
     describe('TestGetGradeCoefficientPairs', () => {
-        it('Test 1', () => {
+        test('Test 1', () => {
             let testString: string;
             let result: {grade: number; coefficient: number; }[];
 

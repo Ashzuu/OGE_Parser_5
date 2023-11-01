@@ -6,7 +6,7 @@ import { MainPageView } from "./View/MainPageView";
 import { ChromeStorage } from "./Data/Storage/ChromeStorage";
 import { StoredSemester } from "./Model/Types/Storage/StoredSemester";
 
-let semester: Semestre = SemestreFactory.Instance.GetSemester();
+// let semester: Semestre = SemestreFactory.Instance.GetSemester();
 
 // if (!PageParser.Instance.AreGradesShown)
 // {

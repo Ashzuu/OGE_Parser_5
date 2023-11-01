@@ -237,6 +237,12 @@ export class PageParser
     private GetNoteList(ueNumber: number, ressourceNumber: number, sectionNumber: number): { grade: number; coefficient: number; }[]
     {
         let section: HTMLElement = this.GetSection(ueNumber, ressourceNumber, sectionNumber);
+
+        // console.log(section instanceof HTMLElement);
+        // console.log(section.innerHTML);
+        console.log(section.textContent);
+        
+
         return StringParser.GetNotesFromSectionInnerText(section.innerText);
     }
     /**

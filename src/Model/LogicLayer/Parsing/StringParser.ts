@@ -22,9 +22,8 @@ export class StringParser {
      * @returns Tableau d'objets contenant les notes et leur coefficient
      */
     public static GetNotesFromSectionInnerText(sectionText: string): { grade: number; coefficient: number; }[]
-    {
-        console.log(sectionText);
-        sectionText = sectionText.slice(sectionText.indexOf('[') + 2, sectionText.indexOf(']') - 1);        
+    {       
+        sectionText = sectionText.slice(sectionText.indexOf('[') + 2, sectionText.indexOf(']') - 1); 
         return this.GetGradeCoefficientPairs(sectionText);
     }
     
