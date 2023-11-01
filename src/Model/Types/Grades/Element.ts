@@ -1,7 +1,6 @@
+/** Classe abstraite representant un element dans le systeme de gestion des notes de OGE */
 export abstract class Element{
-    /**
-     * Moyenne de l'element
-     */
+    /** Moyenne de l'element */
     public get Average(): number
     {
         let totalAverage: number = 0;
@@ -17,9 +16,7 @@ export abstract class Element{
             actualAverage = 0;
         return actualAverage;
     }
-    /**
-     * Coefficient de l'emlement
-     */
+    /** Coefficient de l'emlement */
     public get Coefficient()
     {
         return this._coefficient;

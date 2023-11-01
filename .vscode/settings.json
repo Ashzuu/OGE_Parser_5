@@ -1,21 +1,21 @@
 {
     "explorerExclude.backup": {},
     "files.exclude": {
-        "**/.git": false,
-        "**/.svn": false,
-        "**/.hg": false,
-        "**/CVS": false,
-        "**/.DS_Store": false,
-        "**/Thumbs.db": false,
-        ".git*": false,
-        ".vscode": false,
-        "*config*": false,
-        "dist": false,
-        "node*": false,
-        "pack*": false,
-        "public": false,
-        "READ*": false,
-        "tscon*": false,
-        "webpack": false
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        ".git*": true,
+        ".vscode": true,
+        "*config*": true,
+        "dist": true,
+        "node*": true,
+        "pack*": true,
+        "public": true,
+        "READ*": true,
+        "tscon*": true,
+        "webpack": true
     }
 }

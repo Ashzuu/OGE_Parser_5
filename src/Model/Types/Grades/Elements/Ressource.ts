@@ -1,9 +1,7 @@
 import { Element } from "../Element";
 import { Section } from "./Section";
 
-/**
- * Represente une Ressource
- */
+/** Represente une Ressource */
 export class Ressource extends Element
 {
     private _sectionList: Section[];

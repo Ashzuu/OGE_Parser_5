@@ -2,19 +2,19 @@ import { DetailedUEResult } from "../DetailedUEResult";
 import { Element } from "../Element";
 import { Ressource } from "./Ressource";
 
-/**
- * Represente une UE
- */
+/** Represente une UE */
 export class UE extends Element
 {
     private _ressourceList: Ressource[];
     private _saeIndex: number;
+    /**Index de la premiere ressource du SAE */
     public get SAEIndex(): number { return this._saeIndex; }
     /**Liste des ressources de l'UE */
     private get RessourceList(): Ressource[]
     {
         return this._ressourceList;
     }
+    /**Liste des ressources du pôle CC*/
     private get CCRessources(): Ressource[]
     {
         let ccRessources: Ressource[] = [];
@@ -26,6 +26,7 @@ export class UE extends Element
 
         return ccRessources;
     }
+    /**Liste des ressources du pôle SAE */
     private get SAERessources(): Ressource[]
     {
         let saeRessources: Ressource[] = [];
@@ -35,7 +36,7 @@ export class UE extends Element
 
         return saeRessources;
     }
-    
+    /**Moyenne globale du pôle CC*/
     private get GetGlobalCCAverage(): number
     {
         let avg = -1;
@@ -50,6 +51,7 @@ export class UE extends Element
 
         return avg;
     }
+    /**Moyenne globale du pôle SAE */
     private get GetGlobalSAEAverage(): number
     {
         let avg = -1;
@@ -64,7 +66,7 @@ export class UE extends Element
 
         return avg;
     }
-
+    /**Moyenne de chaque ressources du pôle CC */
     private get GetCCAverages(): number[]
     {
         let averages: number[] = [];
@@ -75,6 +77,7 @@ export class UE extends Element
 
         return averages;
     }
+    /**Moyenne de chaque ressources du pôle SAE */
     private get GetSAEAverages(): number[]
     {
         let averages: number[] = [];
@@ -85,6 +88,7 @@ export class UE extends Element
         return averages;
     }
 
+    /** Resultats detaillés de l'UE */
     public get GetDetailedResults(): DetailedUEResult
     {
         return {

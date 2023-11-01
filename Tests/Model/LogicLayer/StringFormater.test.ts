@@ -1,4 +1,4 @@
-import { StringParser } from "../../../src/Model/LogicLayer/StringParser";
+import { StringParser } from "../../../src/Model/LogicLayer/Parsing/StringParser";
 
 describe('StringParser', () => {
     describe('TestClearCoefficient', () => {

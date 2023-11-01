@@ -1,9 +1,7 @@
 import { Element } from "../Element";
 import { UE } from "./UE";
 
-/**
- * Represente un Semestre
- */
+/** Represente un Semestre */
 export class Semestre extends Element
 {
     private _ueList: UE[];
