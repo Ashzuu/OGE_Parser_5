@@ -2,6 +2,7 @@ import { Semestre } from "../Model/Types/Grades/Elements/Semestre";
 import { UE } from "../Model/Types/Grades/Elements/UE";
 import { MainPageGradeView } from "./MainPageGradeView";
 
+/** Classe de la vue de la page principale */
 export class MainPageView
 {
     private constructor()
@@ -10,6 +11,7 @@ export class MainPageView
         this._ueTables = undefined;
     }
     private static _instance: MainPageView;
+    /** Instance de la classe */
     public static get Instance(): MainPageView{
         if (!this._instance) this._instance = new this();
 
@@ -31,10 +33,11 @@ export class MainPageView
         
         return this._ueTables;
     }
-    // private _gradeView: MainPageGradeView[];
-    // private get GradeView(): MainPageGradeView[] { return this._gradeView; }
-    // private get InsertionCellIndex(): number{ return 1; }
 
+    /**
+     * Ajoute les resultats a la page
+     * @param semester Semestre
+     */
     public AddGradeResultsToPage(semester: Semestre)
     {
         let n: number = Math.min(semester.UEList.length, this.UETables.length);

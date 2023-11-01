@@ -1,7 +1,14 @@
 import { ViewStyle } from "./ViewStyle";
 
+/** Classe creant les elements HTML pour les resultats*/
 export class DOMElementBuilder
 {
+    /**
+     * Ajoute un element HTML pour un resultat
+     * @param grade Note
+     * @param isTD Est un element TD, sinon TH
+     * @returns Element HTML
+     */
     public static AddSingleResult(grade: number, isTD: boolean): HTMLTableCellElement
     {
         let gradeType: string = (isTD) ? "R" : "UE";
@@ -13,7 +20,13 @@ export class DOMElementBuilder
         
         return child;
     }
-
+    /**
+     * Ajoute un element HTML pour un resultat
+     * @param grade Note
+     * @param classesToAdd Classes a ajouter 
+     * @param isTD Est un element TD, sinon TH
+     * @returns Element HTML
+     */
     private static CreateTableCell(grade: number, classesToAdd: string[], isTD: boolean): HTMLTableCellElement{
         let child: HTMLTableCellElement;
         if (isTD) child = document.createElement("td");

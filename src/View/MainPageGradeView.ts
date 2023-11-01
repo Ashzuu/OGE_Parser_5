@@ -6,6 +6,11 @@ import { DOMElementBuilder } from "./DOMElementBuilder";
 
 export class MainPageGradeView
 {
+    /**
+     * Constructeur
+     * @param table Tableau des resultats 
+     * @param saeIndex Index de la SAE
+     */
     public constructor(table: HTMLTableElement, saeIndex: number)
     {
         this._table = table;
@@ -19,7 +24,10 @@ export class MainPageGradeView
     private _table: HTMLTableElement;
     private get Table(): HTMLTableElement { return this._table; }
     //#endregion Properties
-    
+    /**
+     * Ajoute les resultats a la page
+     * @param detailedUEResult Resultats
+     */
     public AddGradeResultToPage(
         detailedUEResult: DetailedUEResult
     ): void
@@ -56,11 +64,23 @@ export class MainPageGradeView
     private AddGlobalCCResult(ccResult: number) { this.AddSingleResult(ccResult, [1, 0]); }
     private AddGlobalUEResult(ueResult: number) { this.AddSingleResult(ueResult, [0, 0], false); }
 
+    /**
+     * Ajoute plusieurs resultats a la page
+     * @param grades Notes
+     * @param begin Index de debut dans le tableau
+     * @param end Index de fin
+     */
     private AddMultipleResult(grades: number[], begin: number, end: number){
         for (let i = begin; i < end; i++){
             this.AddSingleResult(grades[i - begin], [1, i]);
         }
     }
+    /**
+     * Ajoute un resultat a la page
+     * @param grade Note
+     * @param location Emplacement du resultat
+     * @param isTD Est un element TD, sinon TH
+     */
     private AddSingleResult(grade: number, location: number[], isTD: boolean = true){
         let resultHTML: HTMLTableCellElement = DOMElementBuilder.AddSingleResult(grade, isTD);
         let cell: HTMLTableCellElement = 
