@@ -1,8 +1,6 @@
 import { Element } from "../Element";
 
-/**
- * Represente une Note
- */
+/** Represente une Note */
 export class Note extends Element
 {
     private _grade: number;

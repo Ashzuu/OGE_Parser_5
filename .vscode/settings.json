@@ -7,14 +7,15 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
+        ".git*": true,
         ".vscode": true,
+        "*config*": true,
         "dist": true,
-        "webpack": true,
         "node*": true,
         "pack*": true,
-        ".git*": true,
-        "READ*": true,
         "public": true,
-        "tscon*": true
+        "READ*": true,
+        "tscon*": true,
+        "webpack": true
     }
 }

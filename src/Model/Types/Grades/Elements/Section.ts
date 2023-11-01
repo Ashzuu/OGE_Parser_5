@@ -1,15 +1,11 @@
 import { Element } from "../Element";
 import { Note } from "./Note";
 
-/**
- * Represente une Section
- */
+/** Represente une Section */
 export class Section extends Element
 {
     private _gradeList: Note[];
-    /**
-     * Liste des notes dans la section
-     */
+    /** Liste des notes dans la section */
     public get GradeList()
     {
         return this._gradeList;
