@@ -3,6 +3,7 @@ import { IElementFactory } from "../../Interfaces/IElementFactory";
 import { PageParser } from "../Parsing/PageParser";
 import { Note } from "../../Types/Grades/Elements/Note";
 import { NoteFactory } from "./NoteFactory";
+import { ChildNotFoundError } from "../../Types/Error/ChildNotFoundError";
 
 /**
  * Fabrique de sections
@@ -19,12 +20,17 @@ export class SectionFactory implements IElementFactory
      * @param ueNumber Numéro de l'UE
      * @param ressourceNumber Numéro de la ressource
      * @returns Tableau de sections
+     * 
+     * @throws TableNotFoundException Si la table demandées n'existe pas
      */
     public GetAllRessourceSection(ueNumber: number, ressourceNumber: number): Section[] {
         let sectionList: Section[] = [];
         let sectionCount: number = PageParser.Instance.GetSectionCount(ueNumber, ressourceNumber);
         for (let i = 1; i < sectionCount; i++){
-            sectionList.push(this.GetSection(ueNumber, ressourceNumber, i));
+            try{
+                sectionList.push(this.GetSection(ueNumber, ressourceNumber, i));
+            }
+            catch (e){ if (e instanceof ChildNotFoundError) console.error(e); else throw e }
         }
 
         return sectionList;
@@ -35,6 +41,9 @@ export class SectionFactory implements IElementFactory
      * @param ressourceNumber Numéro de la ressource
      * @param sectionNumber Numéro de la section
      * @returns Section
+     * 
+     * @throws ChildNotFoundException Si la section n'existe pas
+     * @throws TableNotFoundException Si la table demandées n'existe pas
      */
     public GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): Section{
         let grades: Note[] = NoteFactory.Instance.GetAllNotes(ueNumber, ressourceNumber, sectionNumber)

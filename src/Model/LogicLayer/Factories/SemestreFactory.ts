@@ -6,13 +6,15 @@ import { UEFactory } from "./UEFactory";
 /** Fabrique de semestre */
 export class SemestreFactory implements IElementFactory
 {
+    //#region Singleton
     private constructor() {}
     private static _instance: SemestreFactory;
     /** Retourne l'instance de la fabrique de semestre */
     public static get Instance() { return this._instance || (this._instance = new this()); }
-    
+    //#endregion
+
     /**
-     * Retourne le semestre
+     * Retourne le semestre de la page actuelle
      * @returns Semestre
      */
     public GetSemester(): Semestre {

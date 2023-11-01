@@ -8,7 +8,7 @@ export class UE extends Element
     private _ressourceList: Ressource[];
     private _saeIndex: number;
     /**Index de la premiere ressource du SAE */
-    public get SAEIndex(): number { return this._saeIndex; }
+    public get SAEIndex(): number { return (this._saeIndex != -1) ? this._saeIndex : this.RessourceList.length; }
     /**Liste des ressources de l'UE */
     private get RessourceList(): Ressource[]
     {

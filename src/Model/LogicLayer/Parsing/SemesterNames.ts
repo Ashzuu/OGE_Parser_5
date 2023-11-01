@@ -35,7 +35,7 @@ export class SemesterNames
         Array.from(semestreNameUL.children).forEach(li => {
             semestreList.push(
                 this.FormatSemesterName(
-                    (li as HTMLElement).innerText
+                    (li as HTMLElement).textContent
                     )
                 );
         });
@@ -47,7 +47,7 @@ export class SemesterNames
     public static get CurrentSemestre(): string
     {
         let semestreNameUL : HTMLElement = this.BodyElement.getElementsByClassName(this.CURRENT_SEMESTER_CLASSES)[0] as HTMLElement;
-        return this.FormatSemesterName(semestreNameUL.innerText);
+        return this.FormatSemesterName(semestreNameUL.textContent);
     }
 
     /** Récupère le semestre correspondant au semestre actuel*/
@@ -63,8 +63,10 @@ export class SemesterNames
      * @param semestreName Nom du semestre à formater
      * @returns Nom du semestre formaté
      */
-    private static FormatSemesterName(semestreName: string): string
+    private static FormatSemesterName(semestreName: string | null): string
     {
+        if (semestreName == null) throw new Error("Semestre name is null");
+
         semestreName = semestreName.replace(/\d*\/\d*-/g, "");
         semestreName = semestreName.replace(/-.* /g, " S");
         return semestreName;

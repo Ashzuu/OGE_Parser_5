@@ -1,3 +1,10 @@
+import { BodyElementNotFoundError } from "../../Types/Error/BodyElementNotFoundError";
+import { ChildNotFoundError } from "../../Types/Error/ChildNotFoundError";
+import { NoGradesFoundError } from "../../Types/Error/NoGradesFoundError";
+import { NullCoefficientError } from "../../Types/Error/NullCoefficientError";
+import { RessourceNameNotFoundError } from "../../Types/Error/RessourceNameNotFoundError";
+import { TableNotFoundError } from "../../Types/Error/TableNotFoundError";
+import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficientPair";
 import { StringParser } from "./StringParser";
 
 /**
@@ -11,8 +18,8 @@ export class PageParser
         this._bodyElement = undefined;
         this._ueTables = undefined;
     }
+
     private static _instance: PageParser;
-    
     /**Retourne l'instance du Parser de la page */
     public static get Instance() { return this._instance || (this._instance = new this()); }
 
@@ -26,10 +33,19 @@ export class PageParser
     //#endregion Saved HTMLElements
     
     //#region Properties
-    /** Retourne le body de la page */
+    /** 
+     * Retourne le body de la page
+     * @throws BodyElementNotFoundError si le body n'est pas trouvé dans le DOM
+     */
     private get BodyElement(): HTMLElement
     {
-        if (!this._bodyElement) this._bodyElement = document.querySelectorAll("body")[0].cloneNode(true) as HTMLElement;
+        if (!this._bodyElement) {
+
+            let docBodyElements: NodeListOf<HTMLBodyElement> =  document.querySelectorAll("body");
+            if (docBodyElements.length == 0) throw new BodyElementNotFoundError();
+
+            this._bodyElement = docBodyElements[0].cloneNode(true) as HTMLElement;
+        }
         return this._bodyElement;
     }
     /** Retourne les tables des UE */
@@ -46,7 +62,11 @@ export class PageParser
     {
         return this.UETables.length;
     }
-    /** Retourne si les notes sont affichées */
+    /**
+     * Retourne si les notes sont affichées
+     * 
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
+     */
     public get AreGradesShown(): boolean
     {
         return this.GetChild(this.UETables[0], [0, 0]).childElementCount > 1
@@ -56,8 +76,10 @@ export class PageParser
     /**
      * Retourne l'élément enfant d'un élément HTML
      * @param htmlElement Élément HTML parent
-     * @param degree Index de chaque enfin de l'élément à récupérer
+     * @param degree Index de chaque enfants à parcourir, equivalent à un chemin pour acceder à l'élément voulu
      * @returns L'élément HTML demandé
+     * 
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
      */
     public GetChild(htmlElement: HTMLElement, degree: number[]): HTMLElement
     {
@@ -65,6 +87,8 @@ export class PageParser
         
         degree.forEach(
             deg => {
+                if (element.childElementCount <= deg) throw new ChildNotFoundError();
+
                 element = element.children[deg] as HTMLElement; 
             });
         
@@ -84,15 +108,22 @@ export class PageParser
      * Retourne la table d'une UE
      * @param tableNumber Numéro de l'UE
      * @returns La table de l'UE
+     * 
+     * @throws TableNotFoundError si la table demandée n'existe pas
      */
     private GetUETable(tableNumber: number): HTMLElement
     {
+        if (tableNumber >= this.UETables.length) throw new TableNotFoundError();
+
         return this.UETables[tableNumber];
     }
     /**
      * Retourne le nom d'une UE
      * @param ueNumber Numéro de l'UE
      * @returns Le nom de l'UE
+     * 
+     * @throws TableNotFoundError si la table demandée n'existe pas
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
      */
     private GetUERessourcesDiv(ueNumber: number): HTMLElement
     {
@@ -111,20 +142,23 @@ export class PageParser
         return ressourceDiv;
     }
     /**
-     * Retourne le nom d'une UE
+     * Retourne l'idex de l'élément séparant les CC des SAE
      * @param ueNumber Numéro de l'UE
-     * @returns Le nom de l'UE
+     * @returns Index de l'element "cell_BUT_SAE" dans la liste des enfants de la table de l'UE, -1 s'il y en a pas
+     * 
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
      */
     public GetCCAndSAESeparationIndex(ueNumber: number): number
     {
+        //N'utilise pas this.GetUETable() car on veut la table non modifiée
         let ueTable: HTMLElement = document.querySelectorAll('table')[ueNumber];
         let ressourceDiv: HTMLElement = this.GetChild(ueTable, [1]);
 
+        //Index de l'element separant les CC des SAE
         let saeIndex = -1;
-        for (let i = 0; i < ressourceDiv.childElementCount; i++){
+        for (let i = 0; i < ressourceDiv.childElementCount && saeIndex == -1; i++){
             if (ressourceDiv.children[i].classList.contains('cell_BUT_SAE')){
                 saeIndex = i;
-                break;
             }
         }
 
@@ -138,6 +172,9 @@ export class PageParser
      * @param ueNumber Numéro de l'UE
      * @param ressourceNumber Numéro de la ressource
      * @returns La div de la ressource
+     * 
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
+     * @throws TableNotFoundError si la table demandée n'existe pas
      */
     private GetRessourceSectionDiv(ueNumber: number, ressourceNumber: number): HTMLElement
     {
@@ -152,35 +189,64 @@ export class PageParser
      */
     public GetRessourceCount(ueNumber: number): number
     {
-        return this.GetUERessourcesDiv(ueNumber).childElementCount;
+        let resCount: number = 0;
+        try { resCount = this.GetUERessourcesDiv(ueNumber).childElementCount; }
+        catch (e){ console.error(e); }
+
+        return resCount;
     }
     /**
      * Retourne le coefficient d'une ressource
      * @param ueNumber Numéro de l'UE
      * @param ressourceNumber Numéro de la ressource
      * @returns Le coefficient de la ressource
+     * 
+     * @throws NoGradesFoundError si aucune note n'est saisie
+     * @throws TableNotFoundError si la table demandée n'existe pas
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
+     * @throws NoGradesFoundError si aucune note n'est saisie
      */
     public GetRessourceCoefficient(ueNumber: number, ressourceNumber: number): number
     {
         let ueRessourcesDiv: HTMLElement = this.GetUERessourcesDiv(ueNumber);
         let coefficientSpan: HTMLElement = this.GetChild(ueRessourcesDiv, [ressourceNumber, 0, 0]);
-        if (coefficientSpan.innerText == "Pas de note saisie") throw new Error("No grades");
+
+        if (coefficientSpan.textContent == "Pas de note saisie") throw new NoGradesFoundError();
             coefficientSpan = this.GetChild(coefficientSpan, [1]);
 
-        return StringParser.ClearCoefficient(coefficientSpan.innerText);
+        let coefficient: number = 0;
+
+        try{
+            coefficient = StringParser.ClearCoefficient(coefficientSpan.textContent);
+        }
+        catch (ex){
+            if (ex instanceof NullCoefficientError){
+                //TODO : Gérer le cas ou le coefficient est null grace a l'API
+                coefficient = 0;
+            }
+            else throw ex;
+        }
+
+        return coefficient;
     }
     /**
      * Retourne le nom d'une ressource
      * @param ueNumber Numéro de l'UE
      * @param ressourceNumber Numéro de la ressource
      * @returns Le nom de la ressource
+     * 
+     * @throws TableNotFoundError si la table demandée n'existe pas
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
+     * @throws RessourceNameNotFoundError si le nom de la ressource n'est pas trouvé
      */
     public GetRessourceName(ueNumber: number, ressourceNumber: number): string
     {
         let ueRessourcesDiv: HTMLElement = this.GetUERessourcesDiv(ueNumber);
         let nameSpan: HTMLElement = this.GetChild(ueRessourcesDiv, [ressourceNumber, 0, 0, 0]);
-        let nameText: string = nameSpan.innerText;
+        
+        if (nameSpan.textContent == null) throw new RessourceNameNotFoundError();
 
+        let nameText: string = nameSpan.textContent as string;
         return nameText;
     }
     //#endregion Ressource
@@ -192,6 +258,9 @@ export class PageParser
      * @param ressourceNumber Numéro de la ressource
      * @param sectionNumber Numéro de la section
      * @returns La div de la section
+     * 
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
+     * @throws TableNotFoundError si la table demandée n'existe pas
      */
     private GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): HTMLElement
     {
@@ -208,7 +277,11 @@ export class PageParser
      */
     public GetSectionCount(ueNumber: number, ressourceNumber: number): number
     {
-        return this.GetRessourceSectionDiv(ueNumber, ressourceNumber).childElementCount;
+        let sectionCount: number = 0;
+        try { sectionCount = this.GetRessourceSectionDiv(ueNumber, ressourceNumber).childElementCount; }
+        catch (e){ console.error(e); }
+
+        return sectionCount;
     }
     /**
      * Retourne le coefficient d'une section
@@ -216,13 +289,17 @@ export class PageParser
      * @param ressourceNumber Numéro de la ressource
      * @param sectionNumber Numéro de la section
      * @returns Le coefficient de la section
+     * 
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
+     * @throws TableNotFoundError si la table demandée n'existe pas
+     * @throws NullCoefficientError si le coefficient est null
      */
     public GetSectionCoefficient(ueNumber: number, ressourceNumber: number, sectionNumber: number): number
     {
         let section: HTMLElement = this.GetSection(ueNumber, ressourceNumber, sectionNumber)
         let coefficientSpan: HTMLElement = section.children[section.childElementCount - 1] as HTMLElement;
         
-        return StringParser.ClearCoefficient(coefficientSpan.innerText);
+        return StringParser.ClearCoefficient(coefficientSpan.textContent);
     }
     //#endregion Section
     
@@ -233,17 +310,15 @@ export class PageParser
      * @param ressourceNumber Numéro de la ressource
      * @param sectionNumber Numéro de la section
      * @returns La liste des notes de la section
+     * 
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
+     * @throws TableNotFoundError si la table demandée n'existe pas
+     * @throws NullSectionTextError si le texte de la section est 'null'
      */
-    private GetNoteList(ueNumber: number, ressourceNumber: number, sectionNumber: number): { grade: number; coefficient: number; }[]
+    private GetNoteList(ueNumber: number, ressourceNumber: number, sectionNumber: number): GradeCoefficientPair[]
     {
         let section: HTMLElement = this.GetSection(ueNumber, ressourceNumber, sectionNumber);
-
-        // console.log(section instanceof HTMLElement);
-        // console.log(section.innerHTML);
-        console.log(section.textContent);
-        
-
-        return StringParser.GetNotesFromSectionInnerText(section.innerText);
+        return StringParser.GetNotesFromSectionInnerText(section.textContent);
     }
     /**
      * Retourne le nombre de notes d'une section
@@ -254,7 +329,11 @@ export class PageParser
      */
     public GetNoteCount(ueNumber: number, ressourceNumber: number, sectionNumber: number): number
     {
-        return this.GetNoteList(ueNumber, ressourceNumber, sectionNumber).length;
+        let noteCount: number = 0;
+        try { noteCount = this.GetNoteList(ueNumber, ressourceNumber, sectionNumber).length; }
+        catch (e){ console.error(e); }
+
+        return noteCount;
     }
     /**
      * Retourne une note d'une section
@@ -263,8 +342,12 @@ export class PageParser
      * @param sectionNumber Numéro de la section
      * @param noteNumber Numéro de la note
      * @returns La note de la section
+     * 
+     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
+     * @throws TableNotFoundError si la table demandée n'existe pas
+     * @throws NullSectionTextError si le texte de la section est 'null'
      */
-    public GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): { grade: number; coefficient: number; }
+    public GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): GradeCoefficientPair
     {
         return this.GetNoteList(ueNumber, ressourceNumber, sectionNumber)[noteNumber];
     }

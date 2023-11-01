@@ -1,4 +1,5 @@
 import { IElementFactory } from "../../Interfaces/IElementFactory";
+import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficientPair";
 import { Note } from "../../Types/Grades/Elements/Note";
 import { PageParser } from "../Parsing/PageParser";
 
@@ -7,12 +8,13 @@ import { PageParser } from "../Parsing/PageParser";
  */
 export class NoteFactory implements IElementFactory
 {
-
+    //#region Singleton
     private constructor() {}
     private static _instance: NoteFactory;
     /** Retourne l'instance de la fabrique de notes */
     public static get Instance() { return this._instance || (this._instance = new this()); }
-    
+    //#endregion Singleton
+
     /**
      * Retourne toutes les notes d'une section
      * @param ueNumber Numéro de l'UE
@@ -25,7 +27,10 @@ export class NoteFactory implements IElementFactory
         let ueCount: number = PageParser.Instance.GetNoteCount(ueNumber, ressourceNumber, sectionNumber);
         for (let i = 0; i < ueCount; i++)
         {
-            ressourceList.push(this.GetNote(ueNumber, ressourceNumber, sectionNumber, i));
+            try{
+                ressourceList.push(this.GetNote(ueNumber, ressourceNumber, sectionNumber, i));
+            }
+            catch (e){ console.error(e); }
         }
 
         return ressourceList;
@@ -37,10 +42,12 @@ export class NoteFactory implements IElementFactory
      * @param sectionNumber Numéro de la section
      * @param noteNumber Numéro de la note
      * @returns Note
+     * 
+     * @throws ChildNotFoundException Si la note n'existe pas
      */
     private GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): Note {
-        let grade: { grade: number; coefficient: number; } = PageParser.Instance.GetNote(ueNumber, ressourceNumber, sectionNumber, noteNumber);
-        let note: Note = new Note(grade.grade, grade.coefficient);
+        let grade: GradeCoefficientPair = PageParser.Instance.GetNote(ueNumber, ressourceNumber, sectionNumber, noteNumber);
+        let note: Note = new Note(grade);
 
         return note;
     }

@@ -1,4 +1,5 @@
 import { Element } from "../Element";
+import { GradeCoefficientPair } from "./GradeCoefficientPair";
 
 /** Represente une Note */
 export class Note extends Element
@@ -12,9 +13,9 @@ export class Note extends Element
      * @param grade valeur de la note
      * @param coefficient coefficient de la note
      */
-    constructor(grade: number, coefficient: number)
+    constructor(grade: GradeCoefficientPair)
     {
-        super(coefficient, []);
-        this._grade = grade;
+        super(grade.coefficient, []);
+        this._grade = grade.grade;
     }
 }

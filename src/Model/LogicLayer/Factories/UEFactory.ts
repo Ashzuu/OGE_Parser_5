@@ -15,13 +15,14 @@ export class UEFactory implements IElementFactory
     /**
      * Retourne toutes les UEs
      * @returns Tableau de toutes les UEs
+     * 
      */
     public GetAllUEs(): UE[]
     {
         let ueList: UE[] = [];
         let ueCount: number = PageParser.Instance.UECount;
         for (let i = 0; i < ueCount; i++){
-            ueList.push(this.GetUE(i));
+            try{ ueList.push(this.GetUE(i)); } catch {}
         }
 
         return ueList;
@@ -30,10 +31,13 @@ export class UEFactory implements IElementFactory
      * Retourne une UE
      * @param ueNumber Numéro de l'UE 
      * @returns UE
+     * 
+     * @throws TableNotFoundException Si la table demandées n'existe pas
      */
     private GetUE(ueNumber: number): UE {
         let ressources: Ressource[] = RessourceFactory.Instance.GetAllUERessources(ueNumber);
-        let saeIndex: number = PageParser.Instance.GetCCAndSAESeparationIndex(ueNumber);
+        let saeIndex: number = -1;
+        try { saeIndex = PageParser.Instance.GetCCAndSAESeparationIndex(ueNumber); } catch {}
         let ue: UE = new UE(1, ressources, saeIndex);
 
         return ue;
