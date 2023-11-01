@@ -1,4 +1,4 @@
-import { StringFormater } from "../StringFormater";
+import { StringParser } from "../StringParser";
 
 export class PageParser
 {   
@@ -118,7 +118,7 @@ export class PageParser
         if (coefficientSpan.innerText == "Pas de note saisie") throw new Error("No grades");
             coefficientSpan = this.GetChild(coefficientSpan, [1]);
 
-        return StringFormater.ClearCoefficient(coefficientSpan.innerText);
+        return StringParser.ClearCoefficient(coefficientSpan.innerText);
     }
     public GetRessourceName(ueNumber: number, ressourceNumber: number): string
     {
@@ -147,7 +147,7 @@ export class PageParser
         let section: HTMLElement = this.GetSection(ueNumber, ressourceNumber, sectionNumber)
         let coefficientSpan: HTMLElement = section.children[section.childElementCount - 1] as HTMLElement;
         
-        return StringFormater.ClearCoefficient(coefficientSpan.innerText);
+        return StringParser.ClearCoefficient(coefficientSpan.innerText);
     }
     //#endregion Section
     
@@ -155,7 +155,7 @@ export class PageParser
     private GetNoteList(ueNumber: number, ressourceNumber: number, sectionNumber: number): { grade: number; coefficient: number; }[]
     {
         let section: HTMLElement = this.GetSection(ueNumber, ressourceNumber, sectionNumber);
-        return StringFormater.GetNotesFromSectionInnerText(section.innerText);
+        return StringParser.GetNotesFromSectionInnerText(section.innerText);
     }
     public GetNoteCount(ueNumber: number, ressourceNumber: number, sectionNumber: number): number
     {

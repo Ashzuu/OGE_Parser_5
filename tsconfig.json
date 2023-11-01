@@ -1,20 +1,26 @@
 {
     "compilerOptions": {
-       "strict": true,
-       "noImplicitAny": true,
-       "noImplicitThis": true,
-       "alwaysStrict": true,
-       "strictBindCallApply": true,
-       "strictNullChecks": true,
-       "strictFunctionTypes": true,
-       "strictPropertyInitialization": true,
-       "module": "commonjs",
-       "target": "es6",
-       "esModuleInterop": true,
-       "sourceMap": true,
-       "rootDir": "src",
-       "outDir": "dist/js",
-       "noEmitOnError": true,
-       "typeRoots": [ "node_modules/@types" ]
-    }
-}
+      "strict": true,
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
+      "strictBindCallApply": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "strictPropertyInitialization": true,
+      "module": "commonjs",
+      "target": "es6",
+      "esModuleInterop": true,
+      "sourceMap": true,
+      "rootDir": "src",
+      "outDir": "./dist/js",
+      "noEmitOnError": true,
+      "typeRoots": ["node_modules/@types"]
+    },
+    "exclude": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      "node_modules"
+    ]
+  }
+  
