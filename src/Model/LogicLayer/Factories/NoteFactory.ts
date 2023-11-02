@@ -30,7 +30,7 @@ export class NoteFactory implements IElementFactory
             try{
                 ressourceList.push(this.GetNote(ueNumber, ressourceNumber, sectionNumber, i));
             }
-            catch (e){ console.error(e); }
+            catch {}
         }
 
         return ressourceList;

@@ -30,7 +30,7 @@ export class SectionFactory implements IElementFactory
             try{
                 sectionList.push(this.GetSection(ueNumber, ressourceNumber, i));
             }
-            catch (e){ if (e instanceof ChildNotFoundError) console.error(e); else throw e }
+            catch (e){ if (!(e instanceof ChildNotFoundError)) throw e }
         }
 
         return sectionList;

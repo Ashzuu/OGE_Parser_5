@@ -1,7 +1,6 @@
 import { NoteFactory } from '../../../../src/Model/LogicLayer/Factories/NoteFactory';
 import { PageParser } from '../../../../src/Model/LogicLayer/Parsing/PageParser';
-import { Test_BodyElement } from '../../htmlBody.test';
-import { JSDOM } from 'jsdom';
+import { Note } from '../../../../src/Model/Types/Grades/Elements/Note';
 
 const fs = require('fs');
 const path = require('path');
@@ -28,11 +27,9 @@ describe('NoteFactory', () => {
         });
     });
     describe('GetAllNotes', () => {
-        test('GetAllNotes', () => {
-            // try{
-                expect(NoteFactory.Instance.GetAllNotes(0, 0, 1)).toBeDefined();
-            // }
-            // catch (e){}
+        test('NormalTest', () => {
+            let result: Note[] = NoteFactory.Instance.GetAllNotes(0, 0, 1);
+            expect(result).toBeDefined();
         });
     });
 });

@@ -34,10 +34,10 @@ export class RessourceFactory implements IElementFactory
             }
             catch (ex)
             {
-                if (ex instanceof NoGradesFoundError ||
+                if (!(ex instanceof NoGradesFoundError ||
                     ex instanceof ChildNotFoundError ||
-                    ex instanceof RessourceNameNotFoundError) console.error(ex);
-                else throw ex;
+                    ex instanceof RessourceNameNotFoundError))
+                    throw ex;
             }
         }
 

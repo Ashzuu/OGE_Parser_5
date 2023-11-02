@@ -70,7 +70,7 @@ export class UE extends Element
     private get GetCCAverages(): number[]
     {
         let averages: number[] = [];
-        let n = Math.min(this._saeIndex - 1, this._ressourceList.length)
+        let n = Math.min(this.SAEIndex - 1, this._ressourceList.length)
         for (let i = 0; i < n; i++){
             averages.push(this._ressourceList[i].Average);
         }
@@ -81,7 +81,7 @@ export class UE extends Element
     private get GetSAEAverages(): number[]
     {
         let averages: number[] = [];
-        for (let i = this._saeIndex - 1; i < this._ressourceList.length; i++){
+        for (let i = this.SAEIndex - 1; i < this._ressourceList.length; i++){
             averages.push(this._ressourceList[i].Average);
         }
 

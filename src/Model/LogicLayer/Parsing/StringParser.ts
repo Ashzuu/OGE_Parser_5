@@ -1,6 +1,7 @@
 import { InvalidGradeFormatError } from "../../Types/Error/InvalidGradeFormatError";
 import { NullCoefficientError } from "../../Types/Error/NullCoefficientError";
 import { NullSectionTextError } from "../../Types/Error/NullSectionTextError";
+import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficientPair";
 
 /**
  * Manager du format des titres
@@ -60,11 +61,9 @@ export class StringParser {
                 });
             }
             catch (ex){
-                if (
-                    ex instanceof InvalidGradeFormatError ||
+                if (!(ex instanceof InvalidGradeFormatError ||
                     ex instanceof NullCoefficientError
-                    ) { console.error(ex); }
-                else { throw ex; }
+                    )) throw ex;
             }
         })
         

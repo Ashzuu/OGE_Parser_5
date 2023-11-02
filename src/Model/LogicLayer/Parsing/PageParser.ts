@@ -87,7 +87,7 @@ export class PageParser
         
         degree.forEach(
             deg => {
-                if (element.childElementCount <= deg) throw new ChildNotFoundError();
+                if (!element || element.childElementCount <= deg) throw new ChildNotFoundError();
 
                 element = element.children[deg] as HTMLElement; 
             });
@@ -191,7 +191,7 @@ export class PageParser
     {
         let resCount: number = 0;
         try { resCount = this.GetUERessourcesDiv(ueNumber).childElementCount; }
-        catch (e){ console.error(e); }
+        catch {}
 
         return resCount;
     }
@@ -279,7 +279,7 @@ export class PageParser
     {
         let sectionCount: number = 0;
         try { sectionCount = this.GetRessourceSectionDiv(ueNumber, ressourceNumber).childElementCount; }
-        catch (e){ console.error(e); }
+        catch {}
 
         return sectionCount;
     }
@@ -331,7 +331,7 @@ export class PageParser
     {
         let noteCount: number = 0;
         try { noteCount = this.GetNoteList(ueNumber, ressourceNumber, sectionNumber).length; }
-        catch (e){ console.error(e); }
+        catch {}
 
         return noteCount;
     }

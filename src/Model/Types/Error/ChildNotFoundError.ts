@@ -1,6 +1,6 @@
 export class ChildNotFoundError extends Error {
     constructor() {
-        super();
+        super("Child element not found");
         this.name = "ChildNotFoundError";
     }
 }
