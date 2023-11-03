@@ -27,13 +27,7 @@ export class UEFactory implements IElementFactory
 
         return ueList;
     }
-    /**
-     * Retourne une UE
-     * @param ueNumber Numéro de l'UE 
-     * @returns UE
-     * 
-     * @throws TableNotFoundException Si la table demandées n'existe pas
-     */
+    
     private GetUE(ueNumber: number): UE {
         let ressources: Ressource[] = RessourceFactory.Instance.GetAllUERessources(ueNumber);
         let saeIndex: number = -1;

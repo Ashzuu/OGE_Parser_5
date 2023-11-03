@@ -1,6 +1,7 @@
-export class NullSectionTextError extends Error {
+import { OGEParserError } from "./OGEParserError";
+
+export class NullSectionTextError extends OGEParserError{
     constructor() {
-        super("Section text is null");
-        this.name = "NullSectionText";
+        super("NullSectionText", "Section text is null");
     }
 }

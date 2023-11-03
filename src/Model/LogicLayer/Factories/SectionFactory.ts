@@ -30,22 +30,13 @@ export class SectionFactory implements IElementFactory
             try{
                 sectionList.push(this.GetSection(ueNumber, ressourceNumber, i));
             }
-            catch (e){ if (!(e instanceof ChildNotFoundError)) throw e }
+            catch {}
         }
 
         return sectionList;
     }
-    /**
-     * Retourne une section d'une ressource
-     * @param ueNumber Numéro de l'UE
-     * @param ressourceNumber Numéro de la ressource
-     * @param sectionNumber Numéro de la section
-     * @returns Section
-     * 
-     * @throws ChildNotFoundException Si la section n'existe pas
-     * @throws TableNotFoundException Si la table demandées n'existe pas
-     */
-    public GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): Section{
+    
+    private GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): Section{
         let grades: Note[] = NoteFactory.Instance.GetAllNotes(ueNumber, ressourceNumber, sectionNumber)
         let coefficient: number = PageParser.Instance.GetSectionCoefficient(ueNumber, ressourceNumber, sectionNumber);
         let section: Section = new Section(coefficient, grades);

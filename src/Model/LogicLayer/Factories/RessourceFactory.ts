@@ -43,18 +43,8 @@ export class RessourceFactory implements IElementFactory
 
         return ressourceList;
     }
-    /**
-     * Retourne une ressource d'une UE
-     * @param ueNumber Numéro de l'UE
-     * @param ressourceNumber Numéro de la ressource
-     * @returns Ressource
-     * 
-     * @throws TableNotFoundException Si la table demandées n'existe pas
-     * @throws NoGradesFoundError si aucune note n'est saisie
-     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
-     * @throws RessourceNameNotFoundError si le nom de la ressource n'est pas trouvé
-     */
-    public GetRessource(ueNumber: number, ressourceNumber: number): Ressource {
+    
+    private GetRessource(ueNumber: number, ressourceNumber: number): Ressource {
         let sections: Section[] = SectionFactory.Instance.GetAllRessourceSection(ueNumber, ressourceNumber)
         let coefficient: number = PageParser.Instance.GetRessourceCoefficient(ueNumber, ressourceNumber);
         let name: string = PageParser.Instance.GetRessourceName(ueNumber, ressourceNumber);

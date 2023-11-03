@@ -1,6 +1,7 @@
-export class BodyElementNotFoundError extends Error{
+import { OGEParserError } from "./OGEParserError";
+
+export class BodyElementNotFoundError extends OGEParserError{
     constructor() {
-        super("Body not found");
-        this.name = "BodyElementNotFoundError";
+        super("BodyElementNotFoundError", "Body element not found");
     }
 }

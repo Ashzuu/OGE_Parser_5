@@ -1,6 +1,7 @@
-export class InvalidGradeFormatError extends Error {
+import { OGEParserError } from "./OGEParserError";
+
+export class InvalidGradeFormatError extends OGEParserError {
     constructor() {
-        super("Invalid grade format");
-        this.name = "InvalidGradeFormat";
+        super("InvalidGradeFormat", "Invalid grade format");
     }
 }

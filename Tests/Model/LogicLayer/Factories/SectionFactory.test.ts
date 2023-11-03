@@ -28,30 +28,13 @@ describe('SectionFactory', () => {
         });
     });
     describe('GetAllRessourceSection', () => {
-        test('NormalTest', () => {
+        test('Normal Test Case', () => {
             let result: Section[] = SectionFactory.Instance.GetAllRessourceSection(0, 0);
             expect(result).toBeDefined();
         });
-        test('TableNotFound', () => {
-            expect(() => {
-                SectionFactory.Instance.GetAllRessourceSection(-1, 0);
-            }).toThrow(TableNotFoundError);
-        });
-    });
-    describe('GetSection', () => {
-        test('NormalTest', () => {
-            let result: Section = SectionFactory.Instance.GetSection(0, 0, 0);
-            expect(result).toBeDefined();
-        });
-        test('TableNotFound', () => {
-            expect(() => {
-                SectionFactory.Instance.GetSection(-1, 0, 0);
-            }).toThrow(TableNotFoundError);
-        });
-        test('ChildNotFound', () => {
-            expect(() => {
-                SectionFactory.Instance.GetSection(0, 0, 50);
-            }).toThrow(ChildNotFoundError);
+        test('Not Throwing TableNotFound', () => {
+            expect(SectionFactory.Instance.GetAllRessourceSection(-1, 0));
+            expect(SectionFactory.Instance.GetAllRessourceSection(500, 0));
         });
     });
 });

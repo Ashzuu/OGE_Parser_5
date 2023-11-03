@@ -1,6 +1,7 @@
-export class ChildNotFoundError extends Error {
+import { OGEParserError } from "./OGEParserError";
+
+export class ChildNotFoundError extends OGEParserError{
     constructor() {
-        super("Child element not found");
-        this.name = "ChildNotFoundError";
+        super("ChildNotFoundError", "Child element not found");
     }
 }

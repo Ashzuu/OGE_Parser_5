@@ -1,6 +1,7 @@
-export class TableNotFoundError extends Error {
+import { OGEParserError } from "./OGEParserError";
+
+export class TableNotFoundError extends OGEParserError{
     constructor() {
-        super("Table not found");
-        this.name = "TableNotFoundError";
+        super("TableNotFoundError", "Table not found");
     }
 }

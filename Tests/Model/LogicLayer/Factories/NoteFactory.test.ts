@@ -20,14 +20,13 @@ beforeEach(() => {
 });
 
 describe('NoteFactory', () => {
-
     describe('Instance', () => {
         test('Get', () => {
             expect(NoteFactory.Instance).toBeDefined();
         });
     });
     describe('GetAllNotes', () => {
-        test('NormalTest', () => {
+        test('Normal Test Case', () => {
             let result: Note[] = NoteFactory.Instance.GetAllNotes(0, 0, 1);
             expect(result).toBeDefined();
         });

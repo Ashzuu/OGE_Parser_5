@@ -35,16 +35,7 @@ export class NoteFactory implements IElementFactory
 
         return ressourceList;
     }
-    /**
-     * Retourne une note d'une section
-     * @param ueNumber Numéro de l'UE
-     * @param ressourceNumber Numéro de la ressource
-     * @param sectionNumber Numéro de la section
-     * @param noteNumber Numéro de la note
-     * @returns Note
-     * 
-     * @throws ChildNotFoundException Si la note n'existe pas
-     */
+    
     private GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): Note {
         let grade: GradeCoefficientPair = PageParser.Instance.GetNote(ueNumber, ressourceNumber, sectionNumber, noteNumber);
         let note: Note = new Note(grade);

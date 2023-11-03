@@ -76,18 +76,18 @@ export class PageParser
     /**
      * Retourne l'élément enfant d'un élément HTML
      * @param htmlElement Élément HTML parent
-     * @param degree Index de chaque enfants à parcourir, equivalent à un chemin pour acceder à l'élément voulu
+     * @param degrees Index de chaque enfants à parcourir, equivalent à un chemin pour acceder à l'élément voulu
      * @returns L'élément HTML demandé
      * 
      * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
      */
-    public GetChild(htmlElement: HTMLElement, degree: number[]): HTMLElement
+    public GetChild(htmlElement: HTMLElement, degrees: number[]): HTMLElement
     {
         let element: HTMLElement = htmlElement;
         
-        degree.forEach(
+        degrees.forEach(
             deg => {
-                if (!element || element.childElementCount <= deg) throw new ChildNotFoundError();
+                if (!element || deg < 0 || element.childElementCount <= deg) throw new ChildNotFoundError();
 
                 element = element.children[deg] as HTMLElement; 
             });
@@ -113,7 +113,9 @@ export class PageParser
      */
     private GetUETable(tableNumber: number): HTMLElement
     {
-        if (tableNumber >= this.UETables.length) throw new TableNotFoundError();
+        //Si l'index de la table n'est pas correct
+        if (tableNumber < 0 ||
+            tableNumber >= this.UETables.length) throw new TableNotFoundError();
 
         return this.UETables[tableNumber];
     }

@@ -1,6 +1,7 @@
-export class NoGradesFoundError extends Error {
+import { OGEParserError } from "./OGEParserError";
+
+export class NoGradesFoundError extends OGEParserError {
     constructor() {
-        super("No grades found");
-        this.name = "NoGradesFoundError";
+        super("NoGradesFoundError", "No grades found");
     }
 }

@@ -1,6 +1,7 @@
-export class RessourceNameNotFoundError extends Error {
+import { OGEParserError } from "./OGEParserError";
+
+export class RessourceNameNotFoundError extends OGEParserError{
     constructor() {
-        super("Ressource name not found");
-        this.name = "RessourceNameNotFound";
+        super("RessourceNameNotFound", "Ressource name not found");
     }
 }

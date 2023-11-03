@@ -1,6 +1,7 @@
-export class NullCoefficientError extends Error {
+import { OGEParserError } from "./OGEParserError";
+
+export class NullCoefficientError extends OGEParserError {
     constructor() {
-        super("Coefficient text is null");
-        this.name = "NullCoefficientError";
+        super("NullCoefficientError", "Coefficient text is null");
     }
 }
