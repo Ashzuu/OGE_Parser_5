@@ -69,7 +69,7 @@ export class PageParser
      */
     public get AreGradesShown(): boolean
     {
-        return this.GetChild(this.UETables[0], [0, 0]).childElementCount > 1
+        return this.GetChild(this.GetUETable(0), [0, 0]).childElementCount > 1
     }
     //#endregion Properties
     
@@ -84,12 +84,12 @@ export class PageParser
     public GetChild(htmlElement: HTMLElement, degrees: number[]): HTMLElement
     {
         let element: HTMLElement = htmlElement;
-        
+
         degrees.forEach(
             deg => {
                 if (!element || deg < 0 || element.childElementCount <= deg) throw new ChildNotFoundError();
-
-                element = element.children[deg] as HTMLElement; 
+                
+                element = element.children[deg] as HTMLElement;
             });
         
         return element;
@@ -147,8 +147,6 @@ export class PageParser
      * Retourne l'idex de l'élément séparant les CC des SAE
      * @param ueNumber Numéro de l'UE
      * @returns Index de l'element "cell_BUT_SAE" dans la liste des enfants de la table de l'UE, -1 s'il y en a pas
-     * 
-     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
      */
     public GetCCAndSAESeparationIndex(ueNumber: number): number
     {
@@ -203,26 +201,21 @@ export class PageParser
      * @param ressourceNumber Numéro de la ressource
      * @returns Le coefficient de la ressource
      * 
-     * @throws NoGradesFoundError si aucune note n'est saisie
      * @throws TableNotFoundError si la table demandée n'existe pas
      * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
-     * @throws NoGradesFoundError si aucune note n'est saisie
      */
     public GetRessourceCoefficient(ueNumber: number, ressourceNumber: number): number
     {
         let ueRessourcesDiv: HTMLElement = this.GetUERessourcesDiv(ueNumber);
         let coefficientSpan: HTMLElement = this.GetChild(ueRessourcesDiv, [ressourceNumber, 0, 0]);
 
-        if (coefficientSpan.textContent == "Pas de note saisie") throw new NoGradesFoundError();
-            coefficientSpan = this.GetChild(coefficientSpan, [1]);
-
         let coefficient: number = 0;
 
-        try{
-            coefficient = StringParser.ClearCoefficient(coefficientSpan.textContent);
-        }
-        catch (ex){
-            if (ex instanceof NullCoefficientError){
+        try{ coefficient = StringParser.ClearCoefficient(coefficientSpan.textContent); }
+        catch (ex)
+        {
+            if (ex instanceof NullCoefficientError)
+            {
                 //TODO : Gérer le cas ou le coefficient est null grace a l'API
                 coefficient = 0;
             }
@@ -249,7 +242,7 @@ export class PageParser
         if (nameSpan.textContent == null) throw new RessourceNameNotFoundError();
 
         let nameText: string = nameSpan.textContent as string;
-        return nameText;
+        return nameText.replace(/\n +/g, ' ');
     }
     //#endregion Ressource
 
@@ -267,7 +260,7 @@ export class PageParser
     private GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): HTMLElement
     {
         let sectionDiv: HTMLElement = this.GetRessourceSectionDiv(ueNumber, ressourceNumber);
-        let section: HTMLElement = this.GetChild(sectionDiv, [sectionNumber]);
+        let section: HTMLElement = this.GetChild(sectionDiv, [sectionNumber + 1]);
 
         return section;
     }
@@ -280,7 +273,7 @@ export class PageParser
     public GetSectionCount(ueNumber: number, ressourceNumber: number): number
     {
         let sectionCount: number = 0;
-        try { sectionCount = this.GetRessourceSectionDiv(ueNumber, ressourceNumber).childElementCount; }
+        try { sectionCount = this.GetRessourceSectionDiv(ueNumber, ressourceNumber).childElementCount - 1; }
         catch {}
 
         return sectionCount;
@@ -320,7 +313,8 @@ export class PageParser
     private GetNoteList(ueNumber: number, ressourceNumber: number, sectionNumber: number): GradeCoefficientPair[]
     {
         let section: HTMLElement = this.GetSection(ueNumber, ressourceNumber, sectionNumber);
-        return StringParser.GetNotesFromSectionInnerText(section.textContent);
+        let notes: GradeCoefficientPair[] =  StringParser.GetNotesFromSectionInnerText(section.textContent);
+        return notes;
     }
     /**
      * Retourne le nombre de notes d'une section
@@ -351,7 +345,10 @@ export class PageParser
      */
     public GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): GradeCoefficientPair
     {
-        return this.GetNoteList(ueNumber, ressourceNumber, sectionNumber)[noteNumber];
+        let note: GradeCoefficientPair = this.GetNoteList(ueNumber, ressourceNumber, sectionNumber)[noteNumber];
+        if (!note) throw new ChildNotFoundError();
+
+        return note;
     }
     //#endregion Note
 }

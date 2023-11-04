@@ -18,7 +18,7 @@ export class StringParser {
     public static ClearCoefficient(coefficientText: string | null): number
     {
         if (coefficientText == null) throw new NullCoefficientError();
-
+        if (coefficientText.includes("(")) coefficientText = coefficientText.slice(coefficientText.lastIndexOf('('), -1);
         coefficientText = coefficientText.replace("(", "");
         coefficientText = coefficientText.replace(")", "");
 
@@ -46,6 +46,7 @@ export class StringParser {
      * @returns Tableau d'objets contenant les notes et leur coefficient
      */
     private static GetGradeCoefficientPairs(sectionText: string): GradeCoefficientPair[] {
+        sectionText = sectionText.replace(/\n/g, "");
         let notes: string[] = sectionText.split(')');
         notes.pop();
         

@@ -1,34 +1,24 @@
 import { NoteFactory } from '../../../../src/Model/LogicLayer/Factories/NoteFactory';
-import { PageParser } from '../../../../src/Model/LogicLayer/Parsing/PageParser';
 import { Note } from '../../../../src/Model/Types/Grades/Elements/Note';
-
-const fs = require('fs');
-const path = require('path');
-
-let mockHtml: string;
-const PATH_TO_MOCKS: string = `C:/Users/ashot/Documents/GitHub/OGE_Parser/Tests/Mocks/`;
-
-beforeAll(() => {
-    mockHtml = fs.readFileSync(path.resolve(PATH_TO_MOCKS, 'OGE.HTML'), 'utf-8');
-    Object.defineProperty(PageParser.Instance, 'BodyElement', {
-        get: jest.fn(() => document.body),
-    });
-});
-
-beforeEach(() => {
-    document.body.innerHTML = mockHtml;
-});
+import { JestSetup } from '../../../Mocks/JestSetup';
 
 describe('NoteFactory', () => {
     describe('Instance', () => {
         test('Get', () => {
+            JestSetup.SetupMockBody(1);
             expect(NoteFactory.Instance).toBeDefined();
         });
     });
     describe('GetAllNotes', () => {
         test('Normal Test Case', () => {
-            let result: Note[] = NoteFactory.Instance.GetAllNotes(0, 0, 1);
-            expect(result).toBeDefined();
+            JestSetup.SetupMockBody(1);
+            let result: Note[] = NoteFactory.Instance.GetAllNotes(0, 0, 2);
+            expect(result).toStrictEqual(
+                [
+                    new Note({grade: 8, coefficient: 1}),
+                    new Note({grade: 16, coefficient: 1}),
+                ]
+            );
         });
     });
 });

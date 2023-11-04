@@ -3,36 +3,29 @@ import { PageParser } from '../../../../src/Model/LogicLayer/Parsing/PageParser'
 import { ChildNotFoundError } from '../../../../src/Model/Types/Error/ChildNotFoundError';
 import { TableNotFoundError } from '../../../../src/Model/Types/Error/TableNotFoundError';
 import { Section } from '../../../../src/Model/Types/Grades/Elements/Section';
+import { JestSetup } from '../../../Mocks/JestSetup';
 
-const fs = require('fs');
-const path = require('path');
-
-let mockHtml: string;
-const PATH_TO_MOCKS: string = `C:/Users/ashot/Documents/GitHub/OGE_Parser/Tests/Mocks/`;
-
-beforeAll(() => {
-    mockHtml = fs.readFileSync(path.resolve(PATH_TO_MOCKS, 'OGE.HTML'), 'utf-8');
-    Object.defineProperty(PageParser.Instance, 'BodyElement', {
-        get: jest.fn(() => document.body),
-    });
-});
-
-beforeEach(() => {
-    document.body.innerHTML = mockHtml;
-});
+JestSetup.SetupBodyElementProperty();
 
 describe('SectionFactory', () => {
     describe('Instance', () => {
+        JestSetup.SetupMockBody(1);
         test('Get', () => {
             expect(SectionFactory.Instance).toBeDefined();
         });
     });
     describe('GetAllRessourceSection', () => {
         test('Normal Test Case', () => {
+            JestSetup.SetupMockBody(1);
             let result: Section[] = SectionFactory.Instance.GetAllRessourceSection(0, 0);
-            expect(result).toBeDefined();
+            expect(result.length).toBe(3);
+
+            let testedSection: Section = result[2];
+            expect(testedSection.Average).toBe(12);
+            expect(testedSection.Coefficient).toBe(1);
         });
         test('Not Throwing TableNotFound', () => {
+            JestSetup.SetupMockBody(1);
             expect(SectionFactory.Instance.GetAllRessourceSection(-1, 0));
             expect(SectionFactory.Instance.GetAllRessourceSection(500, 0));
         });

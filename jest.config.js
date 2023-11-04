@@ -7,5 +7,4 @@ module.exports = {
         }],
     },
     verbose: true,
-    // other Jest configurations if any
 };

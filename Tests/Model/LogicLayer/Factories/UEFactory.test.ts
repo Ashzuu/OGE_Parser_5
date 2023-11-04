@@ -1,35 +1,43 @@
 import { UEFactory } from '../../../../src/Model/LogicLayer/Factories/UEFactory';
-import { PageParser } from '../../../../src/Model/LogicLayer/Parsing/PageParser';
-import { ChildNotFoundError } from '../../../../src/Model/Types/Error/ChildNotFoundError';
-import { TableNotFoundError } from '../../../../src/Model/Types/Error/TableNotFoundError';
+import { DetailedUEResult } from '../../../../src/Model/Types/Grades/DetailedUEResult';
 import { UE } from '../../../../src/Model/Types/Grades/Elements/UE';
+import { JestSetup } from '../../../Mocks/JestSetup';
 
-const fs = require('fs');
-const path = require('path');
-
-let mockHtml: string;
-const PATH_TO_MOCKS: string = `C:/Users/ashot/Documents/GitHub/OGE_Parser/Tests/Mocks/`;
-
-beforeAll(() => {
-    mockHtml = fs.readFileSync(path.resolve(PATH_TO_MOCKS, 'OGE.HTML'), 'utf-8');
-    Object.defineProperty(PageParser.Instance, 'BodyElement', {
-        get: jest.fn(() => document.body),
-    });
-});
-
-beforeEach(() => {
-    document.body.innerHTML = mockHtml;
-});
+JestSetup.SetupBodyElementProperty();
 
 describe('UEFactory', () => {
     describe('Instance', () => {
         test('Get', () => {
+            JestSetup.SetupMockBody(1);
             expect(UEFactory.Instance).toBeDefined();
         });
     });
     describe('GetAllRessourceUE', () => {
         test('Normal Test Case', () => {
-            expect(UEFactory.Instance.GetAllUEs()).toBeDefined();
+            JestSetup.SetupMockBody(1);
+            let result: UE[] = UEFactory.Instance.GetAllUEs();
+            expect(result.length).toBe(6);
+
+            let testedUE: UE = result[0];
+            let expectedDetailedResults: DetailedUEResult = {
+                UEResult : 16.13,
+                CCResult : 14.88,
+                SAEResult : 18.00,
+                AllCCResults : [14.42, 14.94, 18.00],
+                AllSAEResults : [18.00]
+            }
+            // expect(testedUE.SAEIndex).toBe(4); TODO: Fix this
+            expect(testedUE.Average.toFixed(2)).toBe('16.13');
+            let testedDetailedResults = testedUE.GetDetailedResults;
+            expect(testedDetailedResults.UEResult.toFixed(2)).toBe(expectedDetailedResults.UEResult.toFixed(2));
+            expect(testedDetailedResults.CCResult.toFixed(2)).toBe(expectedDetailedResults.CCResult.toFixed(2));
+            expect(testedDetailedResults.SAEResult.toFixed(2)).toBe(expectedDetailedResults.SAEResult.toFixed(2));
+            for (let i = 0; i < testedDetailedResults.AllCCResults.length; i++) {
+                expect(testedDetailedResults.AllCCResults[i].toFixed(2)).toEqual(expectedDetailedResults.AllCCResults[i].toFixed(2));
+            }
+            for (let i = 0; i < testedDetailedResults.AllSAEResults.length; i++) {
+                expect(testedDetailedResults.AllSAEResults[i].toFixed(2)).toEqual(expectedDetailedResults.AllSAEResults[i].toFixed(2));
+            }
         });
     });
 });

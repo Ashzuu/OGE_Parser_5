@@ -26,7 +26,7 @@ export class SectionFactory implements IElementFactory
     public GetAllRessourceSection(ueNumber: number, ressourceNumber: number): Section[] {
         let sectionList: Section[] = [];
         let sectionCount: number = PageParser.Instance.GetSectionCount(ueNumber, ressourceNumber);
-        for (let i = 1; i < sectionCount; i++){
+        for (let i = 0; i < sectionCount; i++){
             try{
                 sectionList.push(this.GetSection(ueNumber, ressourceNumber, i));
             }
