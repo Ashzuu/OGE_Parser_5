@@ -49,6 +49,16 @@ export class SemesterNames
         let semestreNameUL : HTMLElement = this.BodyElement.getElementsByClassName(this.CURRENT_SEMESTER_CLASSES)[0] as HTMLElement;
         return this.FormatSemesterName(semestreNameUL.textContent);
     }
+    /** Récupère le numéro du semestre actuel*/
+    public static get CurrentSemestreNumber(): number
+    {
+        return Number(this.CurrentSemestre.match(/\d*$/g)![0]);
+    }
+    /** Récupère la filière du semestre actuel*/
+    public static get CurrentFiliere(): string
+    {
+        return this.CurrentSemestre.match(/.*(?= S)/g)![0];
+    }
 
     /** Récupère le semestre correspondant au semestre actuel*/
     public static get CorrespondingSemester(): string

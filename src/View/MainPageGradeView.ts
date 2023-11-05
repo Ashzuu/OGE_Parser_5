@@ -1,5 +1,3 @@
-
-import { DOMManipulator } from "../Model/LogicLayer/DomManipulator";
 import { PageParser } from "../Model/LogicLayer/Parsing/PageParser";
 import { DetailedUEResult } from "../Model/Types/Grades/DetailedUEResult";
 import { DOMElementBuilder } from "./DOMElementBuilder";
@@ -85,11 +83,16 @@ export class MainPageGradeView
         let resultHTML: HTMLTableCellElement = DOMElementBuilder.AddSingleResult(grade, isTD);
         let cell: HTMLTableCellElement = 
         (PageParser
-        .Instance
         .GetChild(this.Table, location) as HTMLTableRowElement)
         .insertCell(this.CELL_INSERTION_INDEX
         );
         
-        DOMManipulator.AddResultInCell(cell, resultHTML);
+        this.AddResultInCell(cell, resultHTML);
+    }
+
+    private AddResultInCell(cell: HTMLTableCellElement, result: HTMLTableCellElement): void
+    {
+        cell.outerHTML = result.outerHTML;
+        cell.innerHTML = result.innerHTML;
     }
 }

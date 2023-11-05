@@ -19,6 +19,6 @@ export class Section extends Element
     constructor(coefficient: number, notes: Element[])
     {
         super(coefficient, notes);
-        this._gradeList = this._lowerElements as Note[];
+        this._gradeList = this._subElements as Note[];
     }
 }

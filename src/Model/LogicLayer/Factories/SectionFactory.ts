@@ -3,13 +3,13 @@ import { IElementFactory } from "../../Interfaces/IElementFactory";
 import { PageParser } from "../Parsing/PageParser";
 import { Note } from "../../Types/Grades/Elements/Note";
 import { NoteFactory } from "./NoteFactory";
-import { ChildNotFoundError } from "../../Types/Error/ChildNotFoundError";
 
 /**
  * Fabrique de sections
  */
 export class SectionFactory implements IElementFactory
 {
+    //TODO degager le singleton, laisser que SemestreFactory en singleton
     private constructor() {}
     private static _instance: SectionFactory;
     /** Retourne l'instance de la fabrique de sections */

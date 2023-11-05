@@ -8,7 +8,17 @@ export class UE extends Element
     private _ressourceList: Ressource[];
     private _saeIndex: number;
     /**Index de la premiere ressource du SAE */
-    public get SAEIndex(): number { return (this._saeIndex != -1) ? this._saeIndex : this.RessourceList.length; }
+    public get SAEIndex(): number
+    {
+        //Si l'index est connu il sera different de -1,
+        //S'il est inconnu on prend le nombre de ressources de l'UE en considerant qu'il n'y a pas de SAE
+        let ret: number;
+        if (this._saeIndex == -1) ret = this._ressourceList.length;
+        //S'il est different de zero on prend en compte le cas ou il serait erroné et serait superieur au nombre de ressources de l'UE
+        else ret = Math.min(this._saeIndex, this._ressourceList.length);
+        
+        return ret;
+    }
     /**Liste des ressources de l'UE */
     private get RessourceList(): Ressource[]
     {
@@ -19,6 +29,7 @@ export class UE extends Element
     {
         let ccRessources: Ressource[] = [];
 
+        //n est la limite des ressources CC
         let n: number = Math.min(this.SAEIndex - 1, this.RessourceList.length);
         for (let i = 0; i < n; i++){
             ccRessources.push(this._ressourceList[i]);
@@ -30,6 +41,7 @@ export class UE extends Element
     private get SAERessources(): Ressource[]
     {
         let saeRessources: Ressource[] = [];
+        //SAEIndex est l'index de la premiere ressource SAE
         for (let i = this.SAEIndex - 1; i < this.RessourceList.length; i++){
             saeRessources.push(this._ressourceList[i]);
         }
@@ -39,41 +51,48 @@ export class UE extends Element
     /**Moyenne globale du pôle CC*/
     private get GetGlobalCCAverage(): number
     {
-        let avg = -1;
-        let sum = 0;
-        let coef = 0;
+        let average = 0;
+        let ccRessources = this.CCRessources;
+        if (ccRessources.length > 0)
+        {
+            let sum = 0;
+            let coef = 0;
+            
+            ccRessources.forEach(res => {
+                sum += res.Average * res.Coefficient;
+                coef += res.Coefficient;
+            })
+            
+            average = sum / coef;
+        }
 
-        this.CCRessources.forEach(res => {
-            sum += res.Average * res.Coefficient;
-            coef += res.Coefficient;
-        })
-        if (coef > 0) avg = sum / coef;
-
-        return avg;
+        return average;
     }
     /**Moyenne globale du pôle SAE */
     private get GetGlobalSAEAverage(): number
     {
-        let avg = -1;
-        let sum = 0;
-        let coef = 0;
-
-        this.SAERessources.forEach(res => {
-            sum += res.Average * res.Coefficient;
-            coef += res.Coefficient;
-        })
-        if (coef > 0) avg = sum / coef;
-
-        return avg;
+        let average = 0;
+        let saeRessources = this.SAERessources;
+        if (saeRessources.length > 0)
+        {
+            let sum = 0;
+            let coef = 0;
+            
+            saeRessources.forEach(res => {
+                sum += res.Average * res.Coefficient;
+                coef += res.Coefficient;
+            })
+            
+            average = sum / coef;
+        }
+        return average;
     }
     /**Moyenne de chaque ressources du pôle CC */
     private get GetCCAverages(): number[]
     {
         let averages: number[] = [];
-        let n = Math.min(this.SAEIndex - 1, this._ressourceList.length)
-        for (let i = 0; i < n; i++){
-            averages.push(this._ressourceList[i].Average);
-        }
+        let ccRessources = this.CCRessources;
+        ccRessources.forEach(res => averages.push(res.Average));
 
         return averages;
     }
@@ -81,9 +100,8 @@ export class UE extends Element
     private get GetSAEAverages(): number[]
     {
         let averages: number[] = [];
-        for (let i = this.SAEIndex - 1; i < this._ressourceList.length; i++){
-            averages.push(this._ressourceList[i].Average);
-        }
+        let saeRessources = this.SAERessources;
+        saeRessources.forEach(res => averages.push(res.Average));
 
         return averages;
     }
@@ -107,7 +125,7 @@ export class UE extends Element
     constructor(coefficient: number, ressources: Element[], saeIndex: number)
     {
         super(coefficient, ressources);
-        this._ressourceList = this._lowerElements as Ressource[];
+        this._ressourceList = this._subElements as Ressource[];
 
         this._saeIndex = saeIndex;
     }

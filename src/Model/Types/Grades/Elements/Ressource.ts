@@ -25,6 +25,6 @@ export class Ressource extends Element
     {
         super(coefficient, sections);
         this._name = name;
-        this._sectionList = this._lowerElements as Section[];
+        this._sectionList = this._subElements as Section[];
     }
 }

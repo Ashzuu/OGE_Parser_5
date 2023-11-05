@@ -1,16 +1,15 @@
 import { IStorage } from "../../Model/Interfaces/IStorage";
-import { SemesterNames } from "../../Model/LogicLayer/Parsing/SemesterNames";
 import { Semestre } from "../../Model/Types/Grades/Elements/Semestre";
 import { StoredSemester } from "../../Model/Types/Storage/StoredSemester";
 
 export class ChromeStorage implements IStorage {
     //#region Constants
+    //Clé utilisée pour identifier les semestres dans le chrome.storage.local
     private readonly STORAGE_KEY = "SavedSemesters";
     //#endregion Constants
 
     //#region Singleton
     private constructor() {}
-
     private static _instance: ChromeStorage;
     public static get Instance(): ChromeStorage
     {

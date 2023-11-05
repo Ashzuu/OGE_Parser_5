@@ -1,4 +1,5 @@
 import { PageParser } from "../../../../src/Model/LogicLayer/Parsing/PageParser";
+import { UEParser } from "../../../../src/Model/LogicLayer/Parsing/UEParser";
 import { ChildNotFoundError } from "../../../../src/Model/Types/Error/ChildNotFoundError";
 import { NoGradesFoundError } from "../../../../src/Model/Types/Error/NoGradesFoundError";
 import { TableNotFoundError } from "../../../../src/Model/Types/Error/TableNotFoundError";
@@ -34,7 +35,7 @@ describe('PageParser', () => {
         test('Get', () => {
             JestSetup.SetupMockBody(1);
             PageParser.Reset();
-            let checkedElement = (PageParser.Instance as any).GetUETable(0).children[0].children[0];
+            let checkedElement = new UEParser().UETables[0].children[0].children[0];
             
             expect(PageParser.Instance.AreGradesShown).toBe(true);
             while (checkedElement.childElementCount > 1) { checkedElement.removeChild(checkedElement.children[1]); }
@@ -45,20 +46,20 @@ describe('PageParser', () => {
         test('Normal Case Tests', () => {
             JestSetup.SetupMockBody(1);
             PageParser.Reset();
-            let table = (PageParser.Instance as any).GetUETable(0);
+            let table = new UEParser().UETables[0];
             let searchedElement = table.children[0].children[0];
-            let foundElement = PageParser.Instance.GetChild(table, [0, 0]);
+            let foundElement = PageParser.GetChild(table, [0, 0]);
 
             expect(foundElement).toBe(searchedElement);
         });
         test('ChildNotFoundError', () => {
             JestSetup.SetupMockBody(1);
             PageParser.Reset();
-            let table = (PageParser.Instance as any).GetUETable(0);
-            expect(() => { PageParser.Instance.GetChild(table, [0, 50]) } ).toThrow(ChildNotFoundError);
-            expect(() => { PageParser.Instance.GetChild(table, [0, -50]) } ).toThrow(ChildNotFoundError);
-            expect(() => { PageParser.Instance.GetChild(table, [-1]) } ).toThrow(ChildNotFoundError);
-            expect(() => { PageParser.Instance.GetChild(table, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) } ).toThrow(ChildNotFoundError);
+            let table = new UEParser().UETables[0];
+            expect(() => { PageParser.GetChild(table, [0, 50]) } ).toThrow(ChildNotFoundError);
+            expect(() => { PageParser.GetChild(table, [0, -50]) } ).toThrow(ChildNotFoundError);
+            expect(() => { PageParser.GetChild(table, [-1]) } ).toThrow(ChildNotFoundError);
+            expect(() => { PageParser.GetChild(table, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) } ).toThrow(ChildNotFoundError);
         });
     });
     describe('GetCCAndSAESeparationIndex', () => {

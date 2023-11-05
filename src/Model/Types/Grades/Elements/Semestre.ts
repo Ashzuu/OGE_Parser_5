@@ -17,12 +17,16 @@ export class Semestre extends Element
      * Constructeur par defaut d'un Semestre
      * @param ueList Liste des UE du semestre
      */
-    constructor(ueList: Element[])
+    public constructor(ueList: Element[])
     {
         super(1, ueList);
-        this._ueList = this._lowerElements as UE[];
+        this._ueList = this._subElements as UE[];
     }
 
+    /**
+     * Retourne le semestre sous forme d'objet de type StoredSemester
+     * @returns Un objet de type StoredSemester
+     */
     public ToStoredSemester(): StoredSemester
     {
         let ueAverages: number[] = [];
