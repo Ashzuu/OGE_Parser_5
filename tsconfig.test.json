@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
-      "target": "es5",
-      "module": "commonjs",
-      "strict": true,
-      "esModuleInterop": true,
-      "outDir": "./Tests/dist/js",
-      "rootDir": "./",
-      "types": ["jest", "node"]
+        "typeRoots": [ "./node_modules/@types", "./Tests/Mocks**" ],
+        "target": "es5",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "outDir": "./Tests/dist/js",
+        "rootDir": "./",
+        "types": [ "jest", "node" ]
     },
-    "include": ["./Tests/**/*.ts"],
-    "exclude": ["node_modules"]
+    "include": [ "./Tests/**/*.ts", "./Tests/**/*.d.ts" ],
+    "exclude": [ "node_modules" ]
 }

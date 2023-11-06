@@ -3,20 +3,20 @@ import { PageParser } from '../../../../src/Model/LogicLayer/Parsing/PageParser'
 import { ChildNotFoundError } from '../../../../src/Model/Types/Error/ChildNotFoundError';
 import { TableNotFoundError } from '../../../../src/Model/Types/Error/TableNotFoundError';
 import { Section } from '../../../../src/Model/Types/Grades/Elements/Section';
-import { JestSetup } from '../../../Mocks/JestSetup';
+import { TestsSetup } from '../../../Mocks/TestsSetup';
 
-JestSetup.SetupBodyElementProperty();
+TestsSetup.SetupBodyElementProperty();
 
 describe('SectionFactory', () => {
     describe('Instance', () => {
-        JestSetup.SetupMockBody(1);
+        TestsSetup.SetupMockBody(1);
         test('Get', () => {
             expect(SectionFactory.Instance).toBeDefined();
         });
     });
     describe('GetAllRessourceSection', () => {
         test('Normal Test Case', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             let result: Section[] = SectionFactory.Instance.GetAllRessourceSection(0, 0);
             expect(result.length).toBe(3);
 
@@ -25,7 +25,7 @@ describe('SectionFactory', () => {
             expect(testedSection.Coefficient).toBe(1);
         });
         test('Not Throwing TableNotFound', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             expect(SectionFactory.Instance.GetAllRessourceSection(-1, 0));
             expect(SectionFactory.Instance.GetAllRessourceSection(500, 0));
         });

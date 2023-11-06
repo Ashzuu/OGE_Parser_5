@@ -40,7 +40,7 @@ export class ChromeStorage implements IStorage {
 
     private async LoadFromLocalChromeStorage(): Promise<{ [id: string]: StoredSemester; }> {
         return new Promise((resolve, reject) => {
-            chrome.storage.local.get([this.STORAGE_KEY], (result) => {
+            chrome.storage.local.get([this.STORAGE_KEY], (result: any) => {
                 if (chrome.runtime.lastError) {
                     return reject(chrome.runtime.lastError);
                 }

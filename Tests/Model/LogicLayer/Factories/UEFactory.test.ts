@@ -1,20 +1,20 @@
 import { UEFactory } from '../../../../src/Model/LogicLayer/Factories/UEFactory';
 import { DetailedUEResult } from '../../../../src/Model/Types/Grades/DetailedUEResult';
 import { UE } from '../../../../src/Model/Types/Grades/Elements/UE';
-import { JestSetup } from '../../../Mocks/JestSetup';
+import { TestsSetup } from '../../../Mocks/TestsSetup';
 
-JestSetup.SetupBodyElementProperty();
+TestsSetup.SetupBodyElementProperty();
 
 describe('UEFactory', () => {
     describe('Instance', () => {
         test('Get', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             expect(UEFactory.Instance).toBeDefined();
         });
     });
     describe('GetAllRessourceUE', () => {
         test('Normal Test Case', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             let result: UE[] = UEFactory.Instance.GetAllUEs();
             expect(result.length).toBe(6);
 

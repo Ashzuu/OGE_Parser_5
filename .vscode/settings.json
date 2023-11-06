@@ -11,10 +11,10 @@
         "node*": true,
         "public*": true,
         "package*json": true,
-        ".gitignore": true,
+        "**.git**": true,
         "webpack*": true,
         "*md": true,
-        "*config*": true,
+        "*config*": false,
         ".vscode": true
     }
 }

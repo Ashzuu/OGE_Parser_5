@@ -1,22 +1,21 @@
 import { PageParser } from "../../../../src/Model/LogicLayer/Parsing/PageParser";
-import { UEParser } from "../../../../src/Model/LogicLayer/Parsing/UEParser";
+import { UEParser } from "../../../../src/Model/LogicLayer/Parsing/ElementParsers/UEParser";
 import { ChildNotFoundError } from "../../../../src/Model/Types/Error/ChildNotFoundError";
-import { NoGradesFoundError } from "../../../../src/Model/Types/Error/NoGradesFoundError";
 import { TableNotFoundError } from "../../../../src/Model/Types/Error/TableNotFoundError";
-import { JestSetup } from "../../../Mocks/JestSetup";
+import { TestsSetup } from "../../../Mocks/TestsSetup";
 
-JestSetup.SetupBodyElementProperty();
+TestsSetup.SetupBodyElementProperty();
 
 describe('PageParser', () => {
     describe('Instance', () => {
         test('Get', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             expect(PageParser.Instance).toBeDefined();
         });
     });
     describe('Reset', () => {
         test('Different instances', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             let firstInstance = PageParser.Instance;
             PageParser.Reset();
             let secondInstance = PageParser.Instance;
@@ -26,14 +25,14 @@ describe('PageParser', () => {
     });
     describe('UECount', () => {
         test('Get', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             PageParser.Reset();
             expect(PageParser.Instance.UECount).toBe(6);
         });
     });
     describe('AreGradesShown', () => {
         test('Get', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             PageParser.Reset();
             let checkedElement = new UEParser().UETables[0].children[0].children[0];
             
@@ -44,7 +43,7 @@ describe('PageParser', () => {
     });
     describe('GetChild', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             PageParser.Reset();
             let table = new UEParser().UETables[0];
             let searchedElement = table.children[0].children[0];
@@ -53,7 +52,7 @@ describe('PageParser', () => {
             expect(foundElement).toBe(searchedElement);
         });
         test('ChildNotFoundError', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             PageParser.Reset();
             let table = new UEParser().UETables[0];
             expect(() => { PageParser.GetChild(table, [0, 50]) } ).toThrow(ChildNotFoundError);
@@ -64,7 +63,7 @@ describe('PageParser', () => {
     });
     describe('GetCCAndSAESeparationIndex', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(PageParser.Instance.GetCCAndSAESeparationIndex(0)).toBe(5);
             expect(PageParser.Instance.GetCCAndSAESeparationIndex(1)).toBe(5);
@@ -74,7 +73,7 @@ describe('PageParser', () => {
     });
     describe('GetRessourceCount', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(PageParser.Instance.GetRessourceCount(0)).toBe(6);
             expect(PageParser.Instance.GetRessourceCount(1)).toBe(6);
@@ -83,7 +82,7 @@ describe('PageParser', () => {
     });
     describe('GetRessourceCoefficient', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(PageParser.Instance.GetRessourceCoefficient(0, 0)).toBe(21);
             expect(PageParser.Instance.GetRessourceCoefficient(0, 1)).toBe(21);
@@ -93,13 +92,13 @@ describe('PageParser', () => {
             expect(PageParser.Instance.GetRessourceCoefficient(0, 5)).toBe(38);
         });
         test('ChildNotFoundError', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             PageParser.Reset();
             expect(() => { PageParser.Instance.GetRessourceCoefficient(0, 50) }).toThrow(ChildNotFoundError);
             expect(() => { PageParser.Instance.GetRessourceCoefficient(0, -50) }).toThrow(ChildNotFoundError);
         });
         test('TableNotFoundError', () => {
-            JestSetup.SetupMockBody(1);
+            TestsSetup.SetupMockBody(1);
             PageParser.Reset();
             expect(() => { PageParser.Instance.GetRessourceCoefficient(-1, 0) }).toThrow(TableNotFoundError);
             expect(() => { PageParser.Instance.GetRessourceCoefficient(50, 0) }).toThrow(TableNotFoundError);
@@ -107,7 +106,7 @@ describe('PageParser', () => {
     });
     describe('GetRessourceName', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(PageParser.Instance.GetRessourceName(0, 0)).toBe('Développ orienté objets');
             expect(PageParser.Instance.GetRessourceName(0, 1)).toBe('Développ d\'appli avec IHM');
@@ -117,13 +116,13 @@ describe('PageParser', () => {
             expect(PageParser.Instance.GetRessourceName(0, 5)).toBe('Développement d\'une appli');
         });
         test('ChildNotFoundError', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(() => { PageParser.Instance.GetRessourceName(0, 50) }).toThrow(ChildNotFoundError);
             expect(() => { PageParser.Instance.GetRessourceName(0, -50) }).toThrow(ChildNotFoundError);
         });
         test('TableNotFoundError', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(() => { PageParser.Instance.GetRessourceName(-1, 0) }).toThrow(TableNotFoundError);
             expect(() => { PageParser.Instance.GetRessourceName(50, 0) }).toThrow(TableNotFoundError);
@@ -131,7 +130,7 @@ describe('PageParser', () => {
     });
     describe('GetSectionCount', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(PageParser.Instance.GetSectionCount(0, 0)).toBe(2);
             expect(PageParser.Instance.GetSectionCount(0, 1)).toBe(4);
@@ -143,7 +142,7 @@ describe('PageParser', () => {
     });
     describe('GetSectionCoefficient', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(PageParser.Instance.GetSectionCoefficient(0, 1, 0)).toBe(1);
             expect(PageParser.Instance.GetSectionCoefficient(0, 1, 1)).toBe(1.5);
@@ -151,13 +150,13 @@ describe('PageParser', () => {
             expect(PageParser.Instance.GetSectionCoefficient(0, 1, 3)).toBe(1);
         });
         test('ChildNotFoundError', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(() => { PageParser.Instance.GetSectionCoefficient(0, 1, 50) }).toThrow(ChildNotFoundError);
             expect(() => { PageParser.Instance.GetSectionCoefficient(0, 1, -50) }).toThrow(ChildNotFoundError);
         });
         test('TableNotFoundError', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(() => { PageParser.Instance.GetSectionCoefficient(-1, 0, 0) }).toThrow(TableNotFoundError);
             expect(() => { PageParser.Instance.GetSectionCoefficient(50, 0, 0) }).toThrow(TableNotFoundError);
@@ -165,7 +164,7 @@ describe('PageParser', () => {
     });
     describe('GetNoteCount', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(PageParser.Instance.GetNoteCount(0, 0, 0)).toBe(2);
             expect(PageParser.Instance.GetNoteCount(0, 0, 1)).toBe(9);
@@ -173,13 +172,13 @@ describe('PageParser', () => {
     });
     describe('GetNote', () => {
         test('Normal Case Tests', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(PageParser.Instance.GetNote(0, 0, 0, 0)).toStrictEqual({grade: 17, coefficient: 1});
             expect(PageParser.Instance.GetNote(0, 0, 0, 1)).toStrictEqual({grade: 15, coefficient: 1.5});
         });
         test('ChildNotFoundError', () => {
-            JestSetup.SetupMockBody(2);
+            TestsSetup.SetupMockBody(2);
             PageParser.Reset();
             expect(() => { PageParser.Instance.GetNote(0, 0, 0, 50) }).toThrow(ChildNotFoundError);
             expect(() => { PageParser.Instance.GetNote(0, 0, 0, -50) }).toThrow(ChildNotFoundError);
