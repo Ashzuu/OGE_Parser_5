@@ -4,7 +4,7 @@ import { UE } from "../../src/Model/Types/Grades/Elements/UE";
 const fs = require('fs');
 const path = require('path');
   
-export class TestsSetup
+export default class TestsSetup
 {
     private static mockHtml: string = "";
     private static readonly PATH_TO_MOCKS: string = `./Tests/Mocks/`;

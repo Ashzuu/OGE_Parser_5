@@ -1,14 +1,13 @@
-import 'jest';
-import { chromeMock } from './jest.setup';
+// import 'jest';
 
-declare global {
-    namespace NodeJS {
-        interface Global {
-            chrome: any;
-        }
-    }
-}
+// declare global {
+//     namespace NodeJS {
+//         interface Global {
+//             chrome: any;
+//         }
+//     }
+// }
 
-declare global {
-    var chrome: typeof chromeMock;
-}
+// declare global {
+//     var chrome: typeof chromeMock;
+// }

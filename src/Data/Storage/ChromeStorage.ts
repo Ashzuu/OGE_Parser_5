@@ -24,7 +24,8 @@ export class ChromeStorage implements IStorage {
 
     public Save(semester: Semestre): void {
         let storedSemester: StoredSemester = semester.ToStoredSemester();
-        this.cache[storedSemester.Name + Math.round(Math.random() * 100)] = storedSemester;
+        // this.cache[storedSemester.Name + Math.round(Math.random() * 1000)] = storedSemester;
+        this.cache[storedSemester.Name] = storedSemester;
         this.SaveToLocalChromeStorage();
     }
 
