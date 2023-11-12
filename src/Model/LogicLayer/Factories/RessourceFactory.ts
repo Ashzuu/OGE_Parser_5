@@ -13,9 +13,6 @@ import { ChildNotFoundError } from "../../Types/Error/ChildNotFoundError";
 export class RessourceFactory implements IElementFactory
 {
     private constructor() {}
-    private static _instance: RessourceFactory;
-    /** Retourne l'instance de la fabrique de ressources */
-    public static get Instance() { return this._instance || (this._instance = new this()); }
     
     /**
      * Retourne toutes les ressources d'une UE
@@ -24,7 +21,7 @@ export class RessourceFactory implements IElementFactory
      * 
      * @throws TableNotFoundException Si la table demandées n'existe pas
      */
-    public GetAllUERessources(ueNumber: number): Ressource[] {
+    public static GetAllUERessources(ueNumber: number): Ressource[] {
         let ressourceList: Ressource[] = [];
         let ressourceCount: number = PageParser.Instance.GetRessourceCount(ueNumber);
         for (let i = 0; i < ressourceCount; i++){
@@ -44,8 +41,8 @@ export class RessourceFactory implements IElementFactory
         return ressourceList;
     }
     
-    private GetRessource(ueNumber: number, ressourceNumber: number): Ressource {
-        let sections: Section[] = SectionFactory.Instance.GetAllRessourceSection(ueNumber, ressourceNumber)
+    private static GetRessource(ueNumber: number, ressourceNumber: number): Ressource {
+        let sections: Section[] = SectionFactory.GetAllRessourceSection(ueNumber, ressourceNumber)
         let coefficient: number = PageParser.Instance.GetRessourceCoefficient(ueNumber, ressourceNumber);
         let name: string = PageParser.Instance.GetRessourceName(ueNumber, ressourceNumber);
         let ressource: Ressource = new Ressource(name, coefficient, sections);

@@ -9,11 +9,7 @@ import { NoteFactory } from "./NoteFactory";
  */
 export class SectionFactory implements IElementFactory
 {
-    //TODO degager le singleton, laisser que SemestreFactory en singleton
     private constructor() {}
-    private static _instance: SectionFactory;
-    /** Retourne l'instance de la fabrique de sections */
-    public static get Instance() { return this._instance || (this._instance = new this()); }
 
     /**
      * Retourne toutes les sections d'une ressource
@@ -23,7 +19,7 @@ export class SectionFactory implements IElementFactory
      * 
      * @throws TableNotFoundException Si la table demandées n'existe pas
      */
-    public GetAllRessourceSection(ueNumber: number, ressourceNumber: number): Section[] {
+    public static GetAllRessourceSection(ueNumber: number, ressourceNumber: number): Section[] {
         let sectionList: Section[] = [];
         let sectionCount: number = PageParser.Instance.GetSectionCount(ueNumber, ressourceNumber);
         for (let i = 0; i < sectionCount; i++){
@@ -36,8 +32,8 @@ export class SectionFactory implements IElementFactory
         return sectionList;
     }
     
-    private GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): Section{
-        let grades: Note[] = NoteFactory.Instance.GetAllNotes(ueNumber, ressourceNumber, sectionNumber)
+    private static GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): Section{
+        let grades: Note[] = NoteFactory.GetAllNotes(ueNumber, ressourceNumber, sectionNumber)
         let coefficient: number = PageParser.Instance.GetSectionCoefficient(ueNumber, ressourceNumber, sectionNumber);
         let section: Section = new Section(coefficient, grades);
 

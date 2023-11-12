@@ -15,7 +15,7 @@ export class ChromeStorage implements IStorage {
     {
         if (!this._instance) this._instance = new this();
         this._instance.initCache();
-
+        
         return this._instance;
     }
     //#endregion Singleton
@@ -23,20 +23,26 @@ export class ChromeStorage implements IStorage {
     private cache: { [id: string]: StoredSemester; } = {};
 
     public Save(semester: Semestre): void {
-        let storedSemester: StoredSemester = semester.ToStoredSemester();
-        // this.cache[storedSemester.Name + Math.round(Math.random() * 1000)] = storedSemester;
-        this.cache[storedSemester.Name] = storedSemester;
-        this.SaveToLocalChromeStorage();
+        this.initCache();
+        setTimeout(() => {
+            let storedSemester: StoredSemester = semester.ToStoredSemester();
+            // this.cache[Math.round(Math.random() * 1000000)] = storedSemester;
+            this.cache[storedSemester.Name] = storedSemester;
+            this.SaveToLocalChromeStorage();
+        }, 50);
     }
 
     public Load(): { [id: string]: StoredSemester; } {
         return this.cache;
     }
+    public Clear(): void
+    {
+        this.cache = {}; this.SaveToLocalChromeStorage();
+    }
 
     //#region Private
     private async initCache(): Promise<void> {
-        let temp: { [id: string]: StoredSemester } = await this.LoadFromLocalChromeStorage();
-        Object.assign(this.cache, temp)
+        this.cache = await this.LoadFromLocalChromeStorage();
     }
 
     private async LoadFromLocalChromeStorage(): Promise<{ [id: string]: StoredSemester; }> {
@@ -51,6 +57,7 @@ export class ChromeStorage implements IStorage {
     }
 
     private async SaveToLocalChromeStorage(): Promise<void> {
+        await setTimeout(() => {}, 100);
         return new Promise((resolve, reject) => {
             chrome.storage.local.set({ [this.STORAGE_KEY]: this.cache }, () => {
                 if (chrome.runtime.lastError) {

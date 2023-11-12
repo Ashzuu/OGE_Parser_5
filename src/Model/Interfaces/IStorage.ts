@@ -6,4 +6,5 @@ export interface IStorage
 {
     Save(semester: Semestre): void;
     Load(): { [id: string]: StoredSemester; };
+    Clear(): void;
 }

@@ -69,6 +69,13 @@ describe('PageParser', () => {
             expect(PageParser.Instance.GetCCAndSAESeparationIndex(1)).toBe(5);
             expect(PageParser.Instance.GetCCAndSAESeparationIndex(2)).toBe(5);
             expect(PageParser.Instance.GetCCAndSAESeparationIndex(3)).toBe(5);
+            
+            TestsSetup.SetupMockBody(3);
+            PageParser.Reset();
+            expect(PageParser.Instance.GetCCAndSAESeparationIndex(0)).toBe(2);
+            expect(PageParser.Instance.GetCCAndSAESeparationIndex(1)).toBe(2);
+            expect(PageParser.Instance.GetCCAndSAESeparationIndex(2)).toBe(2);
+            expect(PageParser.Instance.GetCCAndSAESeparationIndex(3)).toBe(3);
         });
     });
     describe('GetRessourceCount', () => {

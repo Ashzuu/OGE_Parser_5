@@ -36,10 +36,25 @@ export class DOMElementBuilder
         if (grade && grade >= 0) innerHTML = grade.toFixed(2);
         child.innerHTML = innerHTML;
 
+        this.AddClasses(child, classesToAdd);
+
+        return child;
+    }
+
+    private static AddClasses(child: HTMLElement, classesToAdd: string[]): void
+    {
         classesToAdd.forEach(type => {
             child.classList.add(type);
         });
+    }
 
-        return child;
+    public static CreateWarningMessage(message: string): HTMLElement
+    {
+        let el: HTMLElement = document.createElement("td");
+        el.innerText = message;
+
+        this.AddClasses(el, ["warning"]);
+
+        return el;
     }
 }

@@ -4,16 +4,14 @@ import { UE } from "../../src/Model/Types/Grades/Elements/UE";
 const fs = require('fs');
 const path = require('path');
   
-export default class TestsSetup
+export class TestsSetup
 {
     private static mockHtml: string = "";
     private static readonly PATH_TO_MOCKS: string = `./Tests/Mocks/`;
     
     public static SetupBodyElementProperty(): void
     {
-        Object.defineProperty(PageParser.Instance, 'BodyElement', {
-            get: jest.fn(() => document.body),
-        });
+        (PageParser.Instance as any).__bodyElement = document.body;
     }
 
     public static SetupMockBody(semester: number): void

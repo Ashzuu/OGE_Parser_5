@@ -1,4 +1,4 @@
-import { DetailedUEResult } from "../DetailedUEResult";
+import { UEDetails } from "../UEDetails";
 import { Element } from "../Element";
 import { Ressource } from "./Ressource";
 
@@ -42,7 +42,8 @@ export class UE extends Element
     {
         let saeRessources: Ressource[] = [];
         //SAEIndex est l'index de la premiere ressource SAE
-        for (let i = this.SAEIndex - 1; i < this.RessourceList.length; i++){
+        let begining: number = (this.SAEIndex - 1 >= 0) ? this.SAEIndex - 1 : this.RessourceList.length;
+        for (let i = begining; i < this.RessourceList.length; i++){
             saeRessources.push(this._ressourceList[i]);
         }
 
@@ -107,7 +108,7 @@ export class UE extends Element
     }
 
     /** Resultats detaillés de l'UE */
-    public get GetDetailedResults(): DetailedUEResult
+    public get GetDetailedResults(): UEDetails
     {
         return {
             UEResult : this.Average,
@@ -115,7 +116,7 @@ export class UE extends Element
             SAEResult : this.GetGlobalSAEAverage,
             AllCCResults : this.GetCCAverages,
             AllSAEResults : this.GetSAEAverages
-        } as DetailedUEResult;
+        } as UEDetails;
     }
     /**
      * Constructeur par defaut d'une UE
