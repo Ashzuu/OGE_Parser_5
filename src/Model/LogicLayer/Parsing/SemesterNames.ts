@@ -68,7 +68,7 @@ export class SemesterNames
     }
     public static get CurrentYearName(): string
     {
-        return this.CurrentFiliere + " " + this.CurrentYear;
+        return this.CurrentFiliere + " " + this.CurrentYear + "A";
     }
 
 

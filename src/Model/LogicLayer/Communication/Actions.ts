@@ -6,6 +6,7 @@ import { ListenerMessage } from "../../Types/Communication/ListenerMessage";
 import { SemesterNames } from "../Parsing/SemesterNames";
 import { YearlyAverage } from "../Results/YearlyAverage";
 
+/** Actions et Reponses possibles dans la communication entre le content script et le popup */
 export class Actions
 {
     private constructor()
@@ -18,6 +19,7 @@ export class Actions
                 params: new YearlyAverage().ToYearDetails()
             };
         }
+        
         //AskToLoadCorrespondingSemester
         this.actions[Messages.AskToLoadCorrespondingSemester] = (params: any) => { Popup.AskLoadCorrespondingSemester(params); }
         this.answers[Messages.AskToLoadCorrespondingSemester] = () => {

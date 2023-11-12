@@ -7,7 +7,7 @@ import { Actions } from "./Model/LogicLayer/Communication/Actions";
 
 let parsedSemester: Semestre = SemestreFactory.GetSemester();
 ChromeStorage.Instance.Save(parsedSemester);
-DisplayGrades(parsedSemester);
+// DisplayGrades(parsedSemester);
 
 //#region functions
 function DisplayGrades(semestre: Semestre): void
