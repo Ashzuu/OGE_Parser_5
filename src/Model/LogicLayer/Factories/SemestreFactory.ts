@@ -1,6 +1,7 @@
 import { IElementFactory } from "../../Interfaces/IElementFactory";
 import { Semestre } from "../../Types/Grades/Elements/Semestre";
 import { UE } from "../../Types/Grades/Elements/UE";
+import { PageParser } from "../Parsing/PageParser";
 import { UEFactory } from "./UEFactory";
 
 /** Fabrique de semestre */

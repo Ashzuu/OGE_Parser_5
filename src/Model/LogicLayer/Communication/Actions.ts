@@ -1,3 +1,4 @@
+import { ProcessSemester } from "../../../ContentScript";
 import { Popup } from "../../../Popup/Popup";
 import { Messages } from "../../Enum/Messages";
 import { ActionDict } from "../../Types/Communication/ActionDict";
@@ -19,13 +20,23 @@ export class Actions
                 params: new YearlyAverage().ToYearDetails()
             };
         }
-        
+
         //AskToLoadCorrespondingSemester
         this.actions[Messages.AskToLoadCorrespondingSemester] = (params: any) => { Popup.AskLoadCorrespondingSemester(params); }
         this.answers[Messages.AskToLoadCorrespondingSemester] = () => {
             return {
                 content: Messages.AskToLoadCorrespondingSemester,
                 params: SemesterNames.CorrespondingSemester
+            };
+        }
+
+        //ProcessSemester
+        this.actions[Messages.ProcessSemester] = (params: any) => {}
+        this.answers[Messages.ProcessSemester] = () => {
+            ProcessSemester();
+            return {
+                content: Messages.ProcessSemester,
+                params: undefined
             };
         }
     }
