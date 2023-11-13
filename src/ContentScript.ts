@@ -10,6 +10,8 @@ main();
 //#region functions
 export function ProcessSemester(): void
 {
+    //Remise a zero des donnees
+    PageParser.Reset();
     let parsedSemester: Semestre = SemestreFactory.GetSemester();
     ChromeStorage.Instance.Save(parsedSemester);
     DisplayGrades(parsedSemester);
@@ -17,10 +19,10 @@ export function ProcessSemester(): void
 
 function DisplayGrades(semestre: Semestre): void
 {
-    if (!PageParser.Instance.AreGradesShown || true)
-    {
+    // if (!PageParser.Instance.AreGradesShown)
+    // {
         MainPageView.Instance.AddGradeResultsToPage(semestre);
-    }
+    // }
 }
 //#endregion functions
 
@@ -29,14 +31,15 @@ function SetListeners(): void
     let elements: HTMLElement[] = Array.from(document.getElementsByClassName('ui-menuitem-link ui-corner-all')) as HTMLElement[];
     elements.forEach(element => {
         element.addEventListener('click', async () => {
+            let start = Date.now();
             let loadingThingy: HTMLElement = document.getElementsByClassName('ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container statusDialog')[0] as HTMLElement;
             while (loadingThingy.style.display != "none") { await new Promise(r => setTimeout(r, 200)); }
             //TODO ProcessSemester(); ne fonctionne pas 
             setTimeout(() => {
-                // Actions.Answers[Messages.ProcessSemester]();
                 ProcessSemester();
                 SetListeners();
-            }, 1000);
+                console.log("Done in", (Date.now() - start), "ms");
+            }, 100);
         });
     });
 }

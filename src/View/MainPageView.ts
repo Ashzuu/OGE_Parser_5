@@ -14,21 +14,25 @@ export class MainPageView
     /** Instance de la classe */
     public static get Instance(): MainPageView{
         if (!this._instance) this._instance = new this();
-
+        
+        //Reset le body et ueTables a chaque appel pour etre sur qu'il soit bien a jour
+        this._instance._bodyElement = undefined;
+        this._instance._ueTables = undefined;
         return this._instance;
     }
 
     private _bodyElement: HTMLElement | undefined;    
     private _ueTables: HTMLElement[] | undefined;
+    
     private get BodyElement(): HTMLElement
     {
-        if (!this._bodyElement) this._bodyElement = document.querySelectorAll("body")[0];
+        if (!this._bodyElement) this._bodyElement = document.querySelectorAll("body")[0] as HTMLElement;
         return this._bodyElement;
     }
     private get UETables(): HTMLElement[]
     {
         if (!this._ueTables){
-            this._ueTables = Array.from(this.BodyElement.querySelectorAll('table')) as HTMLElement[];;
+            this._ueTables = Array.from(this.BodyElement.querySelectorAll('table')) as HTMLElement[];
         }
         
         return this._ueTables;
