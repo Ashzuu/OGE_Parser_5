@@ -1,25 +1,19 @@
 import { UEFactory } from '../../../../src/Model/LogicLayer/Factories/UEFactory';
-import { DetailedUEResult } from '../../../../src/Model/Types/Grades/DetailedUEResult';
 import { UE } from '../../../../src/Model/Types/Grades/Elements/UE';
+import { UEDetails } from '../../../../src/Model/Types/Grades/UEDetails';
 import { TestsSetup } from '../../../Mocks/TestsSetup';
 
 TestsSetup.SetupBodyElementProperty();
 
 describe('UEFactory', () => {
-    describe('Instance', () => {
-        test('Get', () => {
-            TestsSetup.SetupMockBody(1);
-            expect(UEFactory.Instance).toBeDefined();
-        });
-    });
     describe('GetAllRessourceUE', () => {
         test('Normal Test Case', () => {
             TestsSetup.SetupMockBody(1);
-            let result: UE[] = UEFactory.Instance.GetAllUEs();
+            let result: UE[] = UEFactory.GetAllUEs();
             expect(result.length).toBe(6);
 
             let testedUE: UE = result[0];
-            let expectedDetailedResults: DetailedUEResult = {
+            let expectedDetailedResults: UEDetails = {
                 UEResult : 16.13,
                 CCResult : 14.88,
                 SAEResult : 18.00,
