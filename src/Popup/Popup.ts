@@ -40,7 +40,7 @@ export class Popup {
     public static CreateYearlyAverageTable(yearDetails: YearDetails): void {
         let table = document.createElement("table");
 
-        table.className = "table table-striped table-bordered table-hover";
+        table.className = "table table-striped table-bordered";
         table.appendChild(Popup.CreateYearlyAverageTableHeader(yearDetails.YearName));
         table.appendChild(Popup.CreateYearlyAverageTableBody(yearDetails));
 

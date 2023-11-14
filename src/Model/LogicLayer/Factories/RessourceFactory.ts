@@ -44,8 +44,7 @@ export class RessourceFactory implements IElementFactory
     private static GetRessource(ueNumber: number, ressourceNumber: number): Ressource {
         let sections: Section[] = SectionFactory.GetAllRessourceSection(ueNumber, ressourceNumber)
         let coefficient: number = PageParser.Instance.GetRessourceCoefficient(ueNumber, ressourceNumber);
-        let name: string = PageParser.Instance.GetRessourceName(ueNumber, ressourceNumber);
-        let ressource: Ressource = new Ressource(name, coefficient, sections);
+        let ressource: Ressource = new Ressource(coefficient, sections);
 
         return ressource;
     }

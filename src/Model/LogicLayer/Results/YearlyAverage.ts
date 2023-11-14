@@ -12,6 +12,7 @@ export class YearlyAverage implements IYearlyAverage
     private correspondingSemester: StoredSemester | undefined;
     private get CurrentSemesterAverages(): number[]
     {
+        console.log("CurrentSemesterAverages");
         if (this.currentSemester == undefined)
         {
             this.currentSemester = SemesterLoading.LoadCurrentSemester;
@@ -20,6 +21,7 @@ export class YearlyAverage implements IYearlyAverage
     }
     private get CorrespondingSemesterAverages(): number[]
     {
+        throw new Error("CorrespondingSemesterAverages bloqué");
         if (this.correspondingSemester == undefined)
         {
             try 

@@ -111,11 +111,6 @@ export class PageParser
     {
         return this._ressourceParser.GetRessourceCoefficient(ueNumber, ressourceNumber);
     }
-    //TODO: Degager le concept de ressourceName, on en a rien a foutre en vrai
-    public GetRessourceName(ueNumber: number, ressourceNumber: number): string
-    {
-        return this._ressourceParser.GetRessourceName(ueNumber, ressourceNumber);
-    }
     //#endregion Ressource
 
     //#region Section

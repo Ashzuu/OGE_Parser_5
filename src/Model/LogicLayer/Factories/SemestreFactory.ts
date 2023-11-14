@@ -14,6 +14,7 @@ export class SemestreFactory implements IElementFactory
      * @returns Semestre
      */
     public static GetSemester(): Semestre {
+        //Recuperation des UEs
         let ueList: UE[] = UEFactory.GetAllUEs();
         let semester: Semestre = new Semestre(ueList);
 

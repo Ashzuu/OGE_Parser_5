@@ -21,10 +21,16 @@ export class SemesterLoading
 
     private static LoadSemester(semesterName: string): StoredSemester
     {
-        let start = Date.now();
-        while (Date.now() - start < 200) {};
-        if (ChromeStorage.Instance.Load()[semesterName] == undefined) throw new Error('Semester not found TODO');
+        // let start = Date.now();
+        // while (Date.now() - start < 200) {};
+        // // if (ChromeStorage.Instance.Load()[semesterName] == undefined) throw new Error('Semester not found TODO');
 
-        return ChromeStorage.Instance.Load()[semesterName];
+        // return ChromeStorage.Instance.Load()[semesterName];
+        while (ChromeStorage.Instance.Load()[semesterName] == undefined) {
+            let start = Date.now();
+            while (Date.now() - start < 200) {}
+        }
+
+        return ChromeStorage.Instance.Load()[semesterName];        
     }
 }

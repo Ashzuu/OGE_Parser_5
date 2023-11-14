@@ -6,12 +6,8 @@ import { Popup } from "./Popup";
 chrome.runtime.onMessage.addListener((message: ListenerMessage) => {
     Actions.Actions[message.content](message.params);
 });
-document.addEventListener("DOMContentLoaded", () => {
-    Popup.SendMessageToContentScript(Messages.ProcessSemester);
-});
 
 Popup.ReloadButton.addEventListener("click", () => {
     Popup.ClearResultsDiv();
-    Popup.SendMessageToContentScript(Messages.ProcessSemester);
     Popup.SendMessageToContentScript(Messages.GetYearDetails);
 });
