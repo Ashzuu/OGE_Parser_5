@@ -2,6 +2,7 @@ import { IStorage } from "../../Model/Interfaces/IStorage";
 import { Semestre } from "../../Model/Types/Grades/Elements/Semestre";
 import { StoredSemester } from "../../Model/Types/Storage/StoredSemester";
 
+/** Classe gérant le stockage des notes dans le chrome.storage.local */
 export class ChromeStorage implements IStorage {
     //#region Constants
     //Clé utilisée pour identifier les semestres dans le chrome.storage.local
@@ -9,35 +10,96 @@ export class ChromeStorage implements IStorage {
     //#endregion Constants
 
     //#region Singleton
-    private constructor() {}
+    private constructor()
+    {
+        this.InitCache();
+    }
     private static _instance: ChromeStorage;
     public static get Instance(): ChromeStorage
     {
         if (!this._instance) this._instance = new this();
-        this._instance.initCache();
+        this._instance.InitCache();
 
         return this._instance;
     }
     //#endregion Singleton
 
+    //#region InstanceBound
+        //#region Attributes
     private cache: { [id: string]: StoredSemester; } = {};
+    private queue: StoredSemester[] = [];
+        //#endregion Attributes
+        //#region Properties
+    private get IsUpToDate(): boolean
+    {
+        return this.queue.length == 0;
+    }
+        //#endregion Properties
+    //#endregion InstanceBound
 
-    public Save(semester: Semestre): void {
+    public async Save(semester: Semestre): Promise<void> {
         let storedSemester: StoredSemester = semester.ToStoredSemester();
-        this.cache[storedSemester.Name + Math.round(Math.random() * 100)] = storedSemester;
+        
+        this.AddToCache(storedSemester);
         this.SaveToLocalChromeStorage();
     }
 
-    public Load(): { [id: string]: StoredSemester; } {
+    public async Load(): Promise<{ [id: string]: StoredSemester; }> {
+        // if (this.IsUpToDate) return new Promise((resolve) => {resolve(this.cache);});
+        console.log("Load")
+        console.log(this.IsUpToDate);
+        console.log(this.queue);
+        console.log(this.cache);
+        //TODO probleme synchronisation du cache
+        // if (this.IsUpToDate) return this.cache;
+        // else return this.LoadFromLocalChromeStorage();
         return this.cache;
+    }
+    public async Clear(): Promise<void>
+    {
+        this.cache = {}; this.SaveToLocalChromeStorage();
     }
 
     //#region Private
-    private async initCache(): Promise<void> {
-        let temp: { [id: string]: StoredSemester } = await this.LoadFromLocalChromeStorage();
-        Object.assign(this.cache, temp)
+    private i = 0;
+    private InitCache(done: boolean = false): void
+    {
+        // console.log("InitCache", this.i++);
+        if (!done)
+        {            
+            this.LoadFromLocalChromeStorage().then((result) => {
+                if (!done){
+                    Object.assign(result, this.cache);
+                }
+                done = true;
+            });
+            setTimeout(() => {
+                if (this.CheckCache()) this.queue = [];
+                else this.InitCache(done);
+            }, 10);
+        }
     }
 
+    private CheckCache(): boolean
+    {
+        let ret: boolean = true;
+        for (let semester of this.queue)
+        {
+            if (this.cache[semester.Name] == undefined)
+            {
+                ret = false;
+                break;
+            }
+        }
+
+        return ret;
+    }
+    private AddToCache(semester: StoredSemester): void
+    {
+        this.cache[Math.round(Math.random() * 1000000)] = semester;
+        // this.cache[semester.Name] = semester;
+        this.queue.push(semester);
+    }
     private async LoadFromLocalChromeStorage(): Promise<{ [id: string]: StoredSemester; }> {
         return new Promise((resolve, reject) => {
             chrome.storage.local.get([this.STORAGE_KEY], (result: any) => {

@@ -7,20 +7,18 @@ import { RessourceFactory } from "./RessourceFactory";
 /** Fabrique d'UEs */
 export class UEFactory implements IElementFactory
 {
-    private constructor() {}
-    private static _instance: UEFactory;
-    /** Retourne l'instance de la fabrique d'UEs */
-    public static get Instance() { return this._instance || (this._instance = new this()); }
-    
+    private constructor() {}    
     /**
      * Retourne toutes les UEs
      * @returns Tableau de toutes les UEs
      * 
      */
-    public GetAllUEs(): UE[]
+    public static GetAllUEs(): UE[]
     {
         let ueList: UE[] = [];
-        let ueCount: number = PageParser.Instance.UECount;
+        let ueCount: number = 1; //TODO: PageParser.Instance.UECount;
+        // let ueCount: number = PageParser.Instance.UECount;
+        
         for (let i = 0; i < ueCount; i++){
             try{ ueList.push(this.GetUE(i)); } catch {}
         }
@@ -28,8 +26,8 @@ export class UEFactory implements IElementFactory
         return ueList;
     }
     
-    private GetUE(ueNumber: number): UE {
-        let ressources: Ressource[] = RessourceFactory.Instance.GetAllUERessources(ueNumber);
+    private static GetUE(ueNumber: number): UE {
+        let ressources: Ressource[] = RessourceFactory.GetAllUERessources(ueNumber);
         let saeIndex: number = -1;
         try { saeIndex = PageParser.Instance.GetCCAndSAESeparationIndex(ueNumber); } catch {}
         let ue: UE = new UE(1, ressources, saeIndex);

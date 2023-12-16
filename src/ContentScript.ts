@@ -1,15 +1,16 @@
-import { SemestreFactory } from "./Model/LogicLayer/Factories/SemestreFactory";
-import { PageParser } from "./Model/LogicLayer/Parsing/PageParser";
-import { SemesterNames } from "./Model/LogicLayer/Parsing/SemesterNames";
-import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
-import { MainPageView } from "./View/MainPageView";
-import { ChromeStorage } from "./Data/Storage/ChromeStorage";
-import { StoredSemester } from "./Model/Types/Storage/StoredSemester";
+import { Actions } from "./Model/LogicLayer/Communication/Actions";
+import { Content } from "./Content";
 
-let semester: Semestre = SemestreFactory.Instance.GetSemester();
+chrome.runtime.onMessage.addListener((message: string) => {
+    chrome.runtime.sendMessage(Actions.Answers[message]());
+});
 
-semester.UEList.forEach(ue => {console.log(ue.Average);});
-// if (!PageParser.Instance.AreGradesShown)
-// {
-//     MainPageView.Instance.AddGradeResultsToPage(semester);
-// }
+//Point d'entrée de l'extension
+function main(): void
+{
+    new Content().Setup();
+}
+
+main();
+
+//TODO: Si ressources a pas de notes ca plante

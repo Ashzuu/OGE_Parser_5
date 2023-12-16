@@ -7,5 +7,6 @@ module.exports = {
         }],
     },
     verbose: true,
-    setupFiles: ["<rootDir>/Tests/Mocks/jest.setup.ts"]
+    setupFiles: ["<rootDir>/Tests/Mocks/jest.setup.ts"],
+    // setupFilesAfterEnv: ['./Tests/Mocks/jest.mocks.js'],
 };

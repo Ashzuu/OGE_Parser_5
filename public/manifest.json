@@ -4,28 +4,27 @@
     "version": "5.0",
     "description": "J'en peux plus",
     "icons": {
-      "16": "OGE-Parser-Logo.png",
-      "48": "OGE-Parser-Logo.png",
-      "128": "OGE-Parser-Logo.png"
+        "16": "OGE-Parser-Logo.png",
+        "48": "OGE-Parser-Logo.png",
+        "128": "OGE-Parser-Logo.png"
     },
     "permissions": [
-      "tabs",
-      "storage",
-      "activeTab"
+        "tabs",
+        "storage",
+        "activeTab"
     ],
     "host_permissions": [
-      "https://localhost:7156/*"
+        "https://localhost:7156/*"
     ],
     "action": {
-      "default_popup": "View/popup.html",
-      "default_title": "OGE Parser"
+        "default_popup": "View/popup.html",
+        "default_title": "OGE Parser"
     },
     "content_scripts": [
-      {
-        "matches": ["https://iutdijon.u-bourgogne.fr/oge/stylesheets/etu/bilanEtu.xhtml"],
-        "js": ["Model/bundle.js"],
-        "css": ["View/gradesStyle.css"]
-      }
+        {
+            "matches": [ "https://iutdijon.u-bourgogne.fr/oge/stylesheets/etu/bilanEtu.xhtml" ],
+            "js": [ "Model/ContentScript.bundle.js" ],
+            "css": [ "View/gradesStyle.css" ]
+        }
     ]
 }
-  

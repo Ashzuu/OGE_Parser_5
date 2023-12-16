@@ -9,15 +9,15 @@ export abstract class Element{
         //S'il n'y a pas sous element on ne calcul rien et renvoie 0
         if (this._subElements.length > 0)
         {
-            let totalAverage: number = 0;
-            let totalCoef: number = 0;
+            let averagesSum: number = 0;
+            let coefficientSum: number = 0;
             
             this._subElements.forEach(lowerEl => {
-                totalAverage += lowerEl.Average * lowerEl.Coefficient;
-                totalCoef += lowerEl.Coefficient;
+                averagesSum += lowerEl.Average * lowerEl.Coefficient;
+                coefficientSum += lowerEl.Coefficient;
             })
             
-            actualAverage = totalAverage / totalCoef;
+            actualAverage = averagesSum / coefficientSum;
         }
 
         return actualAverage;

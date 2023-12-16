@@ -3,8 +3,6 @@
 // constructor(coefficient: number, ressources: Element[], saeIndex: number)
 
 import { UE } from "../../../../src/Model/Types/Grades/Elements/UE";
-import { Semestre } from "../../../../src/Model/Types/Grades/Elements/Semestre";
-import { DetailedUEResult } from "../../../../src/Model/Types/Grades/DetailedUEResult";
 import { TestsSetup } from "../../../Mocks/TestsSetup";
 import { Ressource } from "../../../../src/Model/Types/Grades/Elements/Ressource";
 

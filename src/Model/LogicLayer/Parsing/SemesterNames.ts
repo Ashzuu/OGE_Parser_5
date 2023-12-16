@@ -59,6 +59,18 @@ export class SemesterNames
     {
         return this.CurrentSemestre.match(/.*(?= S)/g)![0];
     }
+    public static get CurrentYear(): number
+    {
+        let currentYear: number = this.CurrentSemestreNumber;
+        if (currentYear % 2 != 0) currentYear++;
+        
+        return currentYear / 2;
+    }
+    public static get CurrentYearName(): string
+    {
+        return this.CurrentFiliere + " " + this.CurrentYear + "A";
+    }
+
 
     /** Récupère le semestre correspondant au semestre actuel*/
     public static get CorrespondingSemester(): string

@@ -5,16 +5,10 @@ import { TestsSetup } from '../../../Mocks/TestsSetup';
 TestsSetup.SetupBodyElementProperty();
 
 describe('RessourceFactory', () => {
-    describe('Instance', () => {
-        test('Get', () => {
-            TestsSetup.SetupMockBody(1);
-            expect(RessourceFactory.Instance).toBeDefined();
-        });
-    });
     describe('GetAllUERessources', () => {
         test('Normal Test Case', () => {
             TestsSetup.SetupMockBody(1);
-            let result: Ressource[] = RessourceFactory.Instance.GetAllUERessources(0);
+            let result: Ressource[] = RessourceFactory.GetAllUERessources(0);
             expect(result.length).toBe(4);
 
             let testedRessource: Ressource = result[2];
@@ -24,8 +18,8 @@ describe('RessourceFactory', () => {
         });
         test('Not Throwing TableNotFound', () => {
             TestsSetup.SetupMockBody(1);
-            expect(RessourceFactory.Instance.GetAllUERessources(-1));
-            expect(RessourceFactory.Instance.GetAllUERessources(500));
+            expect(RessourceFactory.GetAllUERessources(-1));
+            expect(RessourceFactory.GetAllUERessources(500));
         });
     });
 });

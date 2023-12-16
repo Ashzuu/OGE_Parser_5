@@ -1,5 +1,5 @@
 import { PageParser } from "../Model/LogicLayer/Parsing/PageParser";
-import { DetailedUEResult } from "../Model/Types/Grades/DetailedUEResult";
+import { UEDetails } from "../Model/Types/Grades/UEDetails";
 import { DOMElementBuilder } from "./DOMElementBuilder";
 
 export class MainPageGradeView
@@ -27,7 +27,7 @@ export class MainPageGradeView
      * @param detailedUEResult Resultats
      */
     public AddGradeResultToPage(
-        detailedUEResult: DetailedUEResult
+        detailedUEResult: UEDetails
     ): void
     {
         this.AddGlobalUEResult(detailedUEResult.UEResult);

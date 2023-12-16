@@ -81,11 +81,11 @@ export class UEParser
 
         //Index de l'element separant les CC des SAE
         let saeIndex = -1;
-        for (let i = 0; i < ressourceDiv.childElementCount && saeIndex == -1; i++){
-            if (ressourceDiv.children[i].classList.contains(this.POLE_SAE_CLASS)){
-                saeIndex = i;
-            }
+        let i = 0;
+        while (!(ressourceDiv.children[i].classList.contains(this.POLE_SAE_CLASS))){
+            saeIndex++
         }
+        if (i <= ressourceDiv.childElementCount) saeIndex = i;
 
         return saeIndex;
     }

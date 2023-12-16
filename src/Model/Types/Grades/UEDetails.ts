@@ -1,5 +1,5 @@
 /** Resultats detaillés d'une UE */
-export type DetailedUEResult = {
+export type UEDetails = {
     /** Moyenne de l'UE */
     UEResult: number;
     /** Moyenne global du pôle CC de l'UE */

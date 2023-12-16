@@ -10,9 +10,6 @@ export class NoteFactory implements IElementFactory
 {
     //#region Singleton
     private constructor() {}
-    private static _instance: NoteFactory;
-    /** Retourne l'instance de la fabrique de notes */
-    public static get Instance() { return this._instance || (this._instance = new this()); }
     //#endregion Singleton
 
     /**
@@ -22,7 +19,7 @@ export class NoteFactory implements IElementFactory
      * @param sectionNumber Numéro de la section
      * @returns Tableau de notes
      */
-    public GetAllNotes(ueNumber: number, ressourceNumber: number, sectionNumber: number): Note[] {
+    public static GetAllNotes(ueNumber: number, ressourceNumber: number, sectionNumber: number): Note[] {
         let ressourceList: Note[] = [];
         let ueCount: number = PageParser.Instance.GetNoteCount(ueNumber, ressourceNumber, sectionNumber);
         for (let i = 0; i < ueCount; i++)
@@ -36,7 +33,7 @@ export class NoteFactory implements IElementFactory
         return ressourceList;
     }
     
-    private GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): Note {
+    private static GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): Note {
         let grade: GradeCoefficientPair = PageParser.Instance.GetNote(ueNumber, ressourceNumber, sectionNumber, noteNumber);
         let note: Note = new Note(grade);
 

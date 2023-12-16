@@ -11,9 +11,7 @@ export class TestsSetup
     
     public static SetupBodyElementProperty(): void
     {
-        Object.defineProperty(PageParser.Instance, 'BodyElement', {
-            get: jest.fn(() => document.body),
-        });
+        (PageParser.Instance as any).__bodyElement = document.body;
     }
 
     public static SetupMockBody(semester: number): void

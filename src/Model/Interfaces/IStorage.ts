@@ -4,6 +4,17 @@ import { StoredSemester } from "../Types/Storage/StoredSemester";
 /** Interface des classes gerant le stockage des notes*/
 export interface IStorage
 {
-    Save(semester: Semestre): void;
-    Load(): { [id: string]: StoredSemester; };
+    /**
+     * Sauvegarde un semestre dans le stockage
+     * @param semester Le semestre à sauvegarder
+     */
+    Save(semester: Semestre): Promise<void>;
+    /**
+     * Charge les semestres sauvegardés
+     */
+    Load(): Promise<{ [id: string]: StoredSemester; }>;
+    /**
+     * Efface tous les semestres sauvegardés
+     */
+    Clear(): Promise<void>;
 }

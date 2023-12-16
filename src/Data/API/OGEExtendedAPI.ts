@@ -1,4 +1,5 @@
 import { IAPIConnector } from "../../Model/Interfaces/IAPIConnector";
+import { LaQuoiCouhColle } from "./LaQuoiCouhColle";
 
 export class OGEExtendedAPI implements IAPIConnector
 {
@@ -18,3 +19,17 @@ export class OGEExtendedAPI implements IAPIConnector
         throw new Error("Method not implemented.");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+new LaQuoiCouhColle();
