@@ -27,14 +27,17 @@ export class Content
     }
     //#endregion Properties
 
-    public static Setup(): void{
+    /** Met en place le traitement de la page */
+    public static Setup(): void
+    {
         this.ProcessSemester();
         this.SetSemesterLinksListeners();
     }
+
     /**
      * Parse la page actuelle, sauvegarde les resultats, et les affiche
      */
-    public static ProcessSemester(): void
+    private static ProcessSemester(): void
     {
         //Remise a zero des donnees
         PageParser.Reset();
@@ -50,7 +53,7 @@ export class Content
      * Affiche les moyennes du semestre sur la page principale si elles ne sont pas deja affichees
      * @param semestre Semestre à afficher
      */
-    public static DisplayGrades(semestre: Semestre): void
+    private static DisplayGrades(semestre: Semestre): void
     {
         //Lance l'affichage des resultats si les moyennes sont pas deja affichees
         if (!PageParser.Instance.AreGradesShown)
@@ -60,7 +63,7 @@ export class Content
     }
 
     /** Ajoute les listeners sur les liens des semestres */
-    public static SetSemesterLinksListeners(): void
+    private static SetSemesterLinksListeners(): void
     {
         //Constantes creant un delai pour etre sur que la page soit bien rechargee
         const DELAY_BETWEEN_CHECKS = 200;
@@ -76,7 +79,12 @@ export class Content
 
                 //Attend que la page soit rechargee, en reverifiant avec un intervalle de DELAY_BETWEEN_CHECKS
                 //Elle est bien rechargee quand l'icone de chargement n'est plus visible (display: none)
-                while (loadingIcon.style.display != "none") { await new Promise(r => setTimeout(r, DELAY_BETWEEN_CHECKS)); }
+                while (loadingIcon.style.display != "none")
+                {
+                    await new Promise(
+                        r => setTimeout(r, DELAY_BETWEEN_CHECKS)
+                    );
+                }
                 
                 //Met un decalage de DELAY_AFTER_PAGE_RELOAD pour etre sur que la page soit bien rechargee
                 setTimeout(() => {

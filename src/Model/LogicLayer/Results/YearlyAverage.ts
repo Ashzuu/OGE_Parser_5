@@ -8,30 +8,50 @@ import { SemesterLoading } from "./SemesterLoading";
 export class YearlyAverage implements IYearlyAverage
 {
     //#region Private
+    private semesterLoading;
     private currentSemester: StoredSemester | undefined;
     private correspondingSemester: StoredSemester | undefined;
-    private get CurrentSemesterAverages(): number[]
+    private async InitSemesters(): Promise<void>
     {
-        console.log("CurrentSemesterAverages");
-        if (this.currentSemester == undefined)
-        {
-            this.currentSemester = SemesterLoading.LoadCurrentSemester;
-        }
-        return this.currentSemester.Averages;
+        this.currentSemester = await this.semesterLoading.LoadCurrentSemester();
+            // .LoadCurrentSemester()
+            // .then(
+            //     (result) => {
+            //         console.log("this.semesterLoading.LoadCurrentSemester().then()", result);
+            //         this.currentSemester = result;
+            //     }
+            // );
+        /*
+        this.semesterLoading
+            .LoadCorrespondingSemester()
+            .then(
+                (result) => this.correspondingSemester = result
+                );*/
     }
-    private get CorrespondingSemesterAverages(): number[]
+    private CurrentSemesterAverages(): number[]
     {
-        throw new Error("CorrespondingSemesterAverages bloqué");
-        if (this.correspondingSemester == undefined)
-        {
-            try 
-            {
-                this.correspondingSemester = SemesterLoading.LoadCorrespondingSemester;
-            }
-            catch (error) {}
-        }
+        let start = Date.now();
 
-        return this.correspondingSemester?.Averages ?? [];
+        let ready = this.currentSemester != undefined;
+        if (!ready) this.InitSemesters().then(() => {
+            // console.log("this.InitSemesters().then()", Date.now() - start, "ms");
+            ready = this.currentSemester != undefined
+        });
+
+        let start2 = Date.now();
+        while (!ready) {
+            if (Date.now() - start2 > 1000)
+            {
+                // console.log("CurrentSemesterAverages timed out", Date.now() - start, "ms");
+                throw new Error("CurrentSemesterAverages timed out");
+            }
+        };
+
+        return this.currentSemester!.Averages;
+    }
+    private CorrespondingSemesterAverages(): number[]
+    {
+        throw new Error("Not implemented");
     }
     
     //#region Constantes
@@ -41,14 +61,12 @@ export class YearlyAverage implements IYearlyAverage
 
     //#endregion Private
 
-    public constructor() {
-        //Initialisation des variables à undefined
-        this.currentSemester = undefined;
-        this.correspondingSemester = undefined;
-        //L'appel des propriétés va essayer de les charger.
-        this.CurrentSemesterAverages;
-        this.CorrespondingSemesterAverages;
+    public constructor()
+    {
+        this.semesterLoading = new SemesterLoading();
+        this.InitSemesters();
     }
+    
     public get NeedToAskToLoadCorrespondingSemester(): boolean
     {
         return SemesterNames.CorrespondingSemesterAvailable && this.correspondingSemester == undefined;
@@ -62,11 +80,11 @@ export class YearlyAverage implements IYearlyAverage
     public get YearlyAverages(): number[]
     {
         //Resultats annuelles des UE
-        let yearlyAverages: number[] = Array.from(this.CurrentSemesterAverages);
+        let yearlyAverages: number[] = Array.from(this.CurrentSemesterAverages());
 
         if (SemesterNames.CorrespondingSemesterAvailable)
         {
-            let correspondingSemesterAverages: number[] = this.CorrespondingSemesterAverages;
+            let correspondingSemesterAverages: number[] = this.CorrespondingSemesterAverages();
             //Gere le cas ou un des deux semestres aurait pas le meme nombre d'UE que l'autre
             let n: number = Math.min(yearlyAverages.length, correspondingSemesterAverages.length);
             for (let i = 0; i < n; i++)
@@ -91,6 +109,7 @@ export class YearlyAverage implements IYearlyAverage
         return this.YearlyAverages.every(average => average >= this.VALIDATING_GRADE);
     }
 
+    /** Retourne l'object sous forme de YearDetails */
     public ToYearDetails(): YearDetails {
         return {
             YearName: this.YearName,

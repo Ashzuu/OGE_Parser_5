@@ -4,33 +4,23 @@ import { SemesterNames } from "../Parsing/SemesterNames";
 
 export class SemesterLoading
 {
-    public static get LoadCurrentSemester(): StoredSemester
+    public constructor() { }
+    public async LoadCurrentSemester(): Promise<StoredSemester>
     {
-        ChromeStorage.Instance;
-
         let semesterName: string = SemesterNames.CurrentSemestre;
-        return this.LoadSemester(semesterName);
+        return await this.LoadSemester(semesterName)
     }
-    public static get LoadCorrespondingSemester(): StoredSemester
+    public async LoadCorrespondingSemester(): Promise<StoredSemester>
     {
-        ChromeStorage.Instance;
-
         let semesterName: string = SemesterNames.CorrespondingSemester;
         return this.LoadSemester(semesterName);
     }
 
-    private static LoadSemester(semesterName: string): StoredSemester
+    private async LoadSemester(semesterName: string): Promise<StoredSemester>
     {
-        // let start = Date.now();
-        // while (Date.now() - start < 200) {};
-        // // if (ChromeStorage.Instance.Load()[semesterName] == undefined) throw new Error('Semester not found TODO');
+        let loadedSemester: StoredSemester = (await ChromeStorage.Instance.Load())[semesterName];
 
-        // return ChromeStorage.Instance.Load()[semesterName];
-        while (ChromeStorage.Instance.Load()[semesterName] == undefined) {
-            let start = Date.now();
-            while (Date.now() - start < 200) {}
-        }
-
-        return ChromeStorage.Instance.Load()[semesterName];        
+        if (loadedSemester == undefined) throw new Error("Semestre non trouvé TODO");
+        else return loadedSemester;
     }
 }

@@ -11,4 +11,4 @@ function main(): void
     Content.Setup();
 }
 
-document.onload = main;
+main();
