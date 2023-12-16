@@ -16,7 +16,8 @@ export class UEFactory implements IElementFactory
     public static GetAllUEs(): UE[]
     {
         let ueList: UE[] = [];
-        let ueCount: number = PageParser.Instance.UECount;
+        let ueCount: number = 1; //TODO: PageParser.Instance.UECount;
+        // let ueCount: number = PageParser.Instance.UECount;
         
         for (let i = 0; i < ueCount; i++){
             try{ ueList.push(this.GetUE(i)); } catch {}

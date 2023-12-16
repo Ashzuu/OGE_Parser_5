@@ -56,6 +56,6 @@ export class MainPageView
         new MainPageGradeView(
             table,
             ueObject.SAEIndex)
-            .AddGradeResultToPage(ueObject.GetDetailedResults);
+            .AddGradeResultToPage(ueObject.DetailedResults);
     }
 }

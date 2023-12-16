@@ -108,7 +108,7 @@ export class UE extends Element
     }
 
     /** Resultats detaillés de l'UE */
-    public get GetDetailedResults(): UEDetails
+    public get DetailedResults(): UEDetails
     {
         return {
             UEResult : this.Average,

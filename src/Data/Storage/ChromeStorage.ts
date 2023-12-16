@@ -64,7 +64,7 @@ export class ChromeStorage implements IStorage {
     private i = 0;
     private InitCache(done: boolean = false): void
     {
-        console.log("InitCache", this.i++);
+        // console.log("InitCache", this.i++);
         if (!done)
         {            
             this.LoadFromLocalChromeStorage().then((result) => {
@@ -114,7 +114,6 @@ export class ChromeStorage implements IStorage {
     private async SaveToLocalChromeStorage(): Promise<void> {
         return new Promise((resolve, reject) => {
             chrome.storage.local.set({ [this.STORAGE_KEY]: this.cache }, () => {
-                console.log("Saved to local chrome storage");
                 if (chrome.runtime.lastError) {
                     return reject(chrome.runtime.lastError);
                 }

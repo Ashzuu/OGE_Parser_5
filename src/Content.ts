@@ -8,12 +8,16 @@ import { MainPageView } from "./View/MainPageView";
 export class Content
 {
     //#region constants
-    private static readonly LOADING_ICON_CLASS: string = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container statusDialog';
-    private static readonly SEMESTER_LINKS_CLASS: string = 'ui-menuitem-link ui-corner-all';
+    private readonly LOADING_ICON_CLASS: string = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container statusDialog';
+    private readonly SEMESTER_LINKS_CLASS: string = 'ui-menuitem-link ui-corner-all';
     //#endregion constants
 
+    //#region Attributs
+    private semester: Semestre | undefined;
+    //#endregion Attributs
+
     //#region Properties
-    private static get SemesterLinks(): HTMLElement[]
+    private get SemesterLinks(): HTMLElement[]
     {
         return Array.from(
             document.getElementsByClassName(
@@ -21,23 +25,26 @@ export class Content
             )
         ) as HTMLElement[];
     }
-    private static get LoadingIcon(): HTMLElement
+    private get LoadingIcon(): HTMLElement
     {
         return document.getElementsByClassName(this.LOADING_ICON_CLASS)[0] as HTMLElement;
     }
     //#endregion Properties
 
     /** Met en place le traitement de la page */
-    public static Setup(): void
+    public Setup(): void
     {
+        //Parsing de la page
         this.ProcessSemester();
-        this.SetSemesterLinksListeners();
+        //Affichage des moyennes
+        this.DisplayGrades();
+        //this.SetSemesterLinksListeners();
     }
 
     /**
      * Parse la page actuelle, sauvegarde les resultats, et les affiche
      */
-    private static ProcessSemester(): void
+    private ProcessSemester(): void
     {
         //Remise a zero des donnees
         PageParser.Reset();
@@ -45,25 +52,27 @@ export class Content
         let parsedSemester: Semestre = SemestreFactory.GetSemester();
         //Sauvegarde du semestre retrouvé
         ChromeStorage.Instance.Save(parsedSemester);
-        //Affichage des moyennes
-        this.DisplayGrades(parsedSemester);
+
+        this.semester = parsedSemester as Semestre;
     }
 
     /**
      * Affiche les moyennes du semestre sur la page principale si elles ne sont pas deja affichees
      * @param semestre Semestre à afficher
      */
-    private static DisplayGrades(semestre: Semestre): void
+    private DisplayGrades(): void
     {
         //Lance l'affichage des resultats si les moyennes sont pas deja affichees
-        if (!PageParser.Instance.AreGradesShown)
-        {
-            MainPageView.Instance.AddGradeResultsToPage(semestre);
-        }
+        // if (!PageParser.Instance.AreGradesShown || true)
+        // {
+        //     MainPageView.Instance.AddGradeResultsToPage(this.semester!);
+        // }
+        console.log(this.semester!.UEList[0].DetailedResults.AllCCResults)
+        console.log(this.semester!.UEList[0].DetailedResults.AllSAEResults)
     }
 
     /** Ajoute les listeners sur les liens des semestres */
-    private static SetSemesterLinksListeners(): void
+    private SetSemesterLinksListeners(): void
     {
         //Constantes creant un delai pour etre sur que la page soit bien rechargee
         const DELAY_BETWEEN_CHECKS = 200;

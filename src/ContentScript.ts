@@ -8,7 +8,9 @@ chrome.runtime.onMessage.addListener((message: string) => {
 //Point d'entrée de l'extension
 function main(): void
 {
-    Content.Setup();
+    new Content().Setup();
 }
 
 main();
+
+//TODO: Si ressources a pas de notes ca plante

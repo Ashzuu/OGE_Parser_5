@@ -20,7 +20,6 @@ export class Popup {
     }
     constructor() {}
     public static DisplayYearlyAverage(yearDetails: YearDetails): void {
-        console.table(yearDetails);
         this.CreateYearlyAverageTable(yearDetails);
         
         if (yearDetails.NeedToAskToLoadCorrespondingSemester)
