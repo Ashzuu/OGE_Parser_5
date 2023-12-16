@@ -2,14 +2,21 @@ import { ChromeStorage } from "./Data/Storage/ChromeStorage";
 import { SemestreFactory } from "./Model/LogicLayer/Factories/SemestreFactory";
 import { PageParser } from "./Model/LogicLayer/Parsing/PageParser";
 import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
+import { ConsoleGradeDisplay } from "./View/GradeDisplay/ConsoleGradeDisplay";
+import { IGradeDisplay } from "./Model/Interfaces/IGradeDisplay";
+import { MainPageGradeDisplay } from "./View/GradeDisplay/MainPageGradeDisplay";
 import { MainPageView } from "./View/MainPageView";
 
 /** Gestion du contenu de la page principale */
 export class Content
 {
     //#region constants
+    //Constantes de classes CSS
     private readonly LOADING_ICON_CLASS: string = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container statusDialog';
     private readonly SEMESTER_LINKS_CLASS: string = 'ui-menuitem-link ui-corner-all';
+    //Constantes creant un delai pour etre sur que la page soit bien rechargee
+    private readonly DELAY_BETWEEN_CHECKS = 200;
+    private readonly DELAY_AFTER_PAGE_RELOAD = 100;
     //#endregion constants
 
     //#region Attributs
@@ -56,28 +63,17 @@ export class Content
         this.semester = parsedSemester as Semestre;
     }
 
-    /**
-     * Affiche les moyennes du semestre sur la page principale si elles ne sont pas deja affichees
-     * @param semestre Semestre à afficher
-     */
+    // Affiche les moyennes du semestre sur la page principale si elles ne sont pas deja affichees
     private DisplayGrades(): void
     {
-        //Lance l'affichage des resultats si les moyennes sont pas deja affichees
-        // if (!PageParser.Instance.AreGradesShown || true)
-        // {
-        //     MainPageView.Instance.AddGradeResultsToPage(this.semester!);
-        // }
-        console.log(this.semester!.UEList[0].DetailedResults.AllCCResults)
-        console.log(this.semester!.UEList[0].DetailedResults.AllSAEResults)
+        //Lance l'affichage des resultats
+        let display: IGradeDisplay = new ConsoleGradeDisplay();
+        display.DisplayGrades(this.semester as Semestre);
     }
 
-    /** Ajoute les listeners sur les liens des semestres */
+    // Ajoute les listeners sur les liens des semestres
     private SetSemesterLinksListeners(): void
     {
-        //Constantes creant un delai pour etre sur que la page soit bien rechargee
-        const DELAY_BETWEEN_CHECKS = 200;
-        const DELAY_AFTER_PAGE_RELOAD = 100;
-
         //Recuperation des liens des semestres
         let elements: HTMLElement[] = this.SemesterLinks
         //Ajout des listeners sur les liens des semestres
@@ -91,14 +87,14 @@ export class Content
                 while (loadingIcon.style.display != "none")
                 {
                     await new Promise(
-                        r => setTimeout(r, DELAY_BETWEEN_CHECKS)
+                        r => setTimeout(r, this.DELAY_BETWEEN_CHECKS)
                     );
                 }
                 
                 //Met un decalage de DELAY_AFTER_PAGE_RELOAD pour etre sur que la page soit bien rechargee
                 setTimeout(() => {
                     this.Setup();
-                }, DELAY_AFTER_PAGE_RELOAD);
+                }, this.DELAY_AFTER_PAGE_RELOAD);
             });
         });
     }

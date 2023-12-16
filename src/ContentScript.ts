@@ -13,4 +13,4 @@ function main(): void
 
 main();
 
-//TODO: Si ressources a pas de notes ca plante
+//TODO: Si ressource a pas de notes ca plante
