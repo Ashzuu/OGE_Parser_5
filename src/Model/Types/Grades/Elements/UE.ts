@@ -47,6 +47,7 @@ export class UE extends Element
             saeRessources.push(this._ressourceList[i]);
         }
 
+        console.log("saeRessources", saeRessources)
         return saeRessources;
     }
     /**Moyenne globale du pôle CC*/
@@ -86,6 +87,7 @@ export class UE extends Element
             
             average = sum / coef;
         }
+        console.log("average", average);
         return average;
     }
     /**Moyenne de chaque ressources du pôle CC */

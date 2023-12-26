@@ -7,7 +7,8 @@ export class UEParser
     private readonly POLE_SAE_CLASS = "cell_BUT_SAE";
     private readonly POLE_CC_CLASS = "cell_BUT_RESSOURCE";
     //#endregion Constants
-
+    private _ueTables: HTMLElement[] | undefined;
+    
     /**
      * Constructeur
      * @param body Body de la page, sera utilisé pour recuperer les tables des UE
@@ -17,7 +18,6 @@ export class UEParser
         this._ueTables = undefined;
     }
 
-    private _ueTables: HTMLElement[] | undefined;
     /** Retourne les tables des UE */
     public get UETables(): HTMLElement[]
     {
@@ -78,15 +78,36 @@ export class UEParser
         //N'utilise pas this._ueTables car on veut la table non modifiée
         let ueTable: HTMLElement = document.querySelectorAll('table')[ueNumber];
         let ressourceDiv: HTMLElement = PageParser.GetChild(ueTable, [1]);
-
-        //Index de l'element separant les CC des SAE
-        let saeIndex = -1;
-        let i = 0;
-        while (!(ressourceDiv.children[i].classList.contains(this.POLE_SAE_CLASS))){
-            saeIndex++
+        
+        let saeIndex: number = -1;
+        if (this.HasRegisteredSAE(ressourceDiv))
+        {
+            saeIndex = this.GetCCAndSAESeparationIndexFromDiv(ressourceDiv);
         }
-        if (i <= ressourceDiv.childElementCount) saeIndex = i;
 
         return saeIndex;
+    }
+    private GetCCAndSAESeparationIndexFromDiv(ressourceDiv: HTMLElement): number
+    {
+        //Index de l'element separant les CC des SAE
+        let saeIndex = 0;
+        let children : HTMLCollection = ressourceDiv.children;
+        let length = children.length;
+
+        const condition = (index: number): boolean =>
+        {
+            return !(children[index].classList.contains(this.POLE_SAE_CLASS)) && index < length;
+        }
+
+        while (condition(saeIndex)){ saeIndex++ }
+
+        if (saeIndex >= length) saeIndex = -1;
+
+        return saeIndex;
+    }
+    private HasRegisteredSAE(ressourceDiv: HTMLElement): boolean
+    {
+        let last: number = ressourceDiv.children.length - 1;
+        return ressourceDiv.children[last].textContent?.trim() != "Pas de note saisie";
     }
 }

@@ -5,7 +5,6 @@ import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
 import { ConsoleGradeDisplay } from "./View/GradeDisplay/ConsoleGradeDisplay";
 import { IGradeDisplay } from "./Model/Interfaces/IGradeDisplay";
 import { MainPageGradeDisplay } from "./View/GradeDisplay/MainPageGradeDisplay";
-import { MainPageView } from "./View/MainPageView";
 
 /** Gestion du contenu de la page principale */
 export class Content
@@ -14,9 +13,12 @@ export class Content
     //Constantes de classes CSS
     private readonly LOADING_ICON_CLASS: string = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container statusDialog';
     private readonly SEMESTER_LINKS_CLASS: string = 'ui-menuitem-link ui-corner-all';
+    private readonly GRADE_WARNING_BASE_ID: string = "mainBilanForm:bilanAvantJuryMobilePanel1";
     //Constantes creant un delai pour etre sur que la page soit bien rechargee
     private readonly DELAY_BETWEEN_CHECKS = 200;
     private readonly DELAY_AFTER_PAGE_RELOAD = 100;
+    //Constantes de chemins vers un objet dans la page
+    private readonly GRADE_WARNING_PATH: number[] = [0, 0, 1];
     //#endregion constants
 
     //#region Attributs
@@ -26,16 +28,15 @@ export class Content
     //#region Properties
     private get SemesterLinks(): HTMLElement[]
     {
-        return Array.from(
-            document.getElementsByClassName(
-                this.SEMESTER_LINKS_CLASS
-            )
-        ) as HTMLElement[];
+        return <HTMLElement[]>Array.from(
+            document.getElementsByClassName(this.SEMESTER_LINKS_CLASS)
+            );
     }
     private get LoadingIcon(): HTMLElement
     {
-        return document.getElementsByClassName(this.LOADING_ICON_CLASS)[0] as HTMLElement;
+        return <HTMLElement>document.getElementsByClassName(this.LOADING_ICON_CLASS)[0];
     }
+    private get Display(): IGradeDisplay { return new MainPageGradeDisplay(); }
     //#endregion Properties
 
     /** Met en place le traitement de la page */
@@ -43,14 +44,14 @@ export class Content
     {
         //Parsing de la page
         this.ProcessSemester();
+        //Changement de la phrase Remarque
+        this.GradeWarning();
         //Affichage des moyennes
         this.DisplayGrades();
         //this.SetSemesterLinksListeners();
     }
 
-    /**
-     * Parse la page actuelle, sauvegarde les resultats, et les affiche
-     */
+    // Parse la page actuelle, sauvegarde les resultats, et les affiche
     private ProcessSemester(): void
     {
         //Remise a zero des donnees
@@ -67,8 +68,7 @@ export class Content
     private DisplayGrades(): void
     {
         //Lance l'affichage des resultats
-        let display: IGradeDisplay = new ConsoleGradeDisplay();
-        display.DisplayGrades(this.semester as Semestre);
+        this.Display.DisplayGrades(this.semester!);
     }
 
     // Ajoute les listeners sur les liens des semestres
@@ -98,4 +98,39 @@ export class Content
             });
         });
     }
+
+    //#region Remarque
+    private GradeWarning(): void
+    {
+        let warning: string | undefined = this.GetBaseGradeWarning();
+        if (warning) this.SetGradeWarning(warning);
+    }
+    
+    private GetBaseGradeWarning(): string | undefined
+    {
+        let base: string | undefined = document.getElementById(this.GRADE_WARNING_BASE_ID)?.textContent ?? undefined;
+        if (base)
+        {
+            base = base.replace(/\n/g, "");
+            base = base.trim()
+
+            let regex: RegExp = new RegExp(/\d\d .+ 20\d\d/);
+            let semesterEndDate: string = base.match(regex)?.[0] ?? "";
+            base = "Important : Les vraies moyennes et classement ne seront visibles qu'à partir du "
+                + semesterEndDate
+                + ".</br>&emsp;&emsp;<b>Tout ce qui est produit par l'extension est une estimation et n'a aucune réélle valeur.</b>"
+        }
+        return base;
+    }
+
+    private SetGradeWarning(text: string): void
+    {
+        let warningDiv: HTMLElement | null = document.getElementById(this.GRADE_WARNING_BASE_ID);
+        if (warningDiv)
+        {
+            PageParser.GetChild(warningDiv, this.GRADE_WARNING_PATH).innerHTML = text;
+        }
+    }
+
+    //#endregion Remarque
 }

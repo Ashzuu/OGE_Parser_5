@@ -2,7 +2,6 @@
     "compilerOptions": {
       "strict": true,
       "noImplicitAny": true,
-      "noImplicitThis": true,
       "alwaysStrict": true,
       "strictBindCallApply": true,
       "strictNullChecks": true,
