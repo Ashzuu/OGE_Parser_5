@@ -17,6 +17,7 @@ export class UE extends Element
         //S'il est different de zero on prend en compte le cas ou il serait erroné et serait superieur au nombre de ressources de l'UE
         else ret = Math.min(this._saeIndex, this._ressourceList.length);
         
+        return this._saeIndex;
         return ret;
     }
     /**Liste des ressources de l'UE */
@@ -42,12 +43,15 @@ export class UE extends Element
     {
         let saeRessources: Ressource[] = [];
         //SAEIndex est l'index de la premiere ressource SAE
-        let begining: number = (this.SAEIndex - 1 >= 0) ? this.SAEIndex - 1 : this.RessourceList.length;
-        for (let i = begining; i < this.RessourceList.length; i++){
-            saeRessources.push(this._ressourceList[i]);
+        let begining: number = this.SAEIndex - 1;
+        console.log("begining", begining);
+        if (begining > -1)
+        {
+            for (let i = begining; i < this.RessourceList.length; i++)
+            {
+                saeRessources.push(this._ressourceList[i]);
+            }
         }
-
-        console.log("saeRessources", saeRessources)
         return saeRessources;
     }
     /**Moyenne globale du pôle CC*/

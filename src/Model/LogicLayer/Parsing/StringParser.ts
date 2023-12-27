@@ -8,6 +8,12 @@ import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficie
  * @remarks Utilisé pour normaliser le format des differents string utilisés dans le programme, surtout pour la partie IHM
  */
 export class StringParser {
+    //#region Constantes
+    private static readonly VALID_GRADE_FORMAT: RegExp = new RegExp(/(\d*\.\d*|\d*)\/(\d*\.\d*|\d*)/g);
+    private static readonly GRADE_SPLIT_CHAR: string = "/";
+    private static readonly STANDARDIZED_SCORE_BASE: number = 20;
+    //#endregion Constantes
+
     /**
      * Nettoie le coefficient d'une section
      * @param coefficientText Texte à nettoyer, sous forme de string (ex: "(10.50)")
@@ -79,11 +85,12 @@ export class StringParser {
      */
     private static NormalizeGrade(baseGrade: string): number
     {
-        let validFormat: RegExp = new RegExp(/(\d*\.\d*|\d*)\/(\d*\.\d*|\d*)/g); 
-        if (!validFormat.test(baseGrade)) throw new InvalidGradeFormatError();
+        if (!this.VALID_GRADE_FORMAT.test(baseGrade)) throw new InvalidGradeFormatError();
 
-        let split: string[] = baseGrade.split("/");
-        let normalizedGrade: number = Number(split[0]) / Number(split[1]) * 20;
+        let split: string[] = baseGrade.split(this.GRADE_SPLIT_CHAR);
+        //Si la note donnée est sous un format valide elle aura forcément 2 éléments
+        //Le premier est la note, le second est la base de la note
+        let normalizedGrade: number = Number(split[0]) / Number(split[1]) * this.STANDARDIZED_SCORE_BASE;
 
         return normalizedGrade;
     }

@@ -11,12 +11,10 @@ export class UEFactory implements IElementFactory
     /**
      * Retourne toutes les UEs
      * @returns Tableau de toutes les UEs
-     * 
      */
     public static GetAllUEs(): UE[]
     {
         let ueList: UE[] = [];
-        // let ueCount: number = 1; //TODO: PageParser.Instance.UECount;
         let ueCount: number = PageParser.Instance.UECount;
         
         for (let i = 0; i < ueCount; i++){
