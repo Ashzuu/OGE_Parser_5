@@ -17,7 +17,6 @@ export class UE extends Element
         //S'il est different de zero on prend en compte le cas ou il serait erroné et serait superieur au nombre de ressources de l'UE
         else ret = Math.min(this._saeIndex, this._ressourceList.length);
         
-        return this._saeIndex;
         return ret;
     }
     /**Liste des ressources de l'UE */
@@ -44,7 +43,7 @@ export class UE extends Element
         let saeRessources: Ressource[] = [];
         //SAEIndex est l'index de la premiere ressource SAE
         let begining: number = this.SAEIndex - 1;
-        console.log("begining", begining);
+
         if (begining > -1)
         {
             for (let i = begining; i < this.RessourceList.length; i++)
@@ -55,60 +54,30 @@ export class UE extends Element
         return saeRessources;
     }
     /**Moyenne globale du pôle CC*/
-    private get GetGlobalCCAverage(): number
+    private get GetGlobalCCAverage(): number | undefined
     {
-        let average = 0;
-        let ccRessources = this.CCRessources;
-        if (ccRessources.length > 0)
-        {
-            let sum = 0;
-            let coef = 0;
-            
-            ccRessources.forEach(res => {
-                sum += res.Average * res.Coefficient;
-                coef += res.Coefficient;
-            })
-            
-            average = sum / coef;
-        }
-
-        return average;
+        return this.GetAverage(this.CCRessources);
     }
     /**Moyenne globale du pôle SAE */
-    private get GetGlobalSAEAverage(): number
+    private get GetGlobalSAEAverage(): number | undefined
     {
-        let average = 0;
-        let saeRessources = this.SAERessources;
-        if (saeRessources.length > 0)
-        {
-            let sum = 0;
-            let coef = 0;
-            
-            saeRessources.forEach(res => {
-                sum += res.Average * res.Coefficient;
-                coef += res.Coefficient;
-            })
-            
-            average = sum / coef;
-        }
-        console.log("average", average);
-        return average;
+        return this.GetAverage(this.SAERessources);
     }
     /**Moyenne de chaque ressources du pôle CC */
     private get GetCCAverages(): number[]
     {
-        let averages: number[] = [];
-        let ccRessources = this.CCRessources;
-        ccRessources.forEach(res => averages.push(res.Average));
-
-        return averages;
+        return this.GetAverageList(this.CCRessources);
     }
     /**Moyenne de chaque ressources du pôle SAE */
     private get GetSAEAverages(): number[]
     {
+        return this.GetAverageList(this.SAERessources);
+    }
+
+    private GetAverageList(ressources: Ressource[]): number[]
+    {
         let averages: number[] = [];
-        let saeRessources = this.SAERessources;
-        saeRessources.forEach(res => averages.push(res.Average));
+        ressources.forEach(res => { if (res.Average) averages.push(res.Average)});
 
         return averages;
     }
@@ -124,6 +93,7 @@ export class UE extends Element
             AllSAEResults : this.GetSAEAverages
         } as UEDetails;
     }
+
     /**
      * Constructeur par defaut d'une UE
      * @param coefficient Coefficient de l'UE

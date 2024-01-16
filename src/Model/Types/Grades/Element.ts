@@ -2,25 +2,9 @@
 export abstract class Element{
 
     /** Moyenne de l'element */
-    public get Average(): number
+    public get Average(): number | undefined
     {
-        let actualAverage: number = 0;
-
-        //S'il n'y a pas sous element on ne calcul rien et renvoie 0
-        if (this._subElements.length > 0)
-        {
-            let averagesSum: number = 0;
-            let coefficientSum: number = 0;
-            
-            this._subElements.forEach(lowerEl => {
-                averagesSum += lowerEl.Average * lowerEl.Coefficient;
-                coefficientSum += lowerEl.Coefficient;
-            })
-            
-            actualAverage = averagesSum / coefficientSum;
-        }
-
-        return actualAverage;
+        return this.GetAverage(this._subElements);
     }
     /** Coefficient de l'element */
     public get Coefficient()
@@ -34,5 +18,33 @@ export abstract class Element{
     protected constructor(coef: number, subElements: Element[]){
         this._coefficient = coef;
         this._subElements = subElements;
+    }
+
+    protected GetAverage(elements: Element[]): number | undefined
+    {
+        let actualAverage: number | undefined = undefined;
+
+        //S'il n'y a pas sous element on ne calcul rien et renvoie 0
+        if (elements.length > 0)
+        {
+            let averagesSum: number = 0;
+            let coefficientSum: number = 0;
+            
+            elements.forEach(el => {
+                if (isNaN(el.Coefficient)) console.log(el)
+                const avg: number | undefined = el.Average;
+                if (avg != undefined && !isNaN(avg))
+                {
+                    const coef: number = el.Coefficient;
+
+                    averagesSum += avg * coef;
+                    coefficientSum += coef;
+                }
+            })
+            console.log(averagesSum, coefficientSum)
+            actualAverage = averagesSum / coefficientSum;
+        }
+
+        return actualAverage;
     }
 }

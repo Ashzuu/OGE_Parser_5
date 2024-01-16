@@ -30,7 +30,7 @@ export class Semestre extends Element
     public ToStoredSemester(): StoredSemester
     {
         let ueAverages: number[] = [];
-        this.UEList.forEach(c => ueAverages.push(c.Average));
+        this.UEList.forEach(c => {ueAverages.push(c.Average ?? 0)});
 
         let storedSemester: StoredSemester = {
             Name: SemesterNames.CurrentSemestre,
