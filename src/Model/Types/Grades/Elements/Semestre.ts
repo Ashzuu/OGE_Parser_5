@@ -7,20 +7,18 @@ import { UE } from "./UE";
 /** Represente un Semestre */
 export class Semestre extends Element
 {
-    private _ueList: UE[];
     /**Liste des UE du semestre */
     public get UEList(): UE[]
     {
-        return this._ueList;
+        return this._subElements as UE[];
     }
     /**
      * Constructeur par defaut d'un Semestre
      * @param ueList Liste des UE du semestre
      */
-    public constructor(ueList: Element[])
+    public constructor(ueList: UE[])
     {
         super(1, ueList);
-        this._ueList = this._subElements as UE[];
     }
 
     /**
@@ -35,7 +33,7 @@ export class Semestre extends Element
         let storedSemester: StoredSemester = {
             Name: SemesterNames.CurrentSemestre,
             Averages: ueAverages,
-            Date: (PageParser.Instance.AreGradesShown) ? -1 : Math.floor(Date.now() / 1000)
+            Date: -1 //(PageParser.Instance.AreGradesShown) ? -1 : Math.floor(Date.now() / 1000)
         }
 
         return storedSemester;

@@ -1,51 +1,24 @@
 import { Ressource } from "../../Types/Grades/Elements/Ressource";
-import { IElementFactory } from "../../Interfaces/IElementFactory";
-import { PageParser } from "../Parsing/PageParser";
 import { Section } from "../../Types/Grades/Elements/Section";
+import { PageParser } from "../Parsing/PageParser";
 import { SectionFactory } from "./SectionFactory";
-import { NoGradesFoundError } from "../../Types/Error/NoGradesFoundError";
-import { RessourceNameNotFoundError } from "../../Types/Error/RessourceNameNotFoundError";
-import { ChildNotFoundError } from "../../Types/Error/ChildNotFoundError";
 
-/**
- * Fabrique de ressources
- */
-export class RessourceFactory implements IElementFactory
+export class RessourceFactory
 {
-    private constructor() {}
-    
-    /**
-     * Retourne toutes les ressources d'une UE
-     * @param ueNumber Numéro de l'UE
-     * @returns Tableau de ressources
-     * 
-     * @throws TableNotFoundException Si la table demandées n'existe pas
-     */
-    public static GetAllUERessources(ueNumber: number): Ressource[] {
-        let ressourceList: Ressource[] = [];
-        let ressourceCount: number = PageParser.Instance.GetRessourceCount(ueNumber);
-        for (let i = 0; i < ressourceCount; i++){
-            try
-            {
-                ressourceList.push(this.GetRessource(ueNumber, i));
-            }
-            catch (ex)
-            {
-                if (!(ex instanceof NoGradesFoundError ||
-                    ex instanceof ChildNotFoundError ||
-                    ex instanceof RessourceNameNotFoundError))
-                    throw ex;
-            }
+    public static Ressources(ue: number): Ressource[]
+    {
+        let count: number = PageParser.Instance.RessourceCount(ue);
+        let ressources: Ressource[] = [];
+        for (let i = 0; i < count; i++)
+        {
+            ressources.push(this.GetRessource(ue, i));
         }
-
-        return ressourceList;
+        return ressources;
     }
-    
-    private static GetRessource(ueNumber: number, ressourceNumber: number): Ressource {
-        let sections: Section[] = SectionFactory.GetAllRessourceSection(ueNumber, ressourceNumber)
-        let coefficient: number = PageParser.Instance.GetRessourceCoefficient(ueNumber, ressourceNumber);
-        let ressource: Ressource = new Ressource(coefficient, sections);
-
-        return ressource;
+    private static GetRessource(ue: number, ix: number): Ressource
+    {
+        let coef: number = PageParser.Instance.RessourceCoefficient(ue, ix);
+        let sections: Section[] = SectionFactory.Sections(ue, ix);
+        return new Ressource(coef, sections);
     }
 }

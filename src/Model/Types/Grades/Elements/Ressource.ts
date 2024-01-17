@@ -4,20 +4,18 @@ import { Section } from "./Section";
 /** Represente une Ressource */
 export class Ressource extends Element
 {
-    private _sectionList: Section[];
     /**Liste des sections de la ressource */
     public get SectionList(): Section[]
     {
-        return this._sectionList;
+        return this._subElements as Section[];
     }
     /**
      * Constructeur par defaut d'une Ressource
      * @param coefficient Coefficient de la ressource
      * @param sections Sections de la ressource
      */
-    constructor(coefficient: number, sections: Element[])
+    constructor(coefficient: number, sections: Section[])
     {
         super(coefficient, sections);
-        this._sectionList = this._subElements as Section[];
     }
 }

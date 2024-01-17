@@ -5,24 +5,16 @@ import { Ressource } from "./Ressource";
 /** Represente une UE */
 export class UE extends Element
 {
-    private _ressourceList: Ressource[];
     private _saeIndex: number;
     /**Index de la premiere ressource du SAE */
     public get SAEIndex(): number
     {
-        //Si l'index est connu il sera different de -1,
-        //S'il est inconnu on prend le nombre de ressources de l'UE en considerant qu'il n'y a pas de SAE
-        let ret: number;
-        if (this._saeIndex == -1) ret = this._ressourceList.length;
-        //S'il est different de zero on prend en compte le cas ou il serait erroné et serait superieur au nombre de ressources de l'UE
-        else ret = Math.min(this._saeIndex, this._ressourceList.length);
-        
-        return ret;
+        return (this._saeIndex != -1) ? this._saeIndex : this.RessourceList.length;
     }
     /**Liste des ressources de l'UE */
     private get RessourceList(): Ressource[]
     {
-        return this._ressourceList;
+        return this._subElements as Ressource[];
     }
     /**Liste des ressources du pôle CC*/
     private get CCRessources(): Ressource[]
@@ -30,9 +22,9 @@ export class UE extends Element
         let ccRessources: Ressource[] = [];
 
         //n est la limite des ressources CC
-        let n: number = Math.min(this.SAEIndex - 1, this.RessourceList.length);
+        let n: number = Math.min(this.SAEIndex, this.RessourceList.length);
         for (let i = 0; i < n; i++){
-            ccRessources.push(this._ressourceList[i]);
+            ccRessources.push(this.RessourceList[i]);
         }
 
         return ccRessources;
@@ -42,15 +34,16 @@ export class UE extends Element
     {
         let saeRessources: Ressource[] = [];
         //SAEIndex est l'index de la premiere ressource SAE
-        let begining: number = this.SAEIndex - 1;
+        let begining: number = this.SAEIndex;
 
         if (begining > -1)
         {
             for (let i = begining; i < this.RessourceList.length; i++)
             {
-                saeRessources.push(this._ressourceList[i]);
+                saeRessources.push(this.RessourceList[i]);
             }
         }
+        
         return saeRessources;
     }
     /**Moyenne globale du pôle CC*/
@@ -99,11 +92,9 @@ export class UE extends Element
      * @param coefficient Coefficient de l'UE
      * @param ressources Ressources de l'UE
      */
-    constructor(coefficient: number, ressources: Element[], saeIndex: number)
+    constructor(coefficient: number, ressources: Ressource[], saeIndex: number)
     {
         super(coefficient, ressources);
-        this._ressourceList = this._subElements as Ressource[];
-
         this._saeIndex = saeIndex;
     }
 }

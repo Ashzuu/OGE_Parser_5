@@ -1,10 +1,10 @@
 import { ChromeStorage } from "./Data/Storage/ChromeStorage";
-import { SemestreFactory } from "./Model/LogicLayer/Factories/SemestreFactory";
 import { PageParser } from "./Model/LogicLayer/Parsing/PageParser";
 import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
 import { ConsoleGradeDisplay } from "./View/GradeDisplay/ConsoleGradeDisplay";
 import { IGradeDisplay } from "./Model/Interfaces/IGradeDisplay";
 import { MainPageGradeDisplay } from "./View/GradeDisplay/MainPageGradeDisplay";
+import { SemesterFactory } from "./Model/LogicLayer/Factories/SemesterFactory.1";
 
 /** Gestion du contenu de la page principale */
 export class Content
@@ -36,7 +36,6 @@ export class Content
     {
         return <HTMLElement>document.getElementsByClassName(this.LOADING_ICON_CLASS)[0];
     }
-    private get Display(): IGradeDisplay { return new MainPageGradeDisplay(); }
     //#endregion Properties
 
     /** Met en place le traitement de la page */
@@ -57,18 +56,16 @@ export class Content
         //Remise a zero des donnees
         PageParser.Reset();
         //Parsing de la page
-        let parsedSemester: Semestre = SemestreFactory.GetSemester();
+        this.semester = SemesterFactory.GetSemester() ?? new Error("Semestre non trouvé");
         //Sauvegarde du semestre retrouvé
-        ChromeStorage.Instance.Save(parsedSemester);
-
-        this.semester = parsedSemester as Semestre;
+        // ChromeStorage.Instance.Save(this.semester);
     }
 
     // Affiche les moyennes du semestre sur la page principale si elles ne sont pas deja affichees
     private DisplayGrades(): void
     {
         //Lance l'affichage des resultats
-        this.Display.DisplayGrades(this.semester!);
+        new ConsoleGradeDisplay().DisplayGrades(this.semester!);
     }
 
     // Ajoute les listeners sur les liens des semestres

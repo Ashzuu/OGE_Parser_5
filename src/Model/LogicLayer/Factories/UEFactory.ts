@@ -1,35 +1,25 @@
-import { IElementFactory } from "../../Interfaces/IElementFactory";
 import { Ressource } from "../../Types/Grades/Elements/Ressource";
 import { UE } from "../../Types/Grades/Elements/UE";
 import { PageParser } from "../Parsing/PageParser";
 import { RessourceFactory } from "./RessourceFactory";
 
-/** Fabrique d'UEs */
-export class UEFactory implements IElementFactory
+export class UEFactory
 {
-    private constructor() {}    
-    /**
-     * Retourne toutes les UEs
-     * @returns Tableau de toutes les UEs
-     */
-    public static GetAllUEs(): UE[]
+    public static GetUEs(): UE[]
     {
-        let ueList: UE[] = [];
-        let ueCount: number = PageParser.Instance.UECount;
-        
-        for (let i = 0; i < ueCount; i++){
-            try{ ueList.push(this.GetUE(i)); } catch {}
+        let count: number = PageParser.Instance.UECount;
+        let ues: UE[] = [];
+        for (let i = 0; i < count; i++)
+        {
+            ues.push(this.GetUE(i));
         }
-
-        return ueList;
+        return ues;
     }
-    
-    private static GetUE(ueNumber: number): UE {
-        let ressources: Ressource[] = RessourceFactory.GetAllUERessources(ueNumber);
-        let saeIndex: number = -1;
-        try { saeIndex = PageParser.Instance.GetCCAndSAESeparationIndex(ueNumber); } catch {}
-        let ue: UE = new UE(1, ressources, saeIndex);
-
-        return ue;
+    private static GetUE(ix: number): UE
+    {
+        let coef: number = PageParser.Instance.UECoefficient(ix);
+        let saeIx: number = PageParser.Instance.SaeIndex(ix);
+        let ressources: Ressource[] = RessourceFactory.Ressources(ix);
+        return new UE(coef, ressources, saeIx);
     }
 }

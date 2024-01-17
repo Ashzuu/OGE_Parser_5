@@ -1,42 +1,24 @@
-import { Section } from "../../Types/Grades/Elements/Section";
-import { IElementFactory } from "../../Interfaces/IElementFactory";
-import { PageParser } from "../Parsing/PageParser";
 import { Note } from "../../Types/Grades/Elements/Note";
-import { NoteFactory } from "./NoteFactory";
+import { Section } from "../../Types/Grades/Elements/Section";
+import { PageParser } from "../Parsing/PageParser";
+import { GradeFactory } from "./GradeFactory";
 
-/**
- * Fabrique de sections
- */
-export class SectionFactory implements IElementFactory
+export class SectionFactory
 {
-    private constructor() {}
-
-    /**
-     * Retourne toutes les sections d'une ressource
-     * @param ueNumber Numéro de l'UE
-     * @param ressourceNumber Numéro de la ressource
-     * @returns Tableau de sections
-     * 
-     * @throws TableNotFoundException Si la table demandées n'existe pas
-     */
-    public static GetAllRessourceSection(ueNumber: number, ressourceNumber: number): Section[] {
-        let sectionList: Section[] = [];
-        let sectionCount: number = PageParser.Instance.GetSectionCount(ueNumber, ressourceNumber);
-        for (let i = 0; i < sectionCount; i++){
-            try{
-                sectionList.push(this.GetSection(ueNumber, ressourceNumber, i));
-            }
-            catch {}
+    public static Sections(ue: number, res: number): Section[]
+    {
+        let count: number = PageParser.Instance.SectionCount(ue, res);
+        let sections: Section[] = [];
+        for (let i = 0; i < count; i++)
+        {
+            sections.push(this.GetSection(ue, res, i));
         }
-
-        return sectionList;
+        return sections;
     }
-    
-    private static GetSection(ueNumber: number, ressourceNumber: number, sectionNumber: number): Section{
-        let grades: Note[] = NoteFactory.GetAllNotes(ueNumber, ressourceNumber, sectionNumber)
-        let coefficient: number = PageParser.Instance.GetSectionCoefficient(ueNumber, ressourceNumber, sectionNumber);
-        let section: Section = new Section(coefficient, grades);
-
-        return section;
+    private static GetSection(ue: number, res: number, ix: number): Section
+    {
+        let coef: number = PageParser.Instance.SectionCoefficient(ue, res, ix);
+        let grades: Note[] = GradeFactory.Grades(ue, res, ix);
+        return new Section(coef, grades);
     }
 }
