@@ -93,7 +93,7 @@ export class PageParser
     private GetRawRessources(ue: number): HTMLElement[]
     {
         return Array.from(
-            this.Tables[ue].querySelectorAll(this.RESSOURCE_SELECTOR)
+            this.Tables[ue]?.querySelectorAll(this.RESSOURCE_SELECTOR) ?? []
             );
     }
 
@@ -104,12 +104,12 @@ export class PageParser
     private GetSections(ueIndex: number, resIndex: number): HTMLElement[]
     {
         return Array.from(
-            this.GetResources(ueIndex)[resIndex].querySelectorAll(this.SECTION_SELECTOR)
+            this.GetResources(ueIndex)[resIndex]?.querySelectorAll(this.SECTION_SELECTOR) ?? []
             ).filter(p => p.childElementCount >= this.SECTION_CHILD_COUNT_MIN) as HTMLElement[];
     }
     public GetGrades(ueIndex: number, resIndex: number, sectionIndex: number): GradeCoefficientPair[]
     {
-        return StringParser.GetNotesFromSectionInnerText(this.GetSections(ueIndex, resIndex)[sectionIndex].textContent ?? "");
+        return StringParser.GetNotesFromSectionInnerText(this.GetSections(ueIndex, resIndex)[sectionIndex]?.textContent ?? "");
     }
 
     //#endregion Properties
@@ -126,19 +126,19 @@ export class PageParser
 
     public UECoefficient(ue: number): number
     {
-        let rawCoeff: string = this.Tables[ue].querySelector(this.UE_COEFFICENT_SELECTOR)?.textContent ?? "";
+        let rawCoeff: string = this.Tables[ue]?.querySelector(this.UE_COEFFICENT_SELECTOR)?.textContent ?? "";
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
     public RessourceCoefficient(ue: number, res: number): number
     {
-        let rawCoeff: string = this.GetResources(ue)[res].querySelector(this.RESSOURCE_COEFFICENT_SELECTOR)?.textContent ?? "";
+        let rawCoeff: string = this.GetResources(ue)[res]?.querySelector(this.RESSOURCE_COEFFICENT_SELECTOR)?.textContent ?? "";
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
     public SectionCoefficient(ue: number, res: number, sect: number): number
     {
-        let rawCoeff: string = this.GetSections(ue, res)[sect].querySelector(this.SECTION_COEFFICENT_SELECTOR)?.textContent ?? "";
+        let rawCoeff: string = this.GetSections(ue, res)[sect]?.querySelector(this.SECTION_COEFFICENT_SELECTOR)?.textContent ?? "";
 
         return StringParser.ClearCoefficient(rawCoeff);
     }

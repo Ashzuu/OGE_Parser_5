@@ -16,6 +16,6 @@
         "webpack*": true,
         "dist*": true,
         "public*": true,
-        "Tests/**": true
+        "Tests/**": false
     }
 }

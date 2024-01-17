@@ -36,7 +36,6 @@ export class Content
     {
         return <HTMLElement>document.getElementsByClassName(this.LOADING_ICON_CLASS)[0];
     }
-    private get Display(): IGradeDisplay { return new MainPageGradeDisplay(); }
     //#endregion Properties
 
     /** Met en place le traitement de la page */
@@ -66,7 +65,7 @@ export class Content
     private DisplayGrades(): void
     {
         //Lance l'affichage des resultats
-        this.Display.DisplayGrades(this.semester!);
+        new ConsoleGradeDisplay().DisplayGrades(this.semester!);
     }
 
     // Ajoute les listeners sur les liens des semestres

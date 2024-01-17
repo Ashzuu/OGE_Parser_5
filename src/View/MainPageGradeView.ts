@@ -59,7 +59,7 @@ export class MainPageGradeView
             end
             );
     }
-    private AddGlobalSAEResult(saeResult: number) { this.AddSingleResult(saeResult ?? "NaN", [1, this.SaeIndex + 1]); }
+    private AddGlobalSAEResult(saeResult: number) { this.AddSingleResult(saeResult, [1, this.SaeIndex + 1]); }
     private AddGlobalCCResult(ccResult: number) { this.AddSingleResult(ccResult, [1, 0]); }
     private AddGlobalUEResult(ueResult: number) { this.AddSingleResult(ueResult, [0, 0], false); }
 
@@ -81,7 +81,7 @@ export class MainPageGradeView
      * @param isTD Est un element TD, sinon TH
      */
     private AddSingleResult(grade: number, location: number[], isTD: boolean = true){
-        let resultHTML: HTMLTableCellElement = DOMElementBuilder.AddSingleResult(grade, isTD);
+        let resultHTML: HTMLTableCellElement = DOMElementBuilder.AddSingleResult(grade ?? 'NaN', isTD);
         let cell: HTMLTableCellElement = 
         (PageParser
         .GetChild(this.Table, location) as HTMLTableRowElement)
