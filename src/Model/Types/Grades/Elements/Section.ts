@@ -4,11 +4,10 @@ import { Note } from "./Note";
 /** Represente une Section */
 export class Section extends Element
 {
-    private _gradeList: Note[];
     /** Liste des notes dans la section */
     public get GradeList()
     {
-        return this._gradeList;
+        return this._subElements as Note[];
     }
     
     /**
@@ -16,9 +15,8 @@ export class Section extends Element
      * @param coefficient Coefficient de la section
      * @param notes Liste des notes de la section
      */
-    constructor(coefficient: number, notes: Element[])
+    constructor(coefficient: number, notes: Note[])
     {
         super(coefficient, notes);
-        this._gradeList = this._subElements as Note[];
     }
 }

@@ -1,5 +1,4 @@
 import { ChromeStorage } from "./Data/Storage/ChromeStorage";
-import { SemestreFactory } from "./Model/LogicLayer/Factories/SemestreFactory";
 import { PageParser } from "./Model/LogicLayer/Parsing/PageParser";
 import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
 import { ConsoleGradeDisplay } from "./View/GradeDisplay/ConsoleGradeDisplay";

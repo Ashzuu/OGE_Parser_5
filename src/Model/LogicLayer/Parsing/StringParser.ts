@@ -9,7 +9,7 @@ import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficie
  */
 export class StringParser {
     //#region Constantes
-    private static readonly VALID_GRADE_FORMAT: RegExp = new RegExp(/(\d*\.\d*|\d*)\/(\d*\.\d*|\d*)/g);
+    private static readonly VALID_GRADE_FORMAT: RegExp = new RegExp(/\d+\.*\d*\/\d+\.*\d*/g);
     private static readonly GRADE_SPLIT_CHAR: string = "/";
     private static readonly STANDARDIZED_SCORE_BASE: number = 20;
     //#endregion Constantes
@@ -21,27 +21,28 @@ export class StringParser {
      * 
      * @throws NullCoefficientError Si le texte du coefficient est 'null'
      */
-    public static ClearCoefficient(coefficientText: string | null): number
+    public static ClearCoefficient(coefficientText: string): number
     {
-        if (coefficientText == null) throw new NullCoefficientError();
-        if (coefficientText.includes("(")) coefficientText = coefficientText.slice(coefficientText.lastIndexOf('('), -1);
-        coefficientText = coefficientText.replace("(", "");
-        coefficientText = coefficientText.replace(")", "");
-
-        return Number(coefficientText);
+        let coef: number = 0;
+        if (coefficientText)
+        {
+            // if (coefficientText.includes("(")) coefficientText = coefficientText.slice(coefficientText.lastIndexOf('('), -1);
+            coefficientText = coefficientText.replace("(", "");
+            coefficientText = coefficientText.replace(")", "");
+            
+            coef = Number(coefficientText);
+        }
+        return coef;
     }
 
     /**
      * Récupère les notes d'une section avec leur coefficient
      * @param sectionText Texte de la section à analyser
      * @returns Tableau d'objets contenant les notes et leur coefficient
-     * 
-     * @throws NullSectionTextError Si le texte de la section est 'null'
      */
-    public static GetNotesFromSectionInnerText(sectionText: string | null): GradeCoefficientPair[]
+    public static GetNotesFromSectionInnerText(sectionText: string): GradeCoefficientPair[]
     {   
-        if (sectionText == null) throw new NullSectionTextError();
-
+        debugger;
         sectionText = sectionText.slice(sectionText.indexOf('[') + 2, sectionText.indexOf(']') - 1); 
         return this.GetGradeCoefficientPairs(sectionText);
     }
@@ -52,30 +53,24 @@ export class StringParser {
      * @returns Tableau d'objets contenant les notes et leur coefficient
      */
     private static GetGradeCoefficientPairs(sectionText: string): GradeCoefficientPair[] {
-        sectionText = sectionText.replace(/\n/g, "");
+        sectionText = sectionText.replace(/\s/g, "");
         let notes: string[] = sectionText.split(')');
         notes.pop();
         
         let pairs: GradeCoefficientPair[] = [];
         notes.forEach(n => {
-            let split = n.split(" (");
+            let split = n.split("(");
             if (split.length == 1) split.push("-1");
-            try{
-                pairs.push(
-                    {
-                    grade: this.NormalizeGrade(split[0]),
-                    coefficient: this.ClearCoefficient(split[1])
-                });
-            }
-            catch (ex){
-                if (!(ex instanceof InvalidGradeFormatError ||
-                    ex instanceof NullCoefficientError
-                    )) throw ex;
-            }
+            pairs.push(
+                {
+                grade: this.NormalizeGrade(split[0]),
+                coefficient: this.ClearCoefficient(split[1])
+            });
         })
         
         return pairs;
     }
+
     /**
      * Normalise une note
      * @param baseGrade Note à normaliser (ex: "10/20" ou "5/10")
@@ -85,12 +80,14 @@ export class StringParser {
      */
     private static NormalizeGrade(baseGrade: string): number
     {
-        if (!this.VALID_GRADE_FORMAT.test(baseGrade)) throw new InvalidGradeFormatError();
-
-        let split: string[] = baseGrade.split(this.GRADE_SPLIT_CHAR);
-        //Si la note donnée est sous un format valide elle aura forcément 2 éléments
-        //Le premier est la note, le second est la base de la note
-        let normalizedGrade: number = Number(split[0]) / Number(split[1]) * this.STANDARDIZED_SCORE_BASE;
+        let normalizedGrade: number = 0;
+        // if (!this.VALID_GRADE_FORMAT.test(baseGrade))
+        {
+            let split: string[] = baseGrade.split(this.GRADE_SPLIT_CHAR);
+            //Si la note donnée est sous un format valide elle aura forcément 2 éléments
+            //Le premier est la note, le second est la base de la note
+            normalizedGrade = Number(split[0]) / Number(split[1]) * this.STANDARDIZED_SCORE_BASE;
+        }
 
         return normalizedGrade;
     }

@@ -1,10 +1,7 @@
 import { BodyElementNotFoundError } from "../../Types/Error/BodyElementNotFoundError";
 import { ChildNotFoundError } from "../../Types/Error/ChildNotFoundError";
 import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficientPair";
-import { NoteParser } from "./ElementParsers/NoteParser";
-import { RessourceParser } from "./ElementParsers/RessourceParser";
-import { SectionParser } from "./ElementParsers/SectionParser";
-import { UEParser } from "./ElementParsers/UEParser";
+import { StringParser } from "./StringParser";
 
 /**
  * Classe permettant de parser la page
@@ -15,15 +12,8 @@ export class PageParser
     private constructor()
     {
         //Initialise bodyElement
-        let docBodyElements: NodeListOf<HTMLBodyElement> =  document.querySelectorAll("body");
-        if (docBodyElements.length == 0) throw new BodyElementNotFoundError();
-
-        this._bodyElement = docBodyElements[0].cloneNode(true) as HTMLElement;
-        //Initialise les sub Parser
-        this._ueParser = new UEParser();
-        this._ressourceParser = new RessourceParser();
-        this._sectionParser = new SectionParser();
-        this._noteParser = new NoteParser();
+        this._bodyElement = document.querySelector("body")?.cloneNode(true) as HTMLElement ?? new BodyElementNotFoundError();
+        this._bodyElement = document.querySelector("body") as HTMLElement ?? new BodyElementNotFoundError();
     }
 
     private static _instance: PageParser;
@@ -33,6 +23,19 @@ export class PageParser
     /**Remet a zero les données connu sur la page, utile quand on change de semestre */
     public static Reset() { this._instance = new this(); }
     //#endregion Singleton
+
+    //#region Constants
+    private readonly UE_COEFFICENT_SELECTOR: string = "thead > tr > td > div > span";
+    private readonly RESSOURCE_COEFFICENT_SELECTOR: string = "div > span:nth-child(2)";
+    private readonly SECTION_COEFFICENT_SELECTOR: string = "sub:last-child";
+    private readonly RESSOURCE_SELECTOR: string = 'tbody > tr > td';
+    private readonly RESSOURCE_CHILD_COUNT_MIN: number = 2;
+    private readonly SECTION_SELECTOR: string = 'div';
+    private readonly SECTION_CHILD_COUNT_MIN: number = 3;
+    private readonly POLE_SAE_TEXT_SELECTOR: string = "tr > td:has(span > span)";
+    private readonly POLE_SAE_TEXT_INDEX: number = 1;
+    //#endregion Constants
+
 
     //#region Static Methods
     /**
@@ -65,73 +68,71 @@ export class PageParser
     private _bodyElement: HTMLElement;
     //#endregion Saved HTMLElements
 
-
-    //#region Parser
-    private _ueParser: UEParser;
-    private _ressourceParser: RessourceParser;
-    private _sectionParser: SectionParser;
-    private _noteParser: NoteParser;
-    //#endregion Parser
-
     //#region Properties
     /** 
      * Retourne le body de la page
      * @throws BodyElementNotFoundError si le body n'est pas trouvé dans le DOM
      */
-    public get BodyElement(): HTMLElement { return this._bodyElement; }
+    public get Body(): HTMLElement { return this._bodyElement; }
+
+    private get Tables(): HTMLElement[] { return Array.from(this.Body.querySelectorAll('table')); }
     /** Retourne le nombre d'UE */
-    public get UECount(): number
-    {
-        return this._ueParser.UETables.length;
-    }
-    /**
-     * Retourne si les notes sont affichées
-     * 
-     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
-     */
-    public get AreGradesShown(): boolean
-    {
-        return PageParser.GetChild(this._ueParser.UETables[0], [0, 0]).childElementCount > 1
-    }
-    //#endregion Properties
+    public get UECount(): number { return this.Tables.length; }
     
-    //#region UE
-    public GetCCAndSAESeparationIndex(ueNumber: number): number
-    {
-        return this._ueParser.GetCCAndSAESeparationIndex(ueNumber);
-    }
-    //#endregion UE
+    //TODO: public get AreGradesShown(): boolean { }
 
-    //#region Ressource
-    public GetRessourceCount(ueNumber: number): number
+    private GetRawRessources(ue: number): HTMLElement[]
     {
-        return this._ressourceParser.GetRessourceCount(ueNumber);
+        return Array.from(
+            this.Tables[ue].querySelectorAll(this.RESSOURCE_SELECTOR)
+            );
     }
-    public GetRessourceCoefficient(ueNumber: number, ressourceNumber: number): number
-    {
-        return this._ressourceParser.GetRessourceCoefficient(ueNumber, ressourceNumber);
-    }
-    //#endregion Ressource
 
-    //#region Section
-    public GetSectionCount(ueNumber: number, ressourceNumber: number): number
+    private GetResources(ue: number): HTMLElement[]
     {
-        return this._sectionParser.GetSectionCount(ueNumber, ressourceNumber);
+        return this.GetRawRessources(ue).filter(p => p.childElementCount >= this.RESSOURCE_CHILD_COUNT_MIN) as HTMLElement[];
     }
-    public GetSectionCoefficient(ueNumber: number, ressourceNumber: number, sectionNumber: number): number
+    private GetSections(ueIndex: number, resIndex: number): HTMLElement[]
     {
-        return this._sectionParser.GetSectionCoefficient(ueNumber, ressourceNumber, sectionNumber);
+        return Array.from(
+            this.GetResources(ueIndex)[resIndex].querySelectorAll(this.SECTION_SELECTOR)
+            ).filter(p => p.childElementCount >= this.SECTION_CHILD_COUNT_MIN) as HTMLElement[];
     }
-    //#endregion Section
+    public GetGrades(ueIndex: number, resIndex: number, sectionIndex: number): GradeCoefficientPair[]
+    {
+        return StringParser.GetNotesFromSectionInnerText(this.GetSections(ueIndex, resIndex)[sectionIndex].textContent ?? "");
+    }
 
-    //#region Note
-    public GetNoteCount(ueNumber: number, ressourceNumber: number, sectionNumber: number): number
+    //#endregion Properties
+
+    //#region Coefficient Methods
+    public RessourceCount(ue: number, res: number): number { return this.GetResources(ue).length; }
+    public SectionCount(ue: number, res: number, sect: number): number { return this.GetSections(ue, res).length; }
+    public SaeIndex(ue: number): number
     {
-        return this._noteParser.GetNoteCount(ueNumber, ressourceNumber, sectionNumber);
+        let poleSaeEl: HTMLElement = this.Tables[ue].querySelectorAll(this.POLE_SAE_TEXT_SELECTOR)[this.POLE_SAE_TEXT_INDEX] as HTMLElement;
+        
+        return this.GetRawRessources(ue).indexOf(poleSaeEl);
     }
-    public GetNote(ueNumber: number, ressourceNumber: number, sectionNumber: number, noteNumber: number): GradeCoefficientPair
+
+    public UECoefficient(ue: number): number
     {
-        return this._noteParser.GetNote(ueNumber, ressourceNumber, sectionNumber, noteNumber);
+        let rawCoeff: string = this.Tables[ue].querySelector(this.UE_COEFFICENT_SELECTOR)?.textContent ?? "";
+
+        return StringParser.ClearCoefficient(rawCoeff);
     }
-    //#endregion Note
+    public RessourceCoefficient(ue: number, res: number): number
+    {
+        let rawCoeff: string = this.GetResources(ue)[res].querySelector(this.RESSOURCE_COEFFICENT_SELECTOR)?.textContent ?? "";
+
+        return StringParser.ClearCoefficient(rawCoeff);
+    }
+    public SectionCoefficient(ue: number, res: number, sect: number): number
+    {
+        let rawCoeff: string = this.GetSections(ue, res)[sect].querySelector(this.SECTION_COEFFICENT_SELECTOR)?.textContent ?? "";
+
+        return StringParser.ClearCoefficient(rawCoeff);
+    }
+
+    //#endregion Coefficient Methods
 }

@@ -7,7 +7,7 @@ export class MainPageGradeDisplay implements IGradeDisplay
 {
     public DisplayGrades(semester: Semestre): void
     {
-        if (!PageParser.Instance.AreGradesShown)
+        //if (!PageParser.Instance.AreGradesShown)
         {
             MainPageView.Instance.AddGradeResultsToPage(semester);
         }
