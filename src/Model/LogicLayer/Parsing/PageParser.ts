@@ -34,6 +34,7 @@ export class PageParser
     private readonly SECTION_CHILD_COUNT_MIN: number = 3;
     private readonly POLE_SAE_TEXT_SELECTOR: string = "tr > td:has(span > span)";
     private readonly POLE_SAE_TEXT_INDEX: number = 1;
+    private readonly MAX_COUNT_WHEN_GRADE_HIDDEN: number = 1;
     //#endregion Constants
 
 
@@ -79,7 +80,15 @@ export class PageParser
     /** Retourne le nombre d'UE */
     public get UECount(): number { return this.Tables.length; }
     
-    //TODO: public get AreGradesShown(): boolean { }
+    public get AreGradesShown(): boolean
+    {
+         return (
+            this.Tables[0]
+            ?.querySelector("thead > tr")
+            ?.childElementCount 
+            ?? this.MAX_COUNT_WHEN_GRADE_HIDDEN + 1)
+            > this.MAX_COUNT_WHEN_GRADE_HIDDEN;
+    }
 
     private GetRawRessources(ue: number): HTMLElement[]
     {
@@ -106,13 +115,13 @@ export class PageParser
     //#endregion Properties
 
     //#region Coefficient Methods
-    public RessourceCount(ue: number, res: number): number { return this.GetResources(ue).length; }
-    public SectionCount(ue: number, res: number, sect: number): number { return this.GetSections(ue, res).length; }
+    public RessourceCount(ue: number): number { return this.GetResources(ue).length; }
+    public SectionCount(ue: number, res: number): number { return this.GetSections(ue, res).length; }
     public SaeIndex(ue: number): number
     {
         let poleSaeEl: HTMLElement = this.Tables[ue].querySelectorAll(this.POLE_SAE_TEXT_SELECTOR)[this.POLE_SAE_TEXT_INDEX] as HTMLElement;
         
-        return this.GetRawRessources(ue).indexOf(poleSaeEl);
+        return this.GetRawRessources(ue).indexOf(poleSaeEl) - 1;
     }
 
     public UECoefficient(ue: number): number

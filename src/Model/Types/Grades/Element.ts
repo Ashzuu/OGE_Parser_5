@@ -31,7 +31,6 @@ export abstract class Element{
             let coefficientSum: number = 0;
             
             elements.forEach(el => {
-                if (isNaN(el.Coefficient)) console.log(el)
                 const avg: number | undefined = el.Average;
                 if (avg != undefined && !isNaN(avg))
                 {
@@ -41,7 +40,6 @@ export abstract class Element{
                     coefficientSum += coef;
                 }
             })
-            console.log(averagesSum, coefficientSum)
             actualAverage = averagesSum / coefficientSum;
         }
 

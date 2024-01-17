@@ -22,7 +22,7 @@
     },
     "content_scripts": [
         {
-            "matches": [ "https://iutdijon.u-bourgogne.fr/oge/stylesheets/etu/bilanEtu.xhtml" ],
+            "matches": [ "https://iutdijon.u-bourgogne.fr/oge/stylesheets/etu/bilanEtu.xhtml", "http://127.0.0.1:5500/**" ],
             "js": [ "Model/ContentScript.bundle.js" ],
             "css": [ "View/gradesStyle.css" ]
         }

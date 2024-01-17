@@ -14,19 +14,6 @@ export class YearlyAverage implements IYearlyAverage
     private async InitSemesters(): Promise<void>
     {
         this.currentSemester = await this.semesterLoading.LoadCurrentSemester();
-            // .LoadCurrentSemester()
-            // .then(
-            //     (result) => {
-            //         console.log("this.semesterLoading.LoadCurrentSemester().then()", result);
-            //         this.currentSemester = result;
-            //     }
-            // );
-        /*
-        this.semesterLoading
-            .LoadCorrespondingSemester()
-            .then(
-                (result) => this.correspondingSemester = result
-                );*/
     }
     private CurrentSemesterAverages(): number[]
     {
@@ -34,7 +21,6 @@ export class YearlyAverage implements IYearlyAverage
 
         let ready = this.currentSemester != undefined;
         if (!ready) this.InitSemesters().then(() => {
-            // console.log("this.InitSemesters().then()", Date.now() - start, "ms");
             ready = this.currentSemester != undefined
         });
 
@@ -42,7 +28,6 @@ export class YearlyAverage implements IYearlyAverage
         while (!ready) {
             if (Date.now() - start2 > 1000)
             {
-                // console.log("CurrentSemesterAverages timed out", Date.now() - start, "ms");
                 throw new Error("CurrentSemesterAverages timed out");
             }
         };

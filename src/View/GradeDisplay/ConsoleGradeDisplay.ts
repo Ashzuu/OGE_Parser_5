@@ -6,7 +6,7 @@ export class ConsoleGradeDisplay implements IGradeDisplay
     public DisplayGrades(semester: Semestre): void
     {
         semester.UEList.forEach(
-            ue => console.log(ue.Average)
+            ue => console.log(ue.Average?.toFixed(2))
             );
     }
 }

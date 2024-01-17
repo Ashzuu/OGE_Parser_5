@@ -46,10 +46,6 @@ export class ChromeStorage implements IStorage {
 
     public async Load(): Promise<{ [id: string]: StoredSemester; }> {
         // if (this.IsUpToDate) return new Promise((resolve) => {resolve(this.cache);});
-        console.log("Load")
-        console.log(this.IsUpToDate);
-        console.log(this.queue);
-        console.log(this.cache);
         //TODO probleme synchronisation du cache
         // if (this.IsUpToDate) return this.cache;
         // else return this.LoadFromLocalChromeStorage();
@@ -64,7 +60,6 @@ export class ChromeStorage implements IStorage {
     private i = 0;
     private InitCache(done: boolean = false): void
     {
-        // console.log("InitCache", this.i++);
         if (!done)
         {            
             this.LoadFromLocalChromeStorage().then((result) => {

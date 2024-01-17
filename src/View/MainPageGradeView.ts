@@ -30,6 +30,7 @@ export class MainPageGradeView
         detailedUEResult: UEDetails
     ): void
     {
+        debugger;
         this.AddGlobalUEResult(detailedUEResult.UEResult);
         this.AddGlobalCCResult(detailedUEResult.CCResult);
         this.AddGlobalSAEResult(detailedUEResult.SAEResult);
@@ -39,7 +40,7 @@ export class MainPageGradeView
 
     private AddAllSAEResults(allSAEResults: number[]) {
         
-        let begin = this.SaeIndex + 1;
+        let begin = this.SaeIndex + 2;
         let end = allSAEResults.length + begin;
         
         this.AddMultipleResult(
@@ -58,7 +59,7 @@ export class MainPageGradeView
             end
             );
     }
-    private AddGlobalSAEResult(saeResult: number) { this.AddSingleResult(saeResult, [1, this.SaeIndex]); }
+    private AddGlobalSAEResult(saeResult: number) { this.AddSingleResult(saeResult ?? "NaN", [1, this.SaeIndex + 1]); }
     private AddGlobalCCResult(ccResult: number) { this.AddSingleResult(ccResult, [1, 0]); }
     private AddGlobalUEResult(ueResult: number) { this.AddSingleResult(ueResult, [0, 0], false); }
 
