@@ -65,7 +65,7 @@ export class Content
     private DisplayGrades(): void
     {
         //Lance l'affichage des resultats
-        new ConsoleGradeDisplay().DisplayGrades(this.semester!);
+        new MainPageGradeDisplay().DisplayGrades(this.semester!);
     }
 
     // Ajoute les listeners sur les liens des semestres

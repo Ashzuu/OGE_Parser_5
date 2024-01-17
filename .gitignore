@@ -1,3 +1,4 @@
 OGE_Env
 **/node_modules
 **/dist/**
+.vscode/settings.json

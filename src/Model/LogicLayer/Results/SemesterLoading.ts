@@ -21,6 +21,7 @@ export class SemesterLoading
         let loadedSemester: StoredSemester = (await ChromeStorage.Instance.Load())[semesterName];
 
         if (loadedSemester == undefined) throw new Error("Semestre pas trouvé TODO");
-        else return loadedSemester;
+        
+        return loadedSemester;
     }
 }
