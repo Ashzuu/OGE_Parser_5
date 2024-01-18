@@ -1,3 +1,4 @@
+import { ISemesterStorage } from "../../Interfaces/ISemesterStorage";
 import { IYearlyAverage } from "../../Interfaces/IYearlyAverage";
 import { YearDetails } from "../../Types/Grades/YearDetails";
 import { StoredSemester } from "../../Types/Storage/StoredSemester";
@@ -8,36 +9,9 @@ import { SemesterLoading } from "./SemesterLoading";
 export class YearlyAverage implements IYearlyAverage
 {
     //#region Private
-    private semesterLoading;
+    private storage: ISemesterStorage;
     private currentSemester: StoredSemester | undefined;
     private correspondingSemester: StoredSemester | undefined;
-    private async InitSemesters(): Promise<void>
-    {
-        this.currentSemester = await this.semesterLoading.LoadCurrentSemester();
-    }
-    private CurrentSemesterAverages(): number[]
-    {
-        let start = Date.now();
-
-        let ready = this.currentSemester != undefined;
-        if (!ready) this.InitSemesters().then(() => {
-            ready = this.currentSemester != undefined
-        });
-
-        let start2 = Date.now();
-        while (!ready) {
-            if (Date.now() - start2 > 1000)
-            {
-                throw new Error("CurrentSemesterAverages timed out");
-            }
-        };
-
-        return this.currentSemester!.Averages;
-    }
-    private CorrespondingSemesterAverages(): number[]
-    {
-        throw new Error("Not implemented");
-    }
     
     //#region Constantes
     private readonly PASSING_GRADE: number = 8;
@@ -46,15 +20,21 @@ export class YearlyAverage implements IYearlyAverage
 
     //#endregion Private
 
-    public constructor()
+    /**
+     * Constructeur par defaut
+     * @param storage Classe permettant de charger les semestres
+     */
+    public constructor(storage: ISemesterStorage)
     {
-        this.semesterLoading = new SemesterLoading();
-        this.InitSemesters();
+        this.storage = storage;
+        //Chargement asynchrone des semestres
+        this.storage.GetSemester().then(s => this.currentSemester = s).then(() => console.log("this.currentSemester", this.currentSemester));
+        this.storage.GetCorrespondingSemester().then(s => this.correspondingSemester = s).then(() => console.log("this.correspondingSemester", this.correspondingSemester));
     }
     
     public get NeedToAskToLoadCorrespondingSemester(): boolean
     {
-        return SemesterNames.CorrespondingSemesterAvailable && this.correspondingSemester == undefined;
+        return this.correspondingSemester == undefined && SemesterNames.CorrespondingSemesterAvailable;
     }
 
     public get YearName(): string
@@ -64,18 +44,19 @@ export class YearlyAverage implements IYearlyAverage
 
     public get YearlyAverages(): number[]
     {
-        //Resultats annuelles des UE
-        let yearlyAverages: number[] = Array.from(this.CurrentSemesterAverages());
-
-        if (SemesterNames.CorrespondingSemesterAvailable)
+        console.log(this.currentSemester);
+        console.log(this.correspondingSemester);
+        let yearlyAverages: number[] = this.currentSemester?.Averages ?? [];
+        let count = Math.min(
+            yearlyAverages.length, // <=> this.currentSemester?.Averages.length ?? 0
+            this.correspondingSemester?.Averages.length ?? 0
+            );
+            
+        if (count > 0)
         {
-            let correspondingSemesterAverages: number[] = this.CorrespondingSemesterAverages();
-            //Gere le cas ou un des deux semestres aurait pas le meme nombre d'UE que l'autre
-            let n: number = Math.min(yearlyAverages.length, correspondingSemesterAverages.length);
-            for (let i = 0; i < n; i++)
+            for (let i = 0; i < count; i++)
             {
-                //Fait la moyenne de la valeur recupérée de this.CurrentSemesterAverages dans yearlyAverages et de this.CorrespondingSemesterAverages
-                yearlyAverages[i] = (yearlyAverages[i] + correspondingSemesterAverages[i]) / 2;
+                yearlyAverages[i] = this.correspondingSemester!.Averages[i];
             }
         }
 
@@ -94,7 +75,6 @@ export class YearlyAverage implements IYearlyAverage
         return this.YearlyAverages.every(average => average >= this.VALIDATING_GRADE);
     }
 
-    /** Retourne l'object sous forme de YearDetails */
     public ToYearDetails(): YearDetails {
         return {
             YearName: this.YearName,

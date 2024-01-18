@@ -5,23 +5,16 @@ import { SemesterNames } from "../Parsing/SemesterNames";
 export class SemesterLoading
 {
     public constructor() { }
-    public async LoadCurrentSemester(): Promise<StoredSemester>
+    private get Storage(): ChromeStorage
     {
-        let semesterName: string = SemesterNames.CurrentSemestre;
-        return await this.LoadSemester(semesterName)
+        return new ChromeStorage();
     }
-    public async LoadCorrespondingSemester(): Promise<StoredSemester>
+    public async LoadCurrentSemester(): Promise<StoredSemester | undefined>
     {
-        let semesterName: string = SemesterNames.CorrespondingSemester;
-        return this.LoadSemester(semesterName);
+        return await this.Storage.GetSemester();
     }
-
-    private async LoadSemester(semesterName: string): Promise<StoredSemester>
+    public async LoadCorrespondingSemester(): Promise<StoredSemester | undefined>
     {
-        let loadedSemester: StoredSemester = (await ChromeStorage.Instance.Load())[semesterName];
-
-        if (loadedSemester == undefined) throw new Error("Semestre pas trouvé TODO");
-        
-        return loadedSemester;
+        return await this.Storage.GetCorrespondingSemester();
     }
 }

@@ -58,7 +58,8 @@ export class Content
         //Parsing de la page
         this.semester = SemesterFactory.GetSemester() ?? new Error("Semestre non trouvé");
         //Sauvegarde du semestre retrouvé
-        // ChromeStorage.Instance.Save(this.semester);
+        let storage = new ChromeStorage(this.semester.ToStoredSemester());
+        storage.Save();
     }
 
     // Affiche les moyennes du semestre sur la page principale si elles ne sont pas deja affichees

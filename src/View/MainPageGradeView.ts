@@ -30,7 +30,6 @@ export class MainPageGradeView
         detailedUEResult: UEDetails
     ): void
     {
-        debugger;
         this.AddGlobalUEResult(detailedUEResult.UEResult);
         this.AddGlobalCCResult(detailedUEResult.CCResult);
         this.AddGlobalSAEResult(detailedUEResult.SAEResult);

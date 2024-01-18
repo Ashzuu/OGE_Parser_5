@@ -1,3 +1,4 @@
+import { ChromeStorage } from "../../../../Data/Storage/ChromeStorage";
 import { Popup } from "../../../../Popup/Popup";
 import { Messages } from "../../../Enum/Messages";
 import { IActionAnswerPair } from "../../../Interfaces/IActionAnswerPair";
@@ -15,9 +16,11 @@ export class GetYearDetailsPair implements IActionAnswerPair
     
     public Answer(): ListenerMessage
     {
+        let ya = new YearlyAverage(new ChromeStorage()).ToYearDetails();
+        console.log(ya);
         return {
             content: this.Message,
-            params: new YearlyAverage().ToYearDetails()
+            params: ya
         };
     }
 }
