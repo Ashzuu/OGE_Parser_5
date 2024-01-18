@@ -1,6 +1,6 @@
-OGE_Env
-**/node_modules
-**/webpack
-**/.vscode
+**/OGE_Env/**
+**/node_modules/**
+**/webpack/**
+**/.vscode/**
 **/dist/**
-.vscode/settings.json
+**/.vscode/settings.json
