@@ -10,13 +10,13 @@ export class DOMElementBuilder
      * @param isTD Est un element TD, sinon TH
      * @returns Element HTML
      */
-    public static AddSingleResult(grade: number, isTD: boolean): HTMLTableCellElement
+    public static AddSingleResult(grade: number): HTMLTableCellElement
     {
-        let gradeType: string = (isTD) ? "R" : "UE";
+        // let gradeType: string = (isTD) ? "R" : "UE";
+        let gradeType: string = "R";
         let child: HTMLTableCellElement = this.CreateTableCell(
             grade,
             [gradeType, ViewStyle.GetGradeColor(grade)],
-            isTD
             );
         
         return child;
@@ -28,10 +28,11 @@ export class DOMElementBuilder
      * @param isTD Est un element TD, sinon TH
      * @returns Element HTML
      */
-    private static CreateTableCell(value: number | string, classesToAdd: string[], isTD: boolean): HTMLTableCellElement{
+    private static CreateTableCell(value: number | string, classesToAdd: string[]): HTMLTableCellElement{
         let child: HTMLTableCellElement;
-        if (isTD) child = document.createElement("td");
-        else child = document.createElement("th")
+        // if (isTD) 
+        child = document.createElement("td");
+        // else child = document.createElement("th")
 
         let innerHTML: string = "&nbsp;N/A&nbsp;";
         if (typeof value === "number"){
@@ -82,8 +83,8 @@ export class DOMElementBuilder
             let row: HTMLTableRowElement = document.createElement("tr");
             let average: number = yearDetails.YearlyAverages[i];
 
-            let ueCell: HTMLTableCellElement = this.CreateTableCell("UE " + (i + 1), [], true);
-            let averageCell: HTMLTableCellElement = this.CreateTableCell(average, ["R", ViewStyle.GetGradeColor(average)], true);
+            let ueCell: HTMLTableCellElement = this.CreateTableCell("UE " + (i + 1), []);
+            let averageCell: HTMLTableCellElement = this.CreateTableCell(average, ["R", ViewStyle.GetGradeColor(average)]);
             row.appendChild(ueCell);
             row.appendChild(averageCell);
             body.appendChild(row);

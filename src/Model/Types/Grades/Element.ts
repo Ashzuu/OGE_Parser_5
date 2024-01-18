@@ -4,20 +4,20 @@ export abstract class Element{
     /** Moyenne de l'element */
     public get Average(): number | undefined
     {
-        return this.GetAverage(this._subElements);
+        return this.GetAverage(this.subElements);
     }
     /** Coefficient de l'element */
     public get Coefficient()
     {
-        return this._coefficient;
+        return this.coefficient;
     }
 
-    protected _coefficient: number;
-    protected _subElements: Element[];
+    protected coefficient: number;
+    protected subElements: Element[];
     
     protected constructor(coef: number, subElements: Element[]){
-        this._coefficient = coef;
-        this._subElements = subElements;
+        this.coefficient = coef;
+        this.subElements = subElements;
     }
 
     protected GetAverage(elements: Element[]): number | undefined

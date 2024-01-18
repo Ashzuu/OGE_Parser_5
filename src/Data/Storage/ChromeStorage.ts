@@ -14,13 +14,13 @@ export class ChromeStorage implements IStorage {
     {
         this.InitCache();
     }
-    private static _instance: ChromeStorage;
+    private static instance: ChromeStorage;
     public static get Instance(): ChromeStorage
     {
-        if (!this._instance) this._instance = new this();
-        this._instance.InitCache();
+        if (!this.instance) this.instance = new this();
+        this.instance.InitCache();
 
-        return this._instance;
+        return this.instance;
     }
     //#endregion Singleton
 

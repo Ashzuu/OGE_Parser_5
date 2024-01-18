@@ -20,6 +20,7 @@ export class UEFactory
         let coef: number = PageParser.Instance.UECoefficient(ix);
         let saeIx: number = PageParser.Instance.SaeIndex(ix);
         let ressources: Ressource[] = RessourceFactory.Ressources(ix);
-        return new UE(coef, ressources, saeIx);
+        let name: string = PageParser.Instance.UEName(ix);
+        return new UE(coef, ressources, saeIx, name);
     }
 }

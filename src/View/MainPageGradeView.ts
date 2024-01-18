@@ -11,16 +11,16 @@ export class MainPageGradeView
      */
     public constructor(table: HTMLTableElement, saeIndex: number)
     {
-        this._table = table;
-        this._saeIndex = saeIndex;
+        this.table = table;
+        this.saeIndex = saeIndex;
     }
     //#region Properties
     private readonly CELL_INSERTION_INDEX = 1;
-    private _saeIndex: number;
-    private get SaeIndex(): number { return this._saeIndex; }
+    private saeIndex: number;
+    private get SaeIndex(): number { return this.saeIndex; }
 
-    private _table: HTMLTableElement;
-    private get Table(): HTMLTableElement { return this._table; }
+    private table: HTMLTableElement;
+    private get Table(): HTMLTableElement { return this.table; }
     //#endregion Properties
     /**
      * Ajoute les resultats a la page
@@ -61,7 +61,7 @@ export class MainPageGradeView
     }
     private AddGlobalSAEResult(saeResult: number) { this.AddSingleResult(saeResult, [1, this.SaeIndex + 1]); }
     private AddGlobalCCResult(ccResult: number) { this.AddSingleResult(ccResult, [1, 0]); }
-    private AddGlobalUEResult(ueResult: number) { this.AddSingleResult(ueResult, [0, 0], false); }
+    private AddGlobalUEResult(ueResult: number) { this.AddSingleResult(ueResult, [0, 0]); }
 
     /**
      * Ajoute plusieurs resultats a la page
@@ -80,8 +80,8 @@ export class MainPageGradeView
      * @param location Emplacement du resultat
      * @param isTD Est un element TD, sinon TH
      */
-    private AddSingleResult(grade: number, location: number[], isTD: boolean = true){
-        let resultHTML: HTMLTableCellElement = DOMElementBuilder.AddSingleResult(grade ?? 'NaN', isTD);
+    private AddSingleResult(grade: number, location: number[]){
+        let resultHTML: HTMLTableCellElement = DOMElementBuilder.AddSingleResult(grade ?? 'NaN');
         let cell: HTMLTableCellElement = 
         (PageParser
         .GetChild(this.Table, location) as HTMLTableRowElement)

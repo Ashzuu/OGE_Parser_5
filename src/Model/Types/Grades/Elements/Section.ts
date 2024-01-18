@@ -7,7 +7,7 @@ export class Section extends Element
     /** Liste des notes dans la section */
     public get GradeList()
     {
-        return this._subElements as Note[];
+        return this.subElements as Note[];
     }
     
     /**

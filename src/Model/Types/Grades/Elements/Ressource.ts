@@ -7,7 +7,7 @@ export class Ressource extends Element
     /**Liste des sections de la ressource */
     public get SectionList(): Section[]
     {
-        return this._subElements as Section[];
+        return this.subElements as Section[];
     }
     /**
      * Constructeur par defaut d'une Ressource

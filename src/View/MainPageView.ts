@@ -7,35 +7,35 @@ export class MainPageView
 {
     private constructor()
     {    
-        this._bodyElement = undefined;
-        this._ueTables = undefined;
+        this.bodyElement = undefined;
+        this.ueTables = undefined;
     }
-    private static _instance: MainPageView;
+    private static instance: MainPageView;
     /** Instance de la classe */
     public static get Instance(): MainPageView{
-        if (!this._instance) this._instance = new this();
+        if (!this.instance) this.instance = new this();
         
         //Reset le body et ueTables a chaque appel pour etre sur qu'il soit bien a jour
-        this._instance._bodyElement = undefined;
-        this._instance._ueTables = undefined;
-        return this._instance;
+        this.instance.bodyElement = undefined;
+        this.instance.ueTables = undefined;
+        return this.instance;
     }
 
-    private _bodyElement: HTMLElement | undefined;    
-    private _ueTables: HTMLElement[] | undefined;
+    private bodyElement: HTMLElement | undefined;    
+    private ueTables: HTMLElement[] | undefined;
     
     private get BodyElement(): HTMLElement
     {
-        if (!this._bodyElement) this._bodyElement = document.querySelectorAll("body")[0] as HTMLElement;
-        return this._bodyElement;
+        if (!this.bodyElement) this.bodyElement = document.querySelectorAll("body")[0] as HTMLElement;
+        return this.bodyElement;
     }
     private get UETables(): HTMLElement[]
     {
-        if (!this._ueTables){
-            this._ueTables = Array.from(this.BodyElement.querySelectorAll('table')) as HTMLElement[];
+        if (!this.ueTables){
+            this.ueTables = Array.from(this.BodyElement.querySelectorAll('table')) as HTMLElement[];
         }
         
-        return this._ueTables;
+        return this.ueTables;
     }
 
     /**
@@ -56,6 +56,6 @@ export class MainPageView
         new MainPageGradeView(
             table,
             ueObject.SAEIndex)
-            .AddGradeResultToPage(ueObject.DetailedResults);
+            .AddGradeResultToPage(ueObject.Details);
     }
 }

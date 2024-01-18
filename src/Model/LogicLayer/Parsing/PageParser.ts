@@ -12,16 +12,16 @@ export class PageParser
     private constructor()
     {
         //Initialise bodyElement
-        this._bodyElement = document.querySelector("body")?.cloneNode(true) as HTMLElement ?? new BodyElementNotFoundError();
-        this._bodyElement = document.querySelector("body") as HTMLElement ?? new BodyElementNotFoundError();
+        this.bodyElement = document.querySelector("body")?.cloneNode(true) as HTMLElement ?? new BodyElementNotFoundError();
+        this.bodyElement = document.querySelector("body") as HTMLElement ?? new BodyElementNotFoundError();
     }
 
-    private static _instance: PageParser;
+    private static instance: PageParser;
     /**Retourne l'instance du Parser de la page */
-    public static get Instance() { return this._instance || (this._instance = new this()); }
+    public static get Instance() { return this.instance || (this.instance = new this()); }
 
     /**Remet a zero les données connu sur la page, utile quand on change de semestre */
-    public static Reset() { this._instance = new this(); }
+    public static Reset() { this.instance = new this(); }
     //#endregion Singleton
 
     //#region Constants
@@ -29,6 +29,7 @@ export class PageParser
     private readonly RESSOURCE_COEFFICENT_SELECTOR: string = "div > span:nth-child(2)";
     private readonly SECTION_COEFFICENT_SELECTOR: string = "sub:last-child";
     private readonly RESSOURCE_SELECTOR: string = 'tbody > tr > td';
+    private readonly UE_NAME_SELECTOR: string = "thead > tr > td > div";
     private readonly RESSOURCE_CHILD_COUNT_MIN: number = 2;
     private readonly SECTION_SELECTOR: string = 'div';
     private readonly SECTION_CHILD_COUNT_MIN: number = 3;
@@ -66,7 +67,7 @@ export class PageParser
     //#endregion Static Methods
 
     //#region Saved HTMLElements
-    private _bodyElement: HTMLElement;
+    private bodyElement: HTMLElement;
     //#endregion Saved HTMLElements
 
     //#region Properties
@@ -74,7 +75,7 @@ export class PageParser
      * Retourne le body de la page
      * @throws BodyElementNotFoundError si le body n'est pas trouvé dans le DOM
      */
-    public get Body(): HTMLElement { return this._bodyElement; }
+    public get Body(): HTMLElement { return this.bodyElement; }
 
     private get Tables(): HTMLElement[] { return Array.from(this.Body.querySelectorAll('table')); }
     /** Retourne le nombre d'UE */
@@ -143,5 +144,15 @@ export class PageParser
         return StringParser.ClearCoefficient(rawCoeff);
     }
 
+    public UEName(ue: number): string
+    {
+        return this.Tables[ue]
+            ?.querySelector(this.UE_NAME_SELECTOR)
+            ?.childNodes[0]
+            .textContent
+            ?.replace(/\n */, "")
+            .replace("  ", " ")
+            ?? "";
+    }
     //#endregion Coefficient Methods
 }

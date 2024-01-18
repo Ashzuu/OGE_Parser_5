@@ -5,16 +5,20 @@ import { Ressource } from "./Ressource";
 /** Represente une UE */
 export class UE extends Element
 {
-    private _saeIndex: number;
+    private saeIndex: number;
+    private name: string;
+    
+    /**Nom de l'UE */
+    public get Name(): string{return this.name;}
     /**Index de la premiere ressource du SAE */
     public get SAEIndex(): number
     {
-        return (this._saeIndex != -1) ? this._saeIndex : this.RessourceList.length;
+        return (this.saeIndex != -1) ? this.saeIndex : this.RessourceList.length;
     }
     /**Liste des ressources de l'UE */
     private get RessourceList(): Ressource[]
     {
-        return this._subElements as Ressource[];
+        return this.subElements as Ressource[];
     }
     /**Liste des ressources du pôle CC*/
     private get CCRessources(): Ressource[]
@@ -76,9 +80,10 @@ export class UE extends Element
     }
 
     /** Resultats detaillés de l'UE */
-    public get DetailedResults(): UEDetails
+    public get Details(): UEDetails
     {
         return {
+            Name : this.Name,
             UEResult : this.Average,
             CCResult : this.GetGlobalCCAverage,
             SAEResult : this.GetGlobalSAEAverage,
@@ -92,9 +97,10 @@ export class UE extends Element
      * @param coefficient Coefficient de l'UE
      * @param ressources Ressources de l'UE
      */
-    constructor(coefficient: number, ressources: Ressource[], saeIndex: number)
+    constructor(coefficient: number, ressources: Ressource[], saeIndex: number, name: string = "")
     {
         super(coefficient, ressources);
-        this._saeIndex = saeIndex;
+        this.saeIndex = saeIndex;
+        this.name = name;
     }
 }

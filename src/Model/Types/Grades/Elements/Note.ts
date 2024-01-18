@@ -4,9 +4,9 @@ import { GradeCoefficientPair } from "./GradeCoefficientPair";
 /** Represente une Note */
 export class Note extends Element
 {
-    private _grade: number;
+    private grade: number;
     public get Average(): number{
-        return this._grade;
+        return this.grade;
     }
     /**
      * Constructeur par defaut d'une Note
@@ -16,6 +16,6 @@ export class Note extends Element
     constructor(grade: GradeCoefficientPair)
     {
         super(grade.coefficient, []);
-        this._grade = grade.grade;
+        this.grade = grade.grade;
     }
 }

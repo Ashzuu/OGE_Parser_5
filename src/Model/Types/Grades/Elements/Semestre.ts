@@ -2,6 +2,7 @@ import { PageParser } from "../../../LogicLayer/Parsing/PageParser";
 import { SemesterNames } from "../../../LogicLayer/Parsing/SemesterNames";
 import { StoredSemester } from "../../Storage/StoredSemester";
 import { Element } from "../Element";
+import { UEDetails } from "../UEDetails";
 import { UE } from "./UE";
 
 /** Represente un Semestre */
@@ -10,7 +11,7 @@ export class Semestre extends Element
     /**Liste des UE du semestre */
     public get UEList(): UE[]
     {
-        return this._subElements as UE[];
+        return this.subElements as UE[];
     }
     /**
      * Constructeur par defaut d'un Semestre
