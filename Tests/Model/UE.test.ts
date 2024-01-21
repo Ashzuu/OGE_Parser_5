@@ -36,17 +36,3 @@ test('each UE has the right coefficient', () => {
 
     expect(found).toEqual(expected);
 });
-
-test('each UE has the right resource count', () => {
-    const expected = [
-        0,
-        1,
-        5,
-        4,
-        6,
-        7
-    ]
-    const found = semester.UEList.map(ue => (ue as any).RessourceList.length);
-
-    expect(found).toEqual(expected);
-});

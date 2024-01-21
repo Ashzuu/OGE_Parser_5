@@ -51,12 +51,12 @@ export class UE extends Element
         return saeRessources;
     }
     /**Moyenne globale du pôle CC*/
-    private get GetGlobalCCAverage(): number | undefined
+    private get GetGlobalCCAverage(): number
     {
         return this.GetAverage(this.CCRessources);
     }
     /**Moyenne globale du pôle SAE */
-    private get GetGlobalSAEAverage(): number | undefined
+    private get GetGlobalSAEAverage(): number
     {
         return this.GetAverage(this.SAERessources);
     }
@@ -68,15 +68,13 @@ export class UE extends Element
     /**Moyenne de chaque ressources du pôle SAE */
     private get GetSAEAverages(): number[]
     {
+
         return this.GetAverageList(this.SAERessources);
     }
 
     private GetAverageList(ressources: Ressource[]): number[]
     {
-        let averages: number[] = [];
-        ressources.forEach(res => { if (res.Average) averages.push(res.Average)});
-
-        return averages;
+        return ressources.map(res => { return res.Average }) as number[];
     }
 
     /** Resultats detaillés de l'UE */

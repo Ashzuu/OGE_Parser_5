@@ -18,7 +18,8 @@ export abstract class Parser
     protected readonly UE_COEFFICENT_SELECTOR: string = "thead > tr > td > div > span";
     //RESSOURCES
     protected readonly RESSOURCE_COEFFICENT_SELECTOR: string = "div > span:nth-child(2)";
-    protected readonly RESSOURCE_SELECTOR: string = 'tbody > tr > td';
+    protected readonly RESSOURCE_AND_POLES_SELECTOR: string = 'tbody > tr > td';
+    protected readonly RESSOURCE_SELECTOR: string = '.cell_BUT_RESSOURCE~tr:not(.cell_BUT_SAE)';
     protected readonly CC_RESSOURCE_SELECTOR: string = '.cell_BUT_RESSOURCE~tr:not(.cell_BUT_SAE~tr, .cell_BUT_SAE)';
     protected readonly SAE_RESSOURCE_SELECTOR: string = '.cell_BUT_SAE~tr';
     protected readonly RESSOURCE_CHILD_COUNT_MIN: number = 2;
@@ -81,6 +82,7 @@ export abstract class Parser
     
     protected GetRawRessources(ue: number, selector: string = this.RESSOURCE_SELECTOR): HTMLElement[]
     {
-        return Array.from(this.Tables[ue]?.querySelectorAll(selector) ?? []);
+        return Array.from(this.Tables[ue]?.querySelectorAll(selector) ?? [])
+            .filter(p => p.textContent?.replace(/\s/g, "") != "Pasdenotesaisie") as HTMLElement[];
     }
 }

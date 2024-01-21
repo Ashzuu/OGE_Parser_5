@@ -7,8 +7,12 @@
     --transprent: #EE00001A;
 }
 .Orange{
-    --opaque: #CCCC00;
-    --transprent: #CCCC0020;
+    --opaque: #ff8e4d;
+    --transprent: rgba(255, 142, 77, 0.75);
+}
+.Black{
+    --opaque: #00000000;
+    --transprent: #00000000;
 }
 
 .R{

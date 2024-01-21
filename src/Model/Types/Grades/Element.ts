@@ -2,7 +2,7 @@
 export abstract class Element{
 
     /** Moyenne de l'element */
-    public get Average(): number | undefined
+    public get Average(): number
     {
         return this.GetAverage(this.subElements);
     }
@@ -20,9 +20,9 @@ export abstract class Element{
         this.subElements = subElements;
     }
 
-    protected GetAverage(elements: Element[]): number | undefined
+    protected GetAverage(elements: Element[]): number
     {
-        let actualAverage: number | undefined = undefined;
+        let actualAverage: number = NaN;
 
         //S'il n'y a pas sous element on ne calcul rien et renvoie 0
         if (elements.length > 0)
@@ -31,8 +31,8 @@ export abstract class Element{
             let coefficientSum: number = 0;
             
             elements.forEach(el => {
-                const avg: number | undefined = el.Average;
-                if (avg != undefined && !isNaN(avg))
+                const avg: number = el.Average;
+                if (!isNaN(avg))
                 {
                     const coef: number = el.Coefficient;
 

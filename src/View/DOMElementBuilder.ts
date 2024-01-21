@@ -22,15 +22,17 @@ export class DOMElementBuilder
     
     private static CreateTableCell(value: number | string, classesToAdd: string[]): HTMLTableCellElement{
         let child: HTMLTableCellElement;
-        // if (isTD) 
         child = document.createElement("td");
-        // else child = document.createElement("th")
 
         let innerHTML: string = "&nbsp;N/A&nbsp;";
-        if (typeof value === "number"){
+        if (typeof value === "number")
+        {
             if (value && value >= 0) innerHTML = value.toFixed(2);
         }
-        else { innerHTML = value; }
+        else
+        {
+            innerHTML = value;
+        }
 
         child.innerHTML = innerHTML;
 
@@ -90,7 +92,12 @@ export class DOMElementBuilder
     private static GetGradeColor(grade: number): string
     {
         let color: string = "Green";
-        if (grade < 10){
+        if (isNaN(grade)) 
+        {
+            color = "Black";
+        }
+        else if (grade < 10)
+        {
             if (this.CAN_BE_ORANGE && grade >= 8) color = "Orange";
             else color = "Red";
         }

@@ -24,18 +24,17 @@ export class GradeParser extends Parser
 
     private GetResources(ue: number): HTMLElement[]
     {
-        return this.GetRawRessources(ue)
-            .filter(p => p.childElementCount >= this.RESSOURCE_CHILD_COUNT_MIN) as HTMLElement[];
+        return this.GetRawRessources(ue);
     }
     private GetSections(ue: number, res: number): HTMLElement[]
     {
         return Array.from(
             this.GetResources(ue)[res]?.querySelectorAll(this.SECTION_SELECTOR) ?? []
-            ).filter(p => p.childElementCount >= this.SECTION_CHILD_COUNT_MIN) as HTMLElement[];
+            ).filter(p => p.querySelector("sub")) as HTMLElement[];
     }
-    public GetGrades(ueIndex: number, resIndex: number, sectionIndex: number): GradeCoefficientPair[]
+    public GetGrades(ue: number, res: number, sect: number): GradeCoefficientPair[]
     {
-        return StringParser.GetNotesFromSectionInnerText(this.GetSections(ueIndex, resIndex)[sectionIndex]?.textContent ?? "");
+        return StringParser.GetNotesFromSectionInnerText(this.GetSections(ue, res)[sect]?.textContent ?? "");
     }
 
     //#endregion Properties
@@ -45,8 +44,10 @@ export class GradeParser extends Parser
     public SectionCount(ue: number, res: number): number { return this.GetSections(ue, res).length; }
     public SaeIndex(ue: number): number
     {        
+        let rawRessources = this.GetRawRessources(ue, this.RESSOURCE_AND_POLES_SELECTOR);
         let poleSaeEl: HTMLElement = ViewParser.Instance.GetPoleSaeElement(ue).querySelector("td") as HTMLElement;
-        return this.GetRawRessources(ue).indexOf(poleSaeEl) - 1;
+        
+        return rawRessources.indexOf(poleSaeEl) - 1;
     }
 
     public UECoefficient(ue: number): number

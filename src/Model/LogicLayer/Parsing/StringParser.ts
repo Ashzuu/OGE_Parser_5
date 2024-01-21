@@ -42,8 +42,13 @@ export class StringParser {
      */
     public static GetNotesFromSectionInnerText(sectionText: string): GradeCoefficientPair[]
     {   
-        sectionText = sectionText.slice(sectionText.indexOf('[') + 2, sectionText.indexOf(']') - 1); 
-        return this.GetGradeCoefficientPairs(sectionText);
+        let pairs: GradeCoefficientPair[] = [];
+        if (sectionText != "")
+        {
+            sectionText = sectionText.slice(sectionText.indexOf('[') + 2, sectionText.indexOf(']') - 1); 
+            pairs = this.GetGradeCoefficientPairs(sectionText);
+        }
+        return pairs;
     }
     
     /**
