@@ -1,4 +1,3 @@
-import { PageParser } from "../../src/Model/LogicLayer/Parsing/PageParser";
 import { UE } from "../../src/Model/Types/Grades/Elements/UE";
 
 const fs = require('fs');
@@ -8,13 +7,8 @@ export class TestsSetup
 {
     private static mockHtml: string = "";
     private static readonly PATH_TO_MOCKS: string = `./Tests/Mocks/`;
-    
-    public static SetupBodyElementProperty(): void
-    {
-        (PageParser.Instance as any).__bodyElement = document.body;
-    }
 
-    public static SetupMockBody(semester: number): void
+    public static SetupMockBody(semester: number = 0): void
     {
         let filePath: string = path.resolve(this.PATH_TO_MOCKS, `OGE${semester}.HTML`);
         this.mockHtml = fs.readFileSync(filePath, 'utf-8');

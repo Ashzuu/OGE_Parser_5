@@ -2,7 +2,7 @@ import { ISemesterStorage } from "../../Interfaces/ISemesterStorage";
 import { IYearlyAverage } from "../../Interfaces/IYearlyAverage";
 import { YearDetails } from "../../Types/Grades/YearDetails";
 import { StoredSemester } from "../../Types/Storage/StoredSemester";
-import { PageParser } from "../Parsing/PageParser";
+import { GradeParser } from "../Parsing/GradeParser";
 import { SemesterNames } from "../Parsing/SemesterNames";
 import { SemesterLoading } from "./SemesterLoading";
 

@@ -1,10 +1,10 @@
 import { ChromeStorage } from "./Data/Storage/ChromeStorage";
-import { PageParser } from "./Model/LogicLayer/Parsing/PageParser";
+import { GradeParser } from "./Model/LogicLayer/Parsing/GradeParser";
 import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
 import { ConsoleGradeDisplay } from "./View/GradeDisplay/ConsoleGradeDisplay";
 import { IGradeDisplay } from "./Model/Interfaces/IGradeDisplay";
 import { MainPageGradeDisplay } from "./View/GradeDisplay/MainPageGradeDisplay";
-import { SemesterFactory } from "./Model/LogicLayer/Factories/SemesterFactory.1";
+import { SemesterFactory } from "./Model/LogicLayer/Factories/SemesterFactory";
 
 /** Gestion du contenu de la page principale */
 export class Content
@@ -54,7 +54,7 @@ export class Content
     private ProcessSemester(): void
     {
         //Remise a zero des donnees
-        PageParser.Reset();
+        GradeParser.Reset();
         //Parsing de la page
         this.semester = SemesterFactory.GetSemester() ?? new Error("Semestre non trouvé");
         //Sauvegarde du semestre retrouvé
@@ -126,7 +126,7 @@ export class Content
         let warningDiv: HTMLElement | null = document.getElementById(this.GRADE_WARNING_BASE_ID);
         if (warningDiv)
         {
-            PageParser.GetChild(warningDiv, this.GRADE_WARNING_PATH).innerHTML = text;
+            GradeParser.GetChild(warningDiv, this.GRADE_WARNING_PATH).innerHTML = text;
         }
     }
 

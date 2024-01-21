@@ -1,4 +1,5 @@
-import { PageParser } from "../Model/LogicLayer/Parsing/PageParser";
+import { GradeParser } from "../Model/LogicLayer/Parsing/GradeParser";
+import { ViewParser } from "../Model/LogicLayer/Parsing/ViewParser";
 import { UEDetails } from "../Model/Types/Grades/UEDetails";
 import { DOMElementBuilder } from "./DOMElementBuilder";
 
@@ -9,18 +10,15 @@ export class MainPageGradeView
      * @param table Tableau des resultats 
      * @param saeIndex Index de la SAE
      */
-    public constructor(table: HTMLTableElement, saeIndex: number)
+    public constructor(tableIndex: number)
     {
-        this.table = table;
-        this.saeIndex = saeIndex;
+        this.index = tableIndex;
     }
     //#region Properties
-    private readonly CELL_INSERTION_INDEX = 1;
-    private saeIndex: number;
-    private get SaeIndex(): number { return this.saeIndex; }
+    private index: number;
+    private get Index(): number { return this.index; }
 
-    private table: HTMLTableElement;
-    private get Table(): HTMLTableElement { return this.table; }
+    private readonly CELL_INSERTION_INDEX = 1;
     //#endregion Properties
     /**
      * Ajoute les resultats a la page
@@ -37,62 +35,40 @@ export class MainPageGradeView
         this.AddAllSAEResults(detailedUEResult.AllSAEResults);
     }
 
-    private AddAllSAEResults(allSAEResults: number[]) {
-        
-        let begin = this.SaeIndex + 2;
-        let end = allSAEResults.length + begin;
-        
-        this.AddMultipleResult(
-            allSAEResults,
-            begin,
-            end
-            );
-    }
-    private AddAllCCResults(allCCResults: number[]) {
-        let begin = 1;
-        let end = Math.min(this.SaeIndex, allCCResults.length) + begin;
-
-        this.AddMultipleResult(
-            allCCResults,
-            begin,
-            end
-            );
-    }
-    private AddGlobalSAEResult(saeResult: number) { this.AddSingleResult(saeResult, [1, this.SaeIndex + 1]); }
-    private AddGlobalCCResult(ccResult: number) { this.AddSingleResult(ccResult, [1, 0]); }
-    private AddGlobalUEResult(ueResult: number) { this.AddSingleResult(ueResult, [0, 0]); }
-
-    /**
-     * Ajoute plusieurs resultats a la page
-     * @param grades Notes
-     * @param begin Index de debut dans le tableau
-     * @param end Index de fin
-     */
-    private AddMultipleResult(grades: number[], begin: number, end: number){
-        for (let i = begin; i < end; i++){
-            this.AddSingleResult(grades[i - begin], [1, i]);
+    private AddAllSAEResults(results: number[])
+    {
+        const saeElements: HTMLTableRowElement[] = ViewParser.Instance.GetSAEGradeElements(this.index) as HTMLTableRowElement[];
+        for (let i = 0; i < results.length; i++)
+        {
+            this.AddCell(saeElements[i], results[i]);
         }
     }
-    /**
-     * Ajoute un resultat a la page
-     * @param grade Note
-     * @param location Emplacement du resultat
-     * @param isTD Est un element TD, sinon TH
-     */
-    private AddSingleResult(grade: number, location: number[]){
-        let resultHTML: HTMLTableCellElement = DOMElementBuilder.AddSingleResult(grade ?? 'NaN');
-        let cell: HTMLTableCellElement = 
-        (PageParser
-        .GetChild(this.Table, location) as HTMLTableRowElement)
-        .insertCell(this.CELL_INSERTION_INDEX
-        );
-        
-        this.AddResultInCell(cell, resultHTML);
+    private AddAllCCResults(results: number[])
+    {
+        const ccElements: HTMLTableRowElement[] = ViewParser.Instance.GetCCGradeElements(this.index) as HTMLTableRowElement[];
+        for (let i = 0; i < results.length; i++)
+        {
+            this.AddCell(ccElements[i], results[i]);
+        }
+    }
+    private AddGlobalSAEResult(saeResult: number)
+    {
+        let saeEl: HTMLTableRowElement = ViewParser.Instance.GetPoleSaeElement(this.index) as HTMLTableRowElement;
+        this.AddCell(saeEl, saeResult);
+    }
+    private AddGlobalCCResult(ccResult: number)
+    {
+        let ccEl: HTMLTableRowElement = ViewParser.Instance.GetPoleCCElement(this.index) as HTMLTableRowElement;
+        this.AddCell(ccEl, ccResult);
+    }
+    private AddGlobalUEResult(ueResult: number)
+    {
+        let ueEl: HTMLTableRowElement = ViewParser.Instance.GetUEElement(this.index) as HTMLTableRowElement;
+        this.AddCell(ueEl, ueResult);
     }
 
-    private AddResultInCell(cell: HTMLTableCellElement, result: HTMLTableCellElement): void
+    private AddCell(element: HTMLTableRowElement, result: number)
     {
-        cell.outerHTML = result.outerHTML;
-        cell.innerHTML = result.innerHTML;
+        element.insertCell(this.CELL_INSERTION_INDEX).outerHTML = DOMElementBuilder.CreateResultCell(result).outerHTML;
     }
 }

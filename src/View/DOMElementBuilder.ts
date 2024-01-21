@@ -1,5 +1,4 @@
 import { YearDetails } from "../Model/Types/Grades/YearDetails";
-import { ViewStyle } from "./ViewStyle";
 
 /** Classe creant les elements HTML pour les resultats*/
 export class DOMElementBuilder
@@ -10,24 +9,17 @@ export class DOMElementBuilder
      * @param isTD Est un element TD, sinon TH
      * @returns Element HTML
      */
-    public static AddSingleResult(grade: number): HTMLTableCellElement
+    public static CreateResultCell(grade: number): HTMLTableCellElement
     {
-        // let gradeType: string = (isTD) ? "R" : "UE";
         let gradeType: string = "R";
         let child: HTMLTableCellElement = this.CreateTableCell(
-            grade,
-            [gradeType, ViewStyle.GetGradeColor(grade)],
+            this.Format(grade),
+            [gradeType, this.GetGradeColor(grade)],
             );
         
         return child;
     }
-    /**
-     * Ajoute un element HTML pour un resultat
-     * @param grade Note
-     * @param classesToAdd Classes a ajouter 
-     * @param isTD Est un element TD, sinon TH
-     * @returns Element HTML
-     */
+    
     private static CreateTableCell(value: number | string, classesToAdd: string[]): HTMLTableCellElement{
         let child: HTMLTableCellElement;
         // if (isTD) 
@@ -84,12 +76,30 @@ export class DOMElementBuilder
             let average: number = yearDetails.YearlyAverages[i];
 
             let ueCell: HTMLTableCellElement = this.CreateTableCell("UE " + (i + 1), []);
-            let averageCell: HTMLTableCellElement = this.CreateTableCell(average, ["R", ViewStyle.GetGradeColor(average)]);
+            let averageCell: HTMLTableCellElement = this.CreateTableCell(average, ["R", this.GetGradeColor(average)]);
             row.appendChild(ueCell);
             row.appendChild(averageCell);
             body.appendChild(row);
         }
 
         return body;
+    }
+
+    //Si les notes peuvent etre oranges (entre 8 inclu et 10 exclu)
+    private static readonly CAN_BE_ORANGE = true;
+    private static GetGradeColor(grade: number): string
+    {
+        let color: string = "Green";
+        if (grade < 10){
+            if (this.CAN_BE_ORANGE && grade >= 8) color = "Orange";
+            else color = "Red";
+        }
+
+        return color;
+    }
+
+    private static Format(grade: number): string
+    {
+        return grade?.toFixed(2) ?? "NaN";
     }
 }

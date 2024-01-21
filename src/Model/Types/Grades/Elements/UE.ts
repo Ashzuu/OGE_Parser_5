@@ -13,10 +13,10 @@ export class UE extends Element
     /**Index de la premiere ressource du SAE */
     public get SAEIndex(): number
     {
-        return (this.saeIndex != -1) ? this.saeIndex : this.RessourceList.length;
+        return (this.saeIndex != -1) ? this.saeIndex : this.Ressources.length;
     }
     /**Liste des ressources de l'UE */
-    private get RessourceList(): Ressource[]
+    private get Ressources(): Ressource[]
     {
         return this.subElements as Ressource[];
     }
@@ -26,9 +26,9 @@ export class UE extends Element
         let ccRessources: Ressource[] = [];
 
         //n est la limite des ressources CC
-        let n: number = Math.min(this.SAEIndex, this.RessourceList.length);
+        let n: number = Math.min(this.SAEIndex, this.Ressources.length);
         for (let i = 0; i < n; i++){
-            ccRessources.push(this.RessourceList[i]);
+            ccRessources.push(this.Ressources[i]);
         }
 
         return ccRessources;
@@ -42,9 +42,9 @@ export class UE extends Element
 
         if (begining > -1)
         {
-            for (let i = begining; i < this.RessourceList.length; i++)
+            for (let i = begining; i < this.Ressources.length; i++)
             {
-                saeRessources.push(this.RessourceList[i]);
+                saeRessources.push(this.Ressources[i]);
             }
         }
         

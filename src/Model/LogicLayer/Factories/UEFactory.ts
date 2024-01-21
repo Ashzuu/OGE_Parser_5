@@ -1,13 +1,13 @@
 import { Ressource } from "../../Types/Grades/Elements/Ressource";
 import { UE } from "../../Types/Grades/Elements/UE";
-import { PageParser } from "../Parsing/PageParser";
+import { GradeParser } from "../Parsing/GradeParser";
 import { RessourceFactory } from "./RessourceFactory";
 
 export class UEFactory
 {
     public static GetUEs(): UE[]
     {
-        let count: number = PageParser.Instance.UECount;
+        let count: number = GradeParser.Instance.UECount;
         let ues: UE[] = [];
         for (let i = 0; i < count; i++)
         {
@@ -17,10 +17,10 @@ export class UEFactory
     }
     private static GetUE(ix: number): UE
     {
-        let coef: number = PageParser.Instance.UECoefficient(ix);
-        let saeIx: number = PageParser.Instance.SaeIndex(ix);
+        let coef: number = GradeParser.Instance.UECoefficient(ix);
+        let saeIx: number = GradeParser.Instance.SaeIndex(ix);
         let ressources: Ressource[] = RessourceFactory.Ressources(ix);
-        let name: string = PageParser.Instance.UEName(ix);
+        let name: string = GradeParser.Instance.UEName(ix);
         return new UE(coef, ressources, saeIx, name);
     }
 }

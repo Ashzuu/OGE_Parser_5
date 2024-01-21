@@ -1,4 +1,4 @@
-import { PageParser } from "../../../LogicLayer/Parsing/PageParser";
+import { GradeParser } from "../../../LogicLayer/Parsing/GradeParser";
 import { SemesterNames } from "../../../LogicLayer/Parsing/SemesterNames";
 import { StoredSemester } from "../../Storage/StoredSemester";
 import { Element } from "../Element";
