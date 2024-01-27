@@ -1,6 +1,3 @@
-import { InvalidGradeFormatError } from "../../Types/Error/InvalidGradeFormatError";
-import { NullCoefficientError } from "../../Types/Error/NullCoefficientError";
-import { NullSectionTextError } from "../../Types/Error/NullSectionTextError";
 import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficientPair";
 
 /**
@@ -18,8 +15,6 @@ export class StringParser {
      * Nettoie le coefficient d'une section
      * @param coefficientText Texte à nettoyer, sous forme de string (ex: "(10.50)")
      * @returns Coefficient nettoyé sous forme de number
-     * 
-     * @throws NullCoefficientError Si le texte du coefficient est 'null'
      */
     public static ClearCoefficient(coefficientText: string): number
     {
@@ -79,8 +74,6 @@ export class StringParser {
      * Normalise une note
      * @param baseGrade Note à normaliser (ex: "10/20" ou "5/10")
      * @returns Note normalisée en etant rapporté à 20
-     * 
-     * @throws InvalidGradeFormatError Si le format de la note est invalide
      */
     private static NormalizeGrade(baseGrade: string): number
     {

@@ -1,5 +1,3 @@
-import { ChildNotFoundError } from "../../Types/Error/ChildNotFoundError";
-
 export abstract class Parser
 {
     protected constructor()
@@ -58,8 +56,6 @@ export abstract class Parser
      * @param htmlElement Élément HTML parent
      * @param pathToChild Index de chaque enfants à parcourir, equivalent à un chemin pour acceder à l'élément voulu
      * @returns L'élément HTML demandé
-     * 
-     * @throws ChildNotFoundError si un des éléments fils demandé n'existe pas
      */
     public static GetChild(htmlElement: HTMLElement, pathToChild: number[]): HTMLElement
     {
@@ -70,7 +66,7 @@ export abstract class Parser
                 
                 if (!element ||
                     degree < 0 ||
-                    element.childElementCount <= degree) throw new ChildNotFoundError();
+                    element.childElementCount <= degree) throw new Error("ChildNotFound");
                 
                 element = element.children[degree] as HTMLElement;
             });
