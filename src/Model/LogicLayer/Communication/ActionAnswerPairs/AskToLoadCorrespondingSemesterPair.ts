@@ -6,7 +6,7 @@ import { SemesterNames } from "../../Parsing/SemesterNames";
 
 export class AskToLoadCorrespondingSemesterPair implements IActionAnswerPair
 {
-    public Message: string = Messages.AskToLoadCorrespondingSemester;
+    public get Message(): string { return Messages.AskToLoadCorrespondingSemester; }
 
     public Action(params: any): void
     {

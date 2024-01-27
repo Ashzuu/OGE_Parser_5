@@ -7,7 +7,7 @@ import { YearlyAverage } from "../../Results/YearlyAverage";
 
 export class GetYearDetailsPair implements IActionAnswerPair
 {
-    public Message: string = Messages.GetYearDetails;
+    public get Message(): string { return Messages.GetYearDetails; }
 
     public Action(params: any): void
     {
@@ -16,11 +16,10 @@ export class GetYearDetailsPair implements IActionAnswerPair
     
     public Answer(): ListenerMessage
     {
-        let ya = new YearlyAverage(new ChromeStorage()).ToYearDetails();
-        console.log(ya);
+        let ya = new YearlyAverage(new ChromeStorage());
         return {
-            content: this.Message,
-            params: ya
+            content: Messages.GetYearDetails, //Why tf this.Message doesn't work?
+            params: ya.ToYearDetails()
         };
     }
 }
