@@ -4,7 +4,7 @@ import { ListenerMessage } from "../Types/Communication/ListenerMessage";
 export interface IActionAnswerPair
 {
     /** Message de l'action */
-    Message: string,
+    get Message(): string,
     /** Action à effectuer */
     Action(params: any): void,
     /** Réponse à renvoyer */
