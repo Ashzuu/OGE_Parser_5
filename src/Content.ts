@@ -56,7 +56,7 @@ export class Content
         //Remise a zero des donnees
         GradeParser.Reset();
         //Parsing de la page
-        this.semester = SemesterFactory.GetSemester() ?? new Error("Semestre non trouvé");
+        this.semester = new SemesterFactory().GetSemester() ?? new Error("Semestre non trouvé");
         //Sauvegarde du semestre retrouvé
         let storage = new ChromeStorage(this.semester.ToStoredSemester());
         storage.Save();
