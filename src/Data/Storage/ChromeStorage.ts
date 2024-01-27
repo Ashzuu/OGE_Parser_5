@@ -46,22 +46,24 @@ export class ChromeStorage implements ISemesterStorage
         {
             let currentSave = await this.Load();
             currentSave[this.SemesterKey] = this.semester;
-
-            const saveObj: any = {};
-            saveObj[this.STORAGE_KEY] = currentSave;
-            this.Storage.set(saveObj);
+            
+            let storage: any = {}
+            storage[this.STORAGE_KEY] = currentSave;
+            this.Storage.set(storage);
         }
     }
     async Clear(): Promise<void>
     {
         this.Storage.clear();
+        console.log("cleared storage");
     }
     //#endregion ISemesterStorage implementation
 
     //#region Methods
     private async Load(): Promise<{ [id: string]: StoredSemester; }>
     {
-        return await this.Storage.get([this.STORAGE_KEY]);
+        let storage = (await this.Storage.get([this.STORAGE_KEY])) ?? {};
+        return storage[this.STORAGE_KEY] ?? {};
     }
     //#endregion Methods
 
