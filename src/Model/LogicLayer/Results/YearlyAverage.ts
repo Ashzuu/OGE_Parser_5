@@ -44,8 +44,19 @@ export class YearlyAverage implements IYearlyAverage
 
     public get YearlyAverages(): number[]
     {
-        console.log(this.currentSemester);
-        console.log(this.correspondingSemester);
+        this.storage.GetSemester()
+        if (!this.currentSemester) console.error("this.currentSemester is undefined");
+        
+        let found = false;
+        for (let i = 0; i < 500; i++)
+        setTimeout(() => {
+            if (!found && this.currentSemester)
+            {
+                found = true;
+                console.log("found in", i * 1 + 1, 'ms');
+            }
+        }, 1);
+
         let yearlyAverages: number[] = this.currentSemester?.Averages ?? [];
         let count = Math.min(
             yearlyAverages.length, // <=> this.currentSemester?.Averages.length ?? 0
