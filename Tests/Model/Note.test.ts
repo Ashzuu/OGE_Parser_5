@@ -9,30 +9,29 @@ beforeEach(() => {
     semester = new SemesterFactory().GetSemester();
 });
 
-test('each UE has the right name', () => {
+test('Grades have the right coefficients', () => {
     const expected = [
-        "UE3.1 PART EXIG APPL ALT",
-        "UE3.2 SÉLE ALG ADEQ ALT",
-        "UE3.2 SÉLE ALG ADEQ ALT",
-        "UE3.3 DÉPLOY SERV ARCHI",
-        "UE2.1 REALISER DEVELOPP",
-        "UE2.6 TRAVAILLER EQUI"
+        1,
+        2,
+        5.1,
+        10.055
     ]
-    const found = semester.UEList.map(ue => ue.Name);
+    const section: any = (semester.UEList[2] as any).Ressources[3].subElements[0];
+    const found: number[] = section.subElements.map((r: any) => r.Coefficient);
 
     for (let i = 0; i < expected.length; i++) expect(found[i]).toEqual(expected[i]);
-});
+})
 
-test('each UE has the right coefficient', () => {
+test('Grades have the right coefficients', () => {
     const expected = [
-        530,
-        13,
-        10000,
-        130,
-        200,
-        101
+        20,
+        16,
+        16,
+        15
     ]
-    const found = semester.UEList.map(ue => ue.Coefficient);
+
+    const section: any = (semester.UEList[2] as any).Ressources[3].subElements[0];
+    const found: number[] = section.subElements.map((r: any) => r.Average);
 
     for (let i = 0; i < expected.length; i++) expect(found[i]).toEqual(expected[i]);
-});
+})

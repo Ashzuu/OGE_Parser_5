@@ -1,4 +1,5 @@
 import { SemesterFactory } from '../../src/Model/LogicLayer/Factories/SemesterFactory'
+import { Section } from '../../src/Model/Types/Grades/Elements/Section';
 import { Semestre } from '../../src/Model/Types/Grades/Elements/Semestre';
 import { TestsSetup } from '../Mocks/TestsSetup';
 
@@ -9,30 +10,25 @@ beforeEach(() => {
     semester = new SemesterFactory().GetSemester();
 });
 
-test('each UE has the right name', () => {
+test('Sections have the right coefficients', () => {
     const expected = [
-        "UE3.1 PART EXIG APPL ALT",
-        "UE3.2 SÉLE ALG ADEQ ALT",
-        "UE3.2 SÉLE ALG ADEQ ALT",
-        "UE3.3 DÉPLOY SERV ARCHI",
-        "UE2.1 REALISER DEVELOPP",
-        "UE2.6 TRAVAILLER EQUI"
+        1,
+        2,
+        1.1,
+        10.05
     ]
-    const found = semester.UEList.map(ue => ue.Name);
+    const found: number[] = (semester.UEList[2] as any).Ressources[1].subElements.map((r: Section) => r.Coefficient);
 
     for (let i = 0; i < expected.length; i++) expect(found[i]).toEqual(expected[i]);
 });
 
-test('each UE has the right coefficient', () => {
+test('Sections have the right amount of grades', () => {
     const expected = [
-        530,
-        13,
-        10000,
-        130,
-        200,
-        101
+        4,
+        3,
+        2
     ]
-    const found = semester.UEList.map(ue => ue.Coefficient);
+    const found: number[] = (semester.UEList[2] as any).Ressources[3].subElements.map((r: any) => r.subElements.length);
 
     for (let i = 0; i < expected.length; i++) expect(found[i]).toEqual(expected[i]);
 });

@@ -6,7 +6,7 @@ var semester: Semestre;
 
 beforeEach(() => {
     TestsSetup.SetupMockBody();
-    semester = SemesterFactory.GetSemester();
+    semester = new SemesterFactory().GetSemester();
 });
 
 test('semester is created', () => {
@@ -16,7 +16,5 @@ test('semester is created', () => {
 test('semester has a UE list', () => {
     expect(semester.UEList).not.toBeNull();
     expect(semester.UEList.length).not.toBe(0);
-    semester.UEList.forEach(ue => {
-        expect(ue).toBeDefined();
-    });
+    semester.UEList.forEach(ue => { expect(ue).toBeDefined() });
 });
