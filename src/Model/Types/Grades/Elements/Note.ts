@@ -5,7 +5,8 @@ import { GradeCoefficientPair } from "./GradeCoefficientPair";
 export class Note extends Element
 {
     private grade: number;
-    public get Average(): number{
+    public get Average(): number
+    {
         return this.grade;
     }
     /**

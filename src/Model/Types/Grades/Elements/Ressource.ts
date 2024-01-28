@@ -4,11 +4,6 @@ import { Section } from "./Section";
 /** Represente une Ressource */
 export class Ressource extends Element
 {
-    /**Liste des sections de la ressource */
-    public get SectionList(): Section[]
-    {
-        return this.subElements as Section[];
-    }
     /**
      * Constructeur par defaut d'une Ressource
      * @param coefficient Coefficient de la ressource

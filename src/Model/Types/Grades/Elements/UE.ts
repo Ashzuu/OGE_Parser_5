@@ -68,7 +68,6 @@ export class UE extends Element
     /**Moyenne de chaque ressources du pôle SAE */
     private get GetSAEAverages(): number[]
     {
-
         return this.GetAverageList(this.SAERessources);
     }
 

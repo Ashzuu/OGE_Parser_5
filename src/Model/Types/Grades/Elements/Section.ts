@@ -3,13 +3,7 @@ import { Note } from "./Note";
 
 /** Represente une Section */
 export class Section extends Element
-{
-    /** Liste des notes dans la section */
-    public get GradeList()
-    {
-        return this.subElements as Note[];
-    }
-    
+{    
     /**
      * Constructeur par defaut d'une Section
      * @param coefficient Coefficient de la section
