@@ -20,13 +20,14 @@ export class SemesterFactory
     private UEs(): UE[]
     {
         let count: number = GradeParser.Instance.UECount;
-        return Array(count).map(ix =>
+        return [...Array(count).keys()].map(ix =>
             {
                 let coef: number = GradeParser.Instance.UECoefficient(ix);
                 let saeIx: number = GradeParser.Instance.SaeIndex(ix);
                 let ressources: Ressource[] = this.Ressources(ix);
                 let name: string = GradeParser.Instance.UEName(ix);
                 
+                // console.log("\ncoef", coef, "\nressources", ressources, "\nsaeIx", saeIx, "\nname", name);
                 return new UE(coef, ressources, saeIx, name);
             }
             );
@@ -35,7 +36,7 @@ export class SemesterFactory
     private Ressources(ue: number): Ressource[]
     {
         let count: number = GradeParser.Instance.RessourceCount(ue);
-        return Array(count).map(ix =>
+        return [...Array(count).keys()].map(ix =>
             {
                 return new Ressource(
                     GradeParser.Instance.RessourceCoefficient(ue, ix),
@@ -47,7 +48,7 @@ export class SemesterFactory
     private Sections(ue: number, res: number): Section[]
     {
         let count: number = GradeParser.Instance.SectionCount(ue, res);
-        return Array(count).map(ix =>
+        return [...Array(count).keys()].map(ix =>
             {
                 return new Section(
                     GradeParser.Instance.SectionCoefficient(ue, res, ix),
