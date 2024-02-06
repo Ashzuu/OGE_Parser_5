@@ -2,12 +2,7 @@
 Please Help
 
 ## Packages à installer
-### Webpack (transpileur)
-npm install --save-dev webpack webpack-cli
-npm install --save-dev copy-webpack-plugin
-### Types
-npm install --save-dev typescript ts-loader
-npm install --save-dev @types/chrome
+Juste npm install en fait.
 
 ## Commandes
 ### Transpilation
