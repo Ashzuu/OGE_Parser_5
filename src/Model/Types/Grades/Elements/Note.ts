@@ -2,11 +2,9 @@ import { Element } from "../Element";
 import { GradeCoefficientPair } from "./GradeCoefficientPair";
 
 /** Represente une Note */
-export class Note extends Element
-{
+export class Note extends Element {
     private grade: number;
-    public get Average(): number
-    {
+    public get Average(): number {
         return this.grade;
     }
     /**
@@ -14,8 +12,7 @@ export class Note extends Element
      * @param grade valeur de la note
      * @param coefficient coefficient de la note
      */
-    constructor(grade: GradeCoefficientPair)
-    {
+    constructor(grade: GradeCoefficientPair) {
         super(grade.coefficient, []);
         this.grade = grade.grade;
     }

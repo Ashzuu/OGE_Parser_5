@@ -1,6 +1,5 @@
-import { ViewParser } from "../Model/LogicLayer/Parsing/ViewParser";
-import { Semestre } from "../Model/Types/Grades/Elements/Semestre";
-import { UE } from "../Model/Types/Grades/Elements/UE";
+import { ViewParser } from "../../../Model/LogicLayer/Parsing/ViewParser";
+import { Semestre } from "../../../Model/Types/Grades/Elements/Semestre";
 import { MainPageGradeView } from "./MainPageGradeView";
 
 /** Classe de la vue de la page principale */
