@@ -1,10 +1,8 @@
-export abstract class Parser
-{
-    protected constructor()
-    {
+export abstract class Parser {
+    protected constructor() {
         this.bodyElement = document.querySelector("body") as HTMLElement;
     }
-    
+
     //#region Saved HTMLElements
     private bodyElement: HTMLElement;
     //#endregion Saved HTMLElements
@@ -30,24 +28,25 @@ export abstract class Parser
     protected readonly POLE_ELEMENT_SECOND_SELECTOR: string = "td span > span";
     protected readonly POLE_CC_INDEX: number = 0;
     protected readonly POLE_SAE_INDEX: number = 1;
-    protected readonly MAX_COUNT_WHEN_GRADE_HIDDEN: number = 1;
+    protected readonly MAX_COUNT_WHEN_GRADES_ARE_HIDDEN: number = 1;
     //#endregion Constants
 
     //#region Properties
     private get Body(): HTMLElement { return this.bodyElement; }
 
-    protected get Tables(): HTMLElement[] { return Array.from(this.Body.querySelectorAll('table')); }
+    protected get Tables(): HTMLElement[] {
+        return Array.from(this.Body.querySelectorAll('table'));
+    }
     /** Retourne le nombre d'UE */
     public get UECount(): number { return this.Tables.length; }
-    
-    public get AreGradesShown(): boolean
-    {
+
+    public get AreGradesShown(): boolean {
         let childCount = this.Tables[0]
             ?.querySelector(this.UE_SELECTOR)
             ?.childElementCount
-            ?? this.MAX_COUNT_WHEN_GRADE_HIDDEN + 1;
+            ?? this.MAX_COUNT_WHEN_GRADES_ARE_HIDDEN + 1;
 
-         return childCount > this.MAX_COUNT_WHEN_GRADE_HIDDEN;
+        return childCount > this.MAX_COUNT_WHEN_GRADES_ARE_HIDDEN;
     }
 
     //#region Static Methods
@@ -57,27 +56,25 @@ export abstract class Parser
      * @param pathToChild Index de chaque enfants à parcourir, equivalent à un chemin pour acceder à l'élément voulu
      * @returns L'élément HTML demandé
      */
-    public static GetChild(htmlElement: HTMLElement, pathToChild: number[]): HTMLElement
-    {
+    public static GetChild(htmlElement: HTMLElement, pathToChild: number[]): HTMLElement {
         let element: HTMLElement = htmlElement;
 
         pathToChild.forEach(
             degree => {
-                
+
                 if (!element ||
                     degree < 0 ||
                     element.childElementCount <= degree) throw new Error("ChildNotFound");
-                
+
                 element = element.children[degree] as HTMLElement;
             });
-        
+
         return element;
     }
     //#endregion Static Methods
 
     
-    protected GetRawRessources(ue: number, selector: string = this.RESSOURCE_SELECTOR): HTMLElement[]
-    {
+    protected GetRawRessources(ue: number, selector: string = this.RESSOURCE_SELECTOR): HTMLElement[] {
         return Array.from(this.Tables[ue]?.querySelectorAll(selector) ?? [])
             .filter(p => p.textContent?.replace(/\s/g, "") != "Pasdenotesaisie") as HTMLElement[];
     }
