@@ -49,7 +49,6 @@ export class Content {
         GradeParser.Reset();
         //Parsing de la page
         this.semester = new SemesterFactory().GetSemester() ?? new Error("Semestre non trouvé");
-        //Sauvegarde du semestre retrouvé
     }
 
     // Affiche les moyennes du semestre sur la page principale si elles ne sont pas deja affichees
@@ -100,7 +99,8 @@ export class Content {
             let semesterEndDate: string = base.match(regex)?.[0] ?? "";
             base = "Important : Les vraies moyennes et classement ne seront visibles qu'à partir du "
                 + semesterEndDate
-                + ".</br>&emsp;&emsp;<b>Tout ce qui est produit par l'extension est une estimation et n'a aucune réélle valeur.</b>"
+                + ".</br>&emsp;&emsp;"
+                + "<b>Tout ce qui est produit par l'extension est une estimation et n'a aucune réélle valeur.</b>"
         }
         return base;
     }
