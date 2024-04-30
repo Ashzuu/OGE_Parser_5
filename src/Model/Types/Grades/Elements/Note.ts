@@ -12,7 +12,7 @@ export class Note extends Element {
      * @param grade valeur de la note
      * @param coefficient coefficient de la note
      */
-    constructor(grade: GradeCoefficientPair) {
+    public constructor(grade: GradeCoefficientPair) {
         super(grade.coefficient, []);
         this.grade = grade.grade;
     }

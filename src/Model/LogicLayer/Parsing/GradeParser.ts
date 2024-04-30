@@ -3,21 +3,18 @@ import { Parser } from "./Parser";
 import { StringParser } from "./StringParser";
 import { ViewParser } from "./ViewParser";
 
-/**
- * Classe permettant de parser la page
- */
+/** Classe permettant de parser la page */
 export class GradeParser extends Parser {
     //#region Singleton
     private constructor() { super(); }
 
     private static instance: GradeParser;
-    /**Retourne l'instance du Parser de la page */
+    /** Retourne l'instance du Parser de la page */
     public static get Instance(): GradeParser { return this.instance || (this.instance = new this()); }
 
-    /**Remet a zero les données connu sur la page, utile quand on change de semestre */
+    /** Remet a zero les données connu sur la page, utile quand on change de semestre */
     public static Reset() { this.instance = new this(); }
     //#endregion Singleton
-
 
     private GetResources(ue: number): HTMLElement[] {
         return this.GetRawRessources(ue);
@@ -27,15 +24,37 @@ export class GradeParser extends Parser {
             this.GetResources(ue)[res]?.querySelectorAll(this.SECTION_SELECTOR) ?? []
         ).filter(p => p.querySelector("sub")) as HTMLElement[];
     }
+    
+    /**
+     * Parse et renvoie une Note et son Coefficient
+     * @param ue Numero d'UE de la Note
+     * @param res Numero de ressource de la Note
+     * @param sect Numero de section de la Note
+     * @returns La note et son coefficient
+     */
     public GetGrades(ue: number, res: number, sect: number): GradeCoefficientPair[] {
         return StringParser.GetNotesFromSectionInnerText(this.GetSections(ue, res)[sect]?.textContent ?? "");
     }
 
-    //#endregion Properties
-
     //#region Coefficient Methods
+    /**
+     * Compte le nombre de ressources dans une UE
+     * @param ue Numero de l'UE
+     * @returns Nombre de ressources dans l'UE
+     */
     public RessourceCount(ue: number): number { return this.GetResources(ue).length; }
+    /**
+     * Compte le nombre de Sections dans une Ressource
+     * @param ue Numero de l'UE
+     * @param res Numero de la ressource dans l'UE
+     * @returns Le nombre de sections
+     */
     public SectionCount(ue: number, res: number): number { return this.GetSections(ue, res).length; }
+    /**
+     * Trouev l'index a partir du quel on passe en SAE dans une UE
+     * @param ue Numero de l'UE
+     * @returns l'index tel que l'element a l'index renvoyé est la premiere SAE
+     */
     public SaeIndex(ue: number): number {
         let rawRessources = this.GetRawRessources(ue, this.RESSOURCE_AND_POLES_SELECTOR);
         let poleSaeEl: HTMLElement = ViewParser.Instance.GetPoleSaeElement(ue).querySelector("td") as HTMLElement;
@@ -43,22 +62,45 @@ export class GradeParser extends Parser {
         return rawRessources.indexOf(poleSaeEl) - 1;
     }
 
+    /**
+     * Trouve le coefficient d'une UE
+     * @param ue Numero de l'UE
+     * @returns le coefficient de l'UE demandée
+     */
     public UECoefficient(ue: number): number {
         let rawCoeff: string = this.Tables[ue]?.querySelector(this.UE_COEFFICENT_SELECTOR)?.textContent ?? "";
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
+    /**
+     * Trouve le coefficient d'une Ressource
+     * @param ue Numero de l'UE
+     * @param res Numero de la Ressource
+     * @returns le coefficient de la Ressource demandée
+     */
     public RessourceCoefficient(ue: number, res: number): number {
         let rawCoeff: string = this.GetResources(ue)[res]?.querySelector(this.RESSOURCE_COEFFICENT_SELECTOR)?.textContent ?? "";
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
+    /**
+     * Trouve le coefficient d'une Section
+     * @param ue Numero de l'UE
+     * @param res Numero de la Ressource
+     * @param sect Numero de la Section
+     * @returns Le coefficient de la Section demandée
+     */
     public SectionCoefficient(ue: number, res: number, sect: number): number {
         let rawCoeff: string = this.GetSections(ue, res)[sect]?.querySelector(this.SECTION_COEFFICENT_SELECTOR)?.textContent ?? "";
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
 
+    /**
+     * Parse le nom d'une UE
+     * @param ue Numero de l'UE
+     * @returns Nom de l'UE demandée
+     */
     public UEName(ue: number): string {
         return this.Tables[ue]
             ?.querySelector(this.UE_NAME_SELECTOR)

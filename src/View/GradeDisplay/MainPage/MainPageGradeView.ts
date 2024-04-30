@@ -3,26 +3,23 @@ import { Semestre } from "../../../Model/Types/Grades/Elements/Semestre";
 import { UEDetails } from "../../../Model/Types/Grades/UEDetails";
 import { DOMElementBuilder } from "../../DOMElementBuilder";
 
+/** Aide à l'affichage des resultats sur la page principale */
 export class MainPageGradeView {
-    /**
-     * Constructeur
-     * @param table Tableau des resultats 
-     * @param saeIndex Index de la SAE
-     */
-    public constructor() {}
     //#region Properties
     private readonly CELL_INSERTION_INDEX = 1;
 
     //#endregion Properties
     /**
      * Ajoute les resultats a la page
-     * @param detailedUEResult Resultats
+     * @param tableIndex Index de la table sur le DOM
+     * @param detailedUEResult Resultats de l'UE correspondante
      */
     public AddGradeResultToPage(tableIndex: number, detailedUEResult: UEDetails): void {
         const ix = tableIndex;
         const d = detailedUEResult;
         const vp = ViewParser.Instance;
 
+        //Evite la perte de contexte quand les methodes seront passées en parametre
         this.AddSingleResults(ix, d.UEResult, vp.GetUEElement);
         this.AddSingleResults(ix, d.CCResult, vp.GetPoleCCElement);
         this.AddSingleResults(ix, d.SAEResult, vp.GetPoleSaeElement);
@@ -40,7 +37,6 @@ export class MainPageGradeView {
         let ueEl: HTMLTableRowElement = <HTMLTableRowElement>func(tableIndex);
         this.AddCell(ueEl, ueResult);
     }
-
     private AddCell(element: HTMLTableRowElement, result: number): void {
         element.insertCell(this.CELL_INSERTION_INDEX).outerHTML = DOMElementBuilder.CreateResultCell(result).outerHTML;
     }

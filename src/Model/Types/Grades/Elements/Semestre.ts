@@ -5,7 +5,7 @@ import { UE } from "./UE";
 export class Semestre extends Element {
     /**Liste des UE du semestre */
     public get UEList(): UE[] {
-        return this.subElements as UE[];
+        return this.SubElements as UE[];
     }
     /**
      * Constructeur par defaut d'un Semestre

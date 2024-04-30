@@ -9,15 +9,27 @@ export abstract class Element {
     public get Coefficient() {
         return this.coefficient;
     }
+    /** Sous-elements de cet element */
+    protected get SubElements(): Element[] { return this.subElements; }
 
-    protected coefficient: number;
-    protected subElements: Element[];
+    private coefficient: number;
+    private subElements: Element[];
 
+    /**
+     * Constructeur pas defaut
+     * @param coef Coefficient de l'element
+     * @param subElements Sous-elements de cet element
+     */
     protected constructor(coef: number, subElements: Element[]) {
         this.coefficient = coef;
         this.subElements = subElements;
     }
 
+    /**
+     * Calcul la moyenne des elements donnés
+     * @param elements Elements a calculer
+     * @returns Moyenne non formatée des elements, NaN si la liste est vide
+     */
     protected GetAverage(elements: Element[]): number {
         let actualAverage: number = NaN;
 
