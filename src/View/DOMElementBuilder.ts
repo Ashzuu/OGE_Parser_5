@@ -18,6 +18,7 @@ export class DOMElementBuilder {
     */
     public static CreateResultCell(grade: number): HTMLTableCellElement {
         let gradeType: string = this.ADDED_GRADE_CLASS;
+
         let child: HTMLTableCellElement = this.CreateTableCell(
             grade?.toFixed(2) ?? "NaN",
             [gradeType, this.GetGradeColor(grade)],

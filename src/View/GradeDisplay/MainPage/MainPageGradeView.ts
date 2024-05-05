@@ -21,16 +21,19 @@ export class MainPageGradeView {
 
         //Evite la perte de contexte quand les methodes seront passées en parametre
         this.AddSingleResults(ix, d.UEResult, vp.GetUEElement);
+
         this.AddSingleResults(ix, d.CCResult, vp.GetPoleCCElement);
-        this.AddSingleResults(ix, d.SAEResult, vp.GetPoleSaeElement);
         this.AddMultipleResults(ix, d.AllCCResults, vp.GetCCGradeElements);
+
+        this.AddSingleResults(ix, d.SAEResult, vp.GetPoleSaeElement);
         this.AddMultipleResults(ix, d.AllSAEResults, vp.GetSAEGradeElements);
     }
 
     private AddMultipleResults(tableIndex: number, results: number[], func: (ue: number) => HTMLElement[]): void {
-        const saeElements: HTMLTableRowElement[] = <HTMLTableRowElement[]>func(tableIndex);
+        const elements: HTMLTableRowElement[] = <HTMLTableRowElement[]>func(tableIndex);
+
         for (let i = 0; i < results.length; i++) {
-            this.AddCell(saeElements[i], results[i]);
+            this.AddCell(elements[i], results[i]);
         }
     }
     private AddSingleResults(tableIndex: number, ueResult: number, func: (ue: number) => HTMLElement): void {

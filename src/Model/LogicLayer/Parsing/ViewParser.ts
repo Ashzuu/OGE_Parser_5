@@ -1,6 +1,8 @@
 import { Parser } from "./Parser";
 
 export class ViewParser extends Parser {
+    protected Reset(): void { ViewParser.instance = new ViewParser(); }
+
     //#region Singleton
     private constructor() {
         super();
@@ -23,7 +25,7 @@ export class ViewParser extends Parser {
     //#region Methods
     private GetPoleElements(ue: number): HTMLElement[] {
         return this.GetRawRessources(ue, this.POLE_ELEMENT_FIRST_SELECTOR)
-            .filter(element => element.querySelector(this.POLE_ELEMENT_SECOND_SELECTOR));
+        .filter(element => element.querySelector(this.POLE_ELEMENT_SECOND_SELECTOR));
     }
 
     public GetUEElement(ue: number): HTMLElement {
