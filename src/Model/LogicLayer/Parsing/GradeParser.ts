@@ -1,30 +1,29 @@
-import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficientPair";
-import { Parser } from "./Parser";
-import { StringParser } from "./StringParser";
-import { ViewParser } from "./ViewParser";
+import {GradeCoefficientPair} from "../../Types/Grades/Elements/GradeCoefficientPair";
+import {Parser} from "./Parser";
+import {StringParser} from "./StringParser";
+import {ViewParser} from "./ViewParser";
 
 /** Classe permettant de parser la page */
 export class GradeParser extends Parser {
-    //#region Singleton
-    private constructor() { super(); }
-
     private static instance: GradeParser;
+
+    //#region Singleton
+    private constructor() {
+        super();
+    }
+
     /** Retourne l'instance du Parser de la page */
-    public static get Instance(): GradeParser { return this.instance || (this.instance = new this()); }
+    public static get Instance(): GradeParser {
+        return this.instance || (this.instance = new this());
+    }
 
     /** Remet a zero les données connu sur la page, utile quand on change de semestre */
-    public static Reset() { this.instance = new this(); }
+    public static Reset() {
+        this.instance = new this();
+    }
+
     //#endregion Singleton
 
-    private GetResources(ue: number): HTMLElement[] {
-        return this.GetRawRessources(ue);
-    }
-    private GetSections(ue: number, res: number): HTMLElement[] {
-        return Array.from(
-            this.GetResources(ue)[res]?.querySelectorAll(this.SECTION_SELECTOR) ?? []
-        ).filter(p => p.querySelector("sub")) as HTMLElement[];
-    }
-    
     /**
      * Parse et renvoie une Note et son Coefficient
      * @param ue Numero d'UE de la Note
@@ -42,14 +41,20 @@ export class GradeParser extends Parser {
      * @param ue Numero de l'UE
      * @returns Nombre de ressources dans l'UE
      */
-    public RessourceCount(ue: number): number { return this.GetResources(ue).length; }
+    public RessourceCount(ue: number): number {
+        return this.GetResources(ue).length;
+    }
+
     /**
      * Compte le nombre de Sections dans une Ressource
      * @param ue Numero de l'UE
      * @param res Numero de la ressource dans l'UE
      * @returns Le nombre de sections
      */
-    public SectionCount(ue: number, res: number): number { return this.GetSections(ue, res).length; }
+    public SectionCount(ue: number, res: number): number {
+        return this.GetSections(ue, res).length;
+    }
+
     /**
      * Trouev l'index a partir du quel on passe en SAE dans une UE
      * @param ue Numero de l'UE
@@ -72,6 +77,7 @@ export class GradeParser extends Parser {
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
+
     /**
      * Trouve le coefficient d'une Ressource
      * @param ue Numero de l'UE
@@ -83,6 +89,7 @@ export class GradeParser extends Parser {
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
+
     /**
      * Trouve le coefficient d'une Section
      * @param ue Numero de l'UE
@@ -103,11 +110,22 @@ export class GradeParser extends Parser {
      */
     public UEName(ue: number): string {
         return this.Tables[ue]
-            ?.querySelector(this.UE_NAME_SELECTOR)
-            ?.childNodes[0]
-            .textContent
-            ?.replace(/\n */g, "")
+                ?.querySelector(this.UE_NAME_SELECTOR)
+                ?.childNodes[0]
+                .textContent
+                ?.replace(/\n */g, "")
             ?? "";
     }
+
+    private GetResources(ue: number): HTMLElement[] {
+        return this.GetRawRessources(ue);
+    }
+
+    private GetSections(ue: number, res: number): HTMLElement[] {
+        return Array.from(
+            this.GetResources(ue)[res]?.querySelectorAll(this.SECTION_SELECTOR) ?? []
+        ).filter(p => p.querySelector("sub")) as HTMLElement[];
+    }
+
     //#endregion Coefficient Methods
 }

@@ -1,4 +1,4 @@
-import { Content } from "./Content";
+import {Content} from "./Content";
 
 function main() {
     new Content().Setup();

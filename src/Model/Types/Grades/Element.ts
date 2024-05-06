@@ -1,19 +1,8 @@
 /** Classe abstraite representant un element dans le systeme de gestion des notes de OGE */
 export abstract class Element {
 
-    /** Moyenne de l'element */
-    public get Average(): number {
-        return this.GetAverage(this.subElements);
-    }
-    /** Coefficient de l'element */
-    public get Coefficient() {
-        return this.coefficient;
-    }
-    /** Sous-elements de cet element */
-    protected get SubElements(): Element[] { return this.subElements; }
-
-    private coefficient: number;
-    private subElements: Element[];
+    private readonly coefficient: number;
+    private readonly subElements: Element[];
 
     /**
      * Constructeur pas defaut
@@ -23,6 +12,21 @@ export abstract class Element {
     protected constructor(coef: number, subElements: Element[]) {
         this.coefficient = coef;
         this.subElements = subElements;
+    }
+
+    /** Moyenne de l'element */
+    public get Average(): number {
+        return this.GetAverage(this.subElements);
+    }
+
+    /** Coefficient de l'element */
+    public get Coefficient() {
+        return this.coefficient;
+    }
+
+    /** Sous-elements de cet element */
+    protected get SubElements(): Element[] {
+        return this.subElements;
     }
 
     /**

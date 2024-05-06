@@ -1,4 +1,4 @@
-import { GradeCoefficientPair } from "../../Types/Grades/Elements/GradeCoefficientPair";
+import {GradeCoefficientPair} from "../../Types/Grades/Elements/GradeCoefficientPair";
 
 /**
  * Manager du format des titres
@@ -8,6 +8,7 @@ export class StringParser {
     //#region Constantes
     private static readonly GRADE_SPLIT_CHAR: string = "/";
     private static readonly STANDARDIZED_SCORE_BASE: number = 20;
+
     //#endregion Constantes
 
     /**
@@ -70,14 +71,9 @@ export class StringParser {
      * @returns Note normalisée en etant rapporté à 20
      */
     private static NormalizeGrade(baseGrade: string): number {
-        let normalizedGrade: number = 0;
-        {
-            let split: string[] = baseGrade.split(this.GRADE_SPLIT_CHAR);
-            //Si la note donnée est sous un format valide elle aura forcément 2 éléments
-            //Le premier est la note, le second est la base de la note
-            normalizedGrade = Number(split[0]) / Number(split[1]) * this.STANDARDIZED_SCORE_BASE;
-        }
-
-        return normalizedGrade;
+        const split: string[] = baseGrade.split(this.GRADE_SPLIT_CHAR);
+        //Si la note donnée est sous un format valide elle aura forcément 2 éléments
+        //Le premier est la note, le second est la base de la note
+        return Number(split[0]) / Number(split[1]) * this.STANDARDIZED_SCORE_BASE;
     }
 }

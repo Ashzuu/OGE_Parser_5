@@ -1,5 +1,3 @@
-import { YearDetails } from "../Model/Types/Grades/YearDetails";
-
 /** Classe creant les elements HTML pour les resultats*/
 export class DOMElementBuilder {
     //#region constants
@@ -13,18 +11,17 @@ export class DOMElementBuilder {
     /**
      * Ajoute un element HTML pour un resultat
      * @param grade Note
-     * @returns Cellule HTML de la note 
+     * @returns Cellule HTML de la note
      * @remarks La cellule aura la classe CSS correspondant et celle pour la couleur de la note
-    */
+     */
     public static CreateResultCell(grade: number): HTMLTableCellElement {
         let gradeType: string = this.ADDED_GRADE_CLASS;
-        let child: HTMLTableCellElement = this.CreateTableCell(
+        return this.CreateTableCell(
             grade?.toFixed(2) ?? "NaN",
             [gradeType, this.GetGradeColor(grade)],
         );
-
-        return child;
     }
+
     //#endregion public methods
 
 
@@ -36,8 +33,7 @@ export class DOMElementBuilder {
         let innerHTML: string = "&nbsp;N/A&nbsp;";
         if (typeof value === "number") {
             if (value && value >= 0) innerHTML = value.toFixed(2);
-        }
-        else {
+        } else {
             innerHTML = value;
         }
 
@@ -58,13 +54,13 @@ export class DOMElementBuilder {
         let color: string = "Green";
         if (isNaN(grade)) {
             color = "Black";
-        }
-        else if (grade < 10) {
+        } else if (grade < 10) {
             if (this.CAN_BE_ORANGE && grade >= 8) color = "Orange";
             else color = "Red";
         }
 
         return color;
     }
+
     //#endregion private methods
 }

@@ -1,7 +1,7 @@
-import { Semestre } from "../../../Model/Types/Grades/Elements/Semestre";
-import { GradeDisplay } from "../../GradeDisplay";
-import { ViewParser } from "../../../Model/LogicLayer/Parsing/ViewParser";
-import { MainPageGradeView } from "./MainPageGradeView";
+import {Semestre} from "../../../Model/Types/Grades/Elements/Semestre";
+import {GradeDisplay} from "../../GradeDisplay";
+import {ViewParser} from "../../../Model/LogicLayer/Parsing/ViewParser";
+import {MainPageGradeView} from "./MainPageGradeView";
 
 /** Affichage des resultats sur la page principale */
 export class MainPageGradeDisplay implements GradeDisplay {
@@ -24,7 +24,7 @@ export class MainPageGradeDisplay implements GradeDisplay {
                 + semesterEndDate ?? ""
                 + ".</br>&emsp;&emsp;"
                 + "<b>Tout ce qui est produit par l'extension est une estimation et n'a aucune réélle valeur.</b>";
-        };
+        }
 
         //Si le finalText n'est pas null warningDiv ne devrait pas l'etre non plus
         if (finalText) {

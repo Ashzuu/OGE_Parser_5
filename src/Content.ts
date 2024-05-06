@@ -1,7 +1,7 @@
-import { GradeParser } from "./Model/LogicLayer/Parsing/GradeParser";
-import { Semestre } from "./Model/Types/Grades/Elements/Semestre";
-import { SemesterFactory } from "./Model/LogicLayer/Factories/SemesterFactory";
-import { Injector } from "./DependencyInjector";
+import {GradeParser} from "./Model/LogicLayer/Parsing/GradeParser";
+import {Semestre} from "./Model/Types/Grades/Elements/Semestre";
+import {SemesterFactory} from "./Model/LogicLayer/Factories/SemesterFactory";
+import {Injector} from "./DependencyInjector";
 
 /** Gestion du contenu de la page principale */
 export class Content {
@@ -20,7 +20,7 @@ export class Content {
         return new SemesterFactory().GetSemester() ?? new Error("Semestre non trouvé");
     }
 
-    private Display(semester: Semestre){
+    private Display(semester: Semestre) {
         const gradeDisplay = Injector.GradeDisplay;
         //Changement de la phrase Remarque
         gradeDisplay.DisplayWarning();

@@ -1,12 +1,26 @@
-import { ViewParser } from "../../../Model/LogicLayer/Parsing/ViewParser";
-import { Semestre } from "../../../Model/Types/Grades/Elements/Semestre";
-import { UEDetails } from "../../../Model/Types/Grades/UEDetails";
-import { DOMElementBuilder } from "../../DOMElementBuilder";
+import {ViewParser} from "../../../Model/LogicLayer/Parsing/ViewParser";
+import {Semestre} from "../../../Model/Types/Grades/Elements/Semestre";
+import {UEDetails} from "../../../Model/Types/Grades/UEDetails";
+import {DOMElementBuilder} from "../../DOMElementBuilder";
 
 /** Aide à l'affichage des resultats sur la page principale */
 export class MainPageGradeView {
     //#region Properties
     private readonly CELL_INSERTION_INDEX = 1;
+
+    //#region static
+    /**
+     * Ajoute les resultats a la page
+     * @param semester Semestre
+     */
+    public static AddGradeResultsToPage(semester: Semestre) {
+        const view = new MainPageGradeView();
+        let n: number = Math.min(semester.UEList.length, ViewParser.Instance.UECount);
+
+        for (let i = 0; i < n; i++) {
+            view.AddGradeResultToPage(i, semester.UEList[i].Details);
+        }
+    }
 
     //#endregion Properties
     /**
@@ -33,26 +47,15 @@ export class MainPageGradeView {
             this.AddCell(saeElements[i], results[i]);
         }
     }
+
     private AddSingleResults(tableIndex: number, ueResult: number, func: (ue: number) => HTMLElement): void {
         let ueEl: HTMLTableRowElement = <HTMLTableRowElement>func(tableIndex);
         this.AddCell(ueEl, ueResult);
     }
+
     private AddCell(element: HTMLTableRowElement, result: number): void {
         element.insertCell(this.CELL_INSERTION_INDEX).outerHTML = DOMElementBuilder.CreateResultCell(result).outerHTML;
     }
 
-    //#region static
-    /**
-     * Ajoute les resultats a la page
-     * @param semester Semestre
-     */
-    public static AddGradeResultsToPage(semester: Semestre) {
-        const view = new MainPageGradeView();
-        let n: number = Math.min(semester.UEList.length, ViewParser.Instance.UECount);
-
-        for (let i = 0; i < n; i++) {
-            view.AddGradeResultToPage(i, semester.UEList[i].Details);
-        }
-    }
     //#endregion static
 }
