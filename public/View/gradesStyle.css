@@ -28,7 +28,6 @@
     border: solid 1px black;
 
     --angle: 45deg;
-    --foreground: #00000000;
     --background: #00000000;
     
     --foreground: var(--opaque);

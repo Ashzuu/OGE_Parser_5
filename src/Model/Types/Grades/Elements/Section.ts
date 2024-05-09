@@ -1,5 +1,5 @@
-import { Element } from "../Element";
-import { Note } from "./Note";
+import {Element} from "../Element";
+import {Note} from "./Note";
 
 /** Represente une Section */
 export class Section extends Element {
@@ -8,7 +8,7 @@ export class Section extends Element {
      * @param coefficient Coefficient de la section
      * @param notes Liste des notes de la section
      */
-    constructor(coefficient: number, notes: Note[]) {
+    public constructor(coefficient: number, notes: Note[]) {
         super(coefficient, notes);
     }
 }

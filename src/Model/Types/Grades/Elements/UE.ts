@@ -1,23 +1,53 @@
-import { UEDetails } from "../UEDetails";
-import { Element } from "../Element";
-import { Ressource } from "./Ressource";
+import {UEDetails} from "../UEDetails";
+import {Element} from "../Element";
+import {Ressource} from "./Ressource";
 
 /** Represente une UE */
 export class UE extends Element {
-    private saeIndex: number;
-    private name: string;
+
+    //#region private 
+    private readonly saeIndex: number;
+    private readonly name: string;
+
+    /**
+     * Constructeur par defaut d'une UE
+     * @param coefficient Coefficient de l'UE
+     * @param ressources Ressources de l'UE
+     * @param saeIndex Index a partir du quel on rentre dans les Ressources de SAE, -1 s'il y en a pas
+     * @param name Nom de l'UE
+     */
+    public constructor(coefficient: number, ressources: Ressource[], saeIndex: number, name: string = "") {
+        super(coefficient, ressources);
+        this.saeIndex = saeIndex;
+        this.name = name;
+    }
 
     /**Nom de l'UE */
-    public get Name(): string { return this.name; }
+    public get Name(): string {
+        return this.name;
+    }
+
     /**Index de la premiere ressource du SAE */
     public get SAEIndex(): number {
         return (this.saeIndex != -1) ? this.saeIndex : this.Ressources.length;
     }
-    /**Liste des ressources de l'UE */
-    private get Ressources(): Ressource[] {
-        return this.subElements as Ressource[];
+
+    /** Resultats detaillés de l'UE */
+    public get Details(): UEDetails {
+        return {
+            Name: this.Name,
+            UEResult: this.Average,
+            CCResult: this.GlobalCCAverage,
+            SAEResult: this.GlobalSAEAverage,
+            AllCCResults: this.CCAverages,
+            AllSAEResults: this.SAEAverages
+        } as UEDetails;
     }
-    /**Liste des ressources du pôle CC*/
+
+    private get Ressources(): Ressource[] {
+        return this.SubElements as Ressource[];
+    }
+
     private get CCRessources(): Ressource[] {
         let ccRessources: Ressource[] = [];
 
@@ -29,7 +59,7 @@ export class UE extends Element {
 
         return ccRessources;
     }
-    /**Liste des ressources du pôle SAE */
+
     private get SAERessources(): Ressource[] {
         let saeRessources: Ressource[] = [];
         //SAEIndex est l'index de la premiere ressource SAE
@@ -43,47 +73,28 @@ export class UE extends Element {
 
         return saeRessources;
     }
-    /**Moyenne globale du pôle CC*/
-    private get GetGlobalCCAverage(): number {
+
+    private get GlobalCCAverage(): number {
         return this.GetAverage(this.CCRessources);
     }
-    /**Moyenne globale du pôle SAE */
-    private get GetGlobalSAEAverage(): number {
+
+    //#endregion private
+
+    private get GlobalSAEAverage(): number {
         return this.GetAverage(this.SAERessources);
     }
-    /**Moyenne de chaque ressources du pôle CC */
-    private get GetCCAverages(): number[] {
+
+    private get CCAverages(): number[] {
         return this.GetAverageList(this.CCRessources);
     }
-    /**Moyenne de chaque ressources du pôle SAE */
-    private get GetSAEAverages(): number[] {
+
+    private get SAEAverages(): number[] {
         return this.GetAverageList(this.SAERessources);
     }
 
     private GetAverageList(ressources: Ressource[]): number[] {
-        return ressources.map(res => { return res.Average }) as number[];
-    }
-
-    /** Resultats detaillés de l'UE */
-    public get Details(): UEDetails {
-        return {
-            Name: this.Name,
-            UEResult: this.Average,
-            CCResult: this.GetGlobalCCAverage,
-            SAEResult: this.GetGlobalSAEAverage,
-            AllCCResults: this.GetCCAverages,
-            AllSAEResults: this.GetSAEAverages
-        } as UEDetails;
-    }
-
-    /**
-     * Constructeur par defaut d'une UE
-     * @param coefficient Coefficient de l'UE
-     * @param ressources Ressources de l'UE
-     */
-    constructor(coefficient: number, ressources: Ressource[], saeIndex: number, name: string = "") {
-        super(coefficient, ressources);
-        this.saeIndex = saeIndex;
-        this.name = name;
+        return ressources.map(res => {
+            return res.Average
+        }) as number[];
     }
 }

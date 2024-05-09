@@ -1,9 +1,9 @@
-import { Note } from "../../Types/Grades/Elements/Note";
-import { Ressource } from "../../Types/Grades/Elements/Ressource";
-import { Section } from "../../Types/Grades/Elements/Section";
-import { Semestre } from "../../Types/Grades/Elements/Semestre";
-import { UE } from "../../Types/Grades/Elements/UE";
-import { GradeParser } from "../Parsing/GradeParser";
+import {Note} from "../../Types/Grades/Elements/Note";
+import {Ressource} from "../../Types/Grades/Elements/Ressource";
+import {Section} from "../../Types/Grades/Elements/Section";
+import {Semestre} from "../../Types/Grades/Elements/Semestre";
+import {UE} from "../../Types/Grades/Elements/UE";
+import {GradeParser} from "../Parsing/GradeParser";
 
 /** Fabrique de semestre */
 export class SemesterFactory {
@@ -18,13 +18,13 @@ export class SemesterFactory {
     private UEs(): UE[] {
         let count: number = GradeParser.Instance.UECount;
         return [...Array(count).keys()].map(ix => {
-            let coef: number = GradeParser.Instance.UECoefficient(ix);
-            let saeIx: number = GradeParser.Instance.SaeIndex(ix);
-            let ressources: Ressource[] = this.Ressources(ix);
-            let name: string = GradeParser.Instance.UEName(ix);
+                let coef: number = GradeParser.Instance.UECoefficient(ix);
+                let saeIx: number = GradeParser.Instance.SaeIndex(ix);
+                let ressources: Ressource[] = this.Ressources(ix);
+                let name: string = GradeParser.Instance.UEName(ix);
 
-            return new UE(coef, ressources, saeIx, name);
-        }
+                return new UE(coef, ressources, saeIx, name);
+            }
         );
     }
 
