@@ -1,7 +1,7 @@
-import {Parser} from "./Parser";
+import { Parser } from "./Parser";
 
 export class ViewParser extends Parser {
-    private static instance: ViewParser;
+    protected Reset(): void { ViewParser.instance = new ViewParser(); }
 
     //#region Singleton
     private constructor() {
@@ -15,6 +15,7 @@ export class ViewParser extends Parser {
     }
 
     /**Retourne l'instance du Parser de la page */
+    public static instance: ViewParser;
     public static get Instance(): ViewParser {
         return this.instance || (this.instance = new this());
     }

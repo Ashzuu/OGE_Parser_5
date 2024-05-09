@@ -5,12 +5,14 @@ import {ViewParser} from "./ViewParser";
 
 /** Classe permettant de parser la page */
 export class GradeParser extends Parser {
-    private static instance: GradeParser;
-
+    protected Reset(): void { GradeParser.instance = new GradeParser(); }
     //#region Singleton
     private constructor() {
         super();
+        Parser.Child = this;
     }
+
+    private static instance: GradeParser;
 
     /** Retourne l'instance du Parser de la page */
     public static get Instance(): GradeParser {
@@ -61,10 +63,12 @@ export class GradeParser extends Parser {
      * @returns l'index tel que l'element a l'index renvoyé est la premiere SAE
      */
     public SaeIndex(ue: number): number {
-        let rawRessources = this.GetRawRessources(ue, this.RESSOURCE_AND_POLES_SELECTOR);
-        let poleSaeEl: HTMLElement = ViewParser.Instance.GetPoleSaeElement(ue).querySelector("td") as HTMLElement;
+        const rawRessources = this.GetRawRessources(ue, this.RESSOURCE_AND_POLES_SELECTOR);
+        const poleSaeElDiv = ViewParser.Instance.GetPoleSaeElement(ue);
+        const poleSaeEl: HTMLElement = poleSaeElDiv.querySelector("td") as HTMLElement;
+        const saeIx = rawRessources.indexOf(poleSaeEl) - 1;
 
-        return rawRessources.indexOf(poleSaeEl) - 1;
+        return saeIx;
     }
 
     /**
