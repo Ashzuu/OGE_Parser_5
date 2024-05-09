@@ -1,28 +1,16 @@
 {
     "manifest_version": 3,
     "name": "OGE Parser",
-    "version": "5.0",
-    "description": "J'en peux plus",
+    "version": "5.7",
+    "description": "Une extension pour calculer vos moyennes sur le bilan des notes de OGE",
     "icons": {
         "16": "OGE-Parser-Logo.png",
         "48": "OGE-Parser-Logo.png",
         "128": "OGE-Parser-Logo.png"
     },
-    "permissions": [
-        "tabs",
-        "storage",
-        "activeTab"
-    ],
-    "host_permissions": [
-        "https://localhost:7156/*"
-    ],
-    "action": {
-        "default_popup": "View/popup.html",
-        "default_title": "OGE Parser"
-    },
     "content_scripts": [
         {
-            "matches": [ "https://iutdijon.u-bourgogne.fr/oge/stylesheets/etu/bilanEtu.xhtml", "http://127.0.0.1:5500/**" ],
+            "matches": [ "https://iutdijon.u-bourgogne.fr/oge/stylesheets/etu/bilanEtu.xhtml" ],
             "js": [ "Model/ContentScript.bundle.js" ],
             "css": [ "View/gradesStyle.css" ]
         }

@@ -20,7 +20,7 @@ export class MainPageGradeDisplay implements GradeDisplay {
 
             let semesterEndDate: string | undefined = base.match(this.GRADE_WARNING_DATE_FORMAT)?.[0];
 
-            finalText = "Important : Les <b>vraies</b> moyennes et classement ne seront visibles qu'à partir du "
+            finalText = "Important : Les <b>vraies</b> moyennes et classements ne seront visibles qu'à partir du "
                 + semesterEndDate ?? ""
                 + ".</br>&emsp;&emsp;"
                 + "<b>Tout ce qui est produit par l'extension est une estimation et n'a aucune réélle valeur.</b>";

@@ -21,13 +21,18 @@ export abstract class Parser {
     protected readonly POLE_CC_INDEX: number = 0;
     protected readonly POLE_SAE_INDEX: number = 1;
     protected readonly MAX_COUNT_WHEN_GRADES_ARE_HIDDEN: number = 1;
+    //#endregion Constants
+
     //#region Saved HTMLElements
     private readonly bodyElement: HTMLElement;
+    //#endregion Saved HTMLElements
 
+    /**
+     * Constructeur par defaut
+     */
     protected constructor() {
         this.bodyElement = document.querySelector("body") as HTMLElement;
     }
-    //#endregion Constants
 
     /** Retourne le nombre d'UE */
     public get UECount(): number {
