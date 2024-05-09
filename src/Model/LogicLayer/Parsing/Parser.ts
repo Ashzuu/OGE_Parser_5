@@ -1,4 +1,19 @@
 export abstract class Parser {
+    protected constructor() {
+        this.bodyElement = document.querySelector("body") as HTMLElement;
+    }
+    
+    //#region Saved HTMLElements
+    private static children: Parser[];
+    private static get Children(): Parser[] { return this.children || (this.children = [])}
+
+    protected static set Child(child: Parser){
+        Parser.Children.push(child);
+    }
+    private bodyElement: HTMLElement;
+    //#endregion Saved HTMLElements
+
+    //#region Constants
     //UE
     protected readonly UE_SELECTOR: string = "thead > tr";
     protected readonly UE_NAME_SELECTOR: string = "thead > tr > td > div";
@@ -17,22 +32,11 @@ export abstract class Parser {
     protected readonly SECTION_SELECTOR: string = 'div';
     //GRADES
     protected readonly POLE_ELEMENT_FIRST_SELECTOR: string = "tbody > tr";
-    protected readonly POLE_ELEMENT_SECOND_SELECTOR: string = "td span > span";
+    protected readonly POLE_ELEMENT_SECOND_SELECTOR: string = "td > span > span";
     protected readonly POLE_CC_INDEX: number = 0;
     protected readonly POLE_SAE_INDEX: number = 1;
     protected readonly MAX_COUNT_WHEN_GRADES_ARE_HIDDEN: number = 1;
     //#endregion Constants
-
-    //#region Saved HTMLElements
-    private readonly bodyElement: HTMLElement;
-    //#endregion Saved HTMLElements
-
-    /**
-     * Constructeur par defaut
-     */
-    protected constructor() {
-        this.bodyElement = document.querySelector("body") as HTMLElement;
-    }
 
     /** Retourne le nombre d'UE */
     public get UECount(): number {
@@ -58,6 +62,9 @@ export abstract class Parser {
     }
 
     //#region Static Methods
+    public static Reset(): void{
+        this.Children.forEach(x => x.Reset())
+    }
     /**
      * Retourne l'élément enfant d'un élément HTML
      * @param htmlElement Élément HTML parent
@@ -81,8 +88,8 @@ export abstract class Parser {
     }
 
     //#endregion Static Methods
-
-
+    protected abstract Reset(): void;
+    
     protected GetRawRessources(ue: number, selector: string = this.RESSOURCE_SELECTOR): HTMLElement[] {
         return Array.from(this.Tables[ue]?.querySelectorAll(selector) ?? [])
             .filter(p => p.textContent?.replace(/\s/g, "") != "Pasdenotesaisie") as HTMLElement[];

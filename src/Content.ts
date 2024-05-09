@@ -1,7 +1,7 @@
-import {GradeParser} from "./Model/LogicLayer/Parsing/GradeParser";
 import {Semestre} from "./Model/Types/Grades/Elements/Semestre";
 import {SemesterFactory} from "./Model/LogicLayer/Factories/SemesterFactory";
 import {Injector} from "./DependencyInjector";
+import { Parser } from "./Model/LogicLayer/Parsing/Parser";
 
 /** Gestion du contenu de la page principale */
 export class Content {
@@ -15,7 +15,7 @@ export class Content {
     // Parse la page actuelle, sauvegarde les resultats, et les affiche
     private ProcessSemester(): Semestre {
         //Remise a zero des donnees
-        GradeParser.Reset();
+        Parser.Reset();
         //Parsing de la page
         return new SemesterFactory().GetSemester() ?? new Error("Semestre non trouvé");
     }
