@@ -2,7 +2,7 @@
 export class DOMElementBuilder {
     //#region constants
     //Classe CSS correspondante dans le CSS injecté pour les cellules de notes rajoutées
-    private static readonly ADDED_GRADE_CLASS: string = "R";
+    private static readonly ADDED_GRADE_CLASS: string = 'R';
     //Si les notes peuvent etre oranges (entre 8 inclu et 10 exclu)
     private static readonly CAN_BE_ORANGE = true;
     //#endregion constants
@@ -16,22 +16,24 @@ export class DOMElementBuilder {
      */
     public static CreateResultCell(grade: number): HTMLTableCellElement {
         let gradeType: string = this.ADDED_GRADE_CLASS;
-        return this.CreateTableCell(
-            grade?.toFixed(2) ?? "NaN",
-            [gradeType, this.GetGradeColor(grade)],
-        );
+        return this.CreateTableCell(grade?.toFixed(2) ?? 'NaN', [
+            gradeType,
+            this.GetGradeColor(grade),
+        ]);
     }
 
     //#endregion public methods
 
-
     //#region private methods
-    private static CreateTableCell(value: number | string, classesToAdd: string[]): HTMLTableCellElement {
+    private static CreateTableCell(
+        value: number | string,
+        classesToAdd: string[],
+    ): HTMLTableCellElement {
         let child: HTMLTableCellElement;
-        child = document.createElement("td");
+        child = document.createElement('td');
 
-        let innerHTML: string = "&nbsp;N/A&nbsp;";
-        if (typeof value === "number") {
+        let innerHTML: string = '&nbsp;N/A&nbsp;';
+        if (typeof value === 'number') {
             if (value && value >= 0) innerHTML = value.toFixed(2);
         } else {
             innerHTML = value;
@@ -51,12 +53,12 @@ export class DOMElementBuilder {
     }
 
     private static GetGradeColor(grade: number): string {
-        let color: string = "Green";
+        let color: string = 'Green';
         if (isNaN(grade)) {
-            color = "Black";
+            color = 'Black';
         } else if (grade < 10) {
-            if (this.CAN_BE_ORANGE && grade >= 8) color = "Orange";
-            else color = "Red";
+            if (this.CAN_BE_ORANGE && grade >= 8) color = 'Orange';
+            else color = 'Red';
         }
 
         return color;

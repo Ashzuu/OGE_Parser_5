@@ -1,5 +1,5 @@
-import {Element} from "../Element";
-import {UE} from "./UE";
+import { Element } from '../Element';
+import { UE } from './UE';
 
 /** Represente un Semestre */
 export class Semestre extends Element {

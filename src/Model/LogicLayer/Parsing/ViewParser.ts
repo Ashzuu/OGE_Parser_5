@@ -1,7 +1,9 @@
-import { Parser } from "./Parser";
+import { Parser } from './Parser';
 
 export class ViewParser extends Parser {
-    protected Reset(): void { ViewParser.instance = new ViewParser(); }
+    protected Reset(): void {
+        ViewParser.instance = new ViewParser();
+    }
 
     //#region Singleton
     private constructor() {
@@ -35,17 +37,18 @@ export class ViewParser extends Parser {
     }
 
     public GetCCGradeElements(ue: number): HTMLElement[] {
-        return this.GetRawRessources(ue, this.CC_RESSOURCE_SELECTOR)
+        return this.GetRawRessources(ue, this.CC_RESSOURCE_SELECTOR);
     }
 
     public GetSAEGradeElements(ue: number): HTMLElement[] {
-        return this.GetRawRessources(ue, this.SAE_RESSOURCE_SELECTOR)
+        return this.GetRawRessources(ue, this.SAE_RESSOURCE_SELECTOR);
     }
 
     //#region Methods
     private GetPoleElements(ue: number): HTMLElement[] {
-        return this.GetRawRessources(ue, this.POLE_ELEMENT_FIRST_SELECTOR)
-            .filter(element => element.querySelector(this.POLE_ELEMENT_SECOND_SELECTOR));
+        return this.GetRawRessources(ue, this.POLE_ELEMENT_FIRST_SELECTOR).filter(element =>
+            element.querySelector(this.POLE_ELEMENT_SECOND_SELECTOR),
+        );
     }
 
     //#endregion Methods

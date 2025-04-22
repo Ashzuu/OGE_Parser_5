@@ -1,11 +1,13 @@
-import {GradeCoefficientPair} from "../../Types/Grades/Elements/GradeCoefficientPair";
-import {Parser} from "./Parser";
-import {StringParser} from "./StringParser";
-import {ViewParser} from "./ViewParser";
+import { GradeCoefficientPair } from '../../Types/Grades/Elements/GradeCoefficientPair';
+import { Parser } from './Parser';
+import { StringParser } from './StringParser';
+import { ViewParser } from './ViewParser';
 
 /** Classe permettant de parser la page */
 export class GradeParser extends Parser {
-    protected Reset(): void { GradeParser.instance = new GradeParser(); }
+    protected Reset(): void {
+        GradeParser.instance = new GradeParser();
+    }
     //#region Singleton
     private constructor() {
         super();
@@ -34,7 +36,9 @@ export class GradeParser extends Parser {
      * @returns La note et son coefficient
      */
     public GetGrades(ue: number, res: number, sect: number): GradeCoefficientPair[] {
-        return StringParser.GetNotesFromSectionInnerText(this.GetSections(ue, res)[sect]?.textContent ?? "");
+        return StringParser.GetNotesFromSectionInnerText(
+            this.GetSections(ue, res)[sect]?.textContent ?? '',
+        );
     }
 
     //#region Coefficient Methods
@@ -65,7 +69,7 @@ export class GradeParser extends Parser {
     public SaeIndex(ue: number): number {
         const rawRessources = this.GetRawRessources(ue, this.RESSOURCE_AND_POLES_SELECTOR);
         const poleSaeElDiv = ViewParser.Instance.GetPoleSaeElement(ue);
-        const poleSaeEl: HTMLElement = poleSaeElDiv.querySelector("td") as HTMLElement;
+        const poleSaeEl: HTMLElement = poleSaeElDiv.querySelector('td') as HTMLElement;
         const saeIx = rawRessources.indexOf(poleSaeEl) - 1;
 
         return saeIx;
@@ -77,7 +81,8 @@ export class GradeParser extends Parser {
      * @returns le coefficient de l'UE demandée
      */
     public UECoefficient(ue: number): number {
-        let rawCoeff: string = this.Tables[ue]?.querySelector(this.UE_COEFFICENT_SELECTOR)?.textContent ?? "";
+        let rawCoeff: string =
+            this.Tables[ue]?.querySelector(this.UE_COEFFICENT_SELECTOR)?.textContent ?? '';
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
@@ -89,7 +94,9 @@ export class GradeParser extends Parser {
      * @returns le coefficient de la Ressource demandée
      */
     public RessourceCoefficient(ue: number, res: number): number {
-        let rawCoeff: string = this.GetResources(ue)[res]?.querySelector(this.RESSOURCE_COEFFICENT_SELECTOR)?.textContent ?? "";
+        let rawCoeff: string =
+            this.GetResources(ue)[res]?.querySelector(this.RESSOURCE_COEFFICENT_SELECTOR)
+                ?.textContent ?? '';
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
@@ -102,7 +109,9 @@ export class GradeParser extends Parser {
      * @returns Le coefficient de la Section demandée
      */
     public SectionCoefficient(ue: number, res: number, sect: number): number {
-        let rawCoeff: string = this.GetSections(ue, res)[sect]?.querySelector(this.SECTION_COEFFICENT_SELECTOR)?.textContent ?? "";
+        let rawCoeff: string =
+            this.GetSections(ue, res)[sect]?.querySelector(this.SECTION_COEFFICENT_SELECTOR)
+                ?.textContent ?? '';
 
         return StringParser.ClearCoefficient(rawCoeff);
     }
@@ -113,12 +122,11 @@ export class GradeParser extends Parser {
      * @returns Nom de l'UE demandée
      */
     public UEName(ue: number): string {
-        return this.Tables[ue]
+        return (
+            this.Tables[ue]
                 ?.querySelector(this.UE_NAME_SELECTOR)
-                ?.childNodes[0]
-                .textContent
-                ?.replace(/\n */g, "")
-            ?? "";
+                ?.childNodes[0].textContent?.replace(/\n */g, '') ?? ''
+        );
     }
 
     private GetResources(ue: number): HTMLElement[] {
@@ -127,8 +135,8 @@ export class GradeParser extends Parser {
 
     private GetSections(ue: number, res: number): HTMLElement[] {
         return Array.from(
-            this.GetResources(ue)[res]?.querySelectorAll(this.SECTION_SELECTOR) ?? []
-        ).filter(p => p.querySelector("sub")) as HTMLElement[];
+            this.GetResources(ue)[res]?.querySelectorAll(this.SECTION_SELECTOR) ?? [],
+        ).filter(p => p.querySelector('sub')) as HTMLElement[];
     }
 
     //#endregion Coefficient Methods

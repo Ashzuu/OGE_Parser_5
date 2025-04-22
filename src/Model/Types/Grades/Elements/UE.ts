@@ -1,11 +1,10 @@
-import {UEDetails} from "../UEDetails";
-import {Element} from "../Element";
-import {Ressource} from "./Ressource";
+import { UEDetails } from '../UEDetails';
+import { Element } from '../Element';
+import { Ressource } from './Ressource';
 
 /** Represente une UE */
 export class UE extends Element {
-
-    //#region private 
+    //#region private
     private readonly saeIndex: number;
     private readonly name: string;
 
@@ -16,7 +15,12 @@ export class UE extends Element {
      * @param saeIndex Index a partir du quel on rentre dans les Ressources de SAE, -1 s'il y en a pas
      * @param name Nom de l'UE
      */
-    public constructor(coefficient: number, ressources: Ressource[], saeIndex: number, name: string = "") {
+    public constructor(
+        coefficient: number,
+        ressources: Ressource[],
+        saeIndex: number,
+        name: string = '',
+    ) {
         super(coefficient, ressources);
         this.saeIndex = saeIndex;
         this.name = name;
@@ -29,7 +33,7 @@ export class UE extends Element {
 
     /**Index de la premiere ressource du SAE */
     public get SAEIndex(): number {
-        return (this.saeIndex != -1) ? this.saeIndex : this.Ressources.length;
+        return this.saeIndex != -1 ? this.saeIndex : this.Ressources.length;
     }
 
     /** Resultats detaillés de l'UE */
@@ -40,7 +44,7 @@ export class UE extends Element {
             CCResult: this.GlobalCCAverage,
             SAEResult: this.GlobalSAEAverage,
             AllCCResults: this.CCAverages,
-            AllSAEResults: this.SAEAverages
+            AllSAEResults: this.SAEAverages,
         } as UEDetails;
     }
 
@@ -94,7 +98,7 @@ export class UE extends Element {
 
     private GetAverageList(ressources: Ressource[]): number[] {
         return ressources.map(res => {
-            return res.Average
+            return res.Average;
         }) as number[];
     }
 }

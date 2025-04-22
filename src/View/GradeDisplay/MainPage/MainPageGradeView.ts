@@ -1,7 +1,7 @@
-import {ViewParser} from "../../../Model/LogicLayer/Parsing/ViewParser";
-import {Semestre} from "../../../Model/Types/Grades/Elements/Semestre";
-import {UEDetails} from "../../../Model/Types/Grades/UEDetails";
-import {DOMElementBuilder} from "../../DOMElementBuilder";
+import { ViewParser } from '../../../Model/LogicLayer/Parsing/ViewParser';
+import { Semestre } from '../../../Model/Types/Grades/Elements/Semestre';
+import { UEDetails } from '../../../Model/Types/Grades/UEDetails';
+import { DOMElementBuilder } from '../../DOMElementBuilder';
 
 /** Aide à l'affichage des resultats sur la page principale */
 export class MainPageGradeView {
@@ -43,7 +43,11 @@ export class MainPageGradeView {
         this.AddMultipleResults(ix, d.AllSAEResults, vp.GetSAEGradeElements);
     }
 
-    private AddMultipleResults(tableIndex: number, results: number[], func: (ue: number) => HTMLElement[]): void {
+    private AddMultipleResults(
+        tableIndex: number,
+        results: number[],
+        func: (ue: number) => HTMLElement[],
+    ): void {
         const elements: HTMLTableRowElement[] = <HTMLTableRowElement[]>func(tableIndex);
 
         for (let i = 0; i < results.length; i++) {
@@ -51,13 +55,18 @@ export class MainPageGradeView {
         }
     }
 
-    private AddSingleResults(tableIndex: number, ueResult: number, func: (ue: number) => HTMLElement): void {
+    private AddSingleResults(
+        tableIndex: number,
+        ueResult: number,
+        func: (ue: number) => HTMLElement,
+    ): void {
         let ueEl: HTMLTableRowElement = <HTMLTableRowElement>func(tableIndex);
         this.AddCell(ueEl, ueResult);
     }
 
     private AddCell(element: HTMLTableRowElement, result: number): void {
-        element.insertCell(this.CELL_INSERTION_INDEX).outerHTML = DOMElementBuilder.CreateResultCell(result).outerHTML;
+        element.insertCell(this.CELL_INSERTION_INDEX).outerHTML =
+            DOMElementBuilder.CreateResultCell(result).outerHTML;
     }
 
     //#endregion static

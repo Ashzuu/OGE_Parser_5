@@ -1,6 +1,5 @@
 /** Classe abstraite representant un element dans le systeme de gestion des notes de OGE */
 export abstract class Element {
-
     private readonly coefficient: number;
     private readonly subElements: Element[];
 
@@ -50,7 +49,7 @@ export abstract class Element {
                     averagesSum += avg * coef;
                     coefficientSum += coef;
                 }
-            })
+            });
             actualAverage = averagesSum / coefficientSum;
         }
 

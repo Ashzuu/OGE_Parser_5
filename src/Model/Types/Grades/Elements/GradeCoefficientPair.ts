@@ -4,4 +4,4 @@ export type GradeCoefficientPair = {
     grade: number;
     /**Coefficient */
     coefficient: number;
-}
+};

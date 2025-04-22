@@ -1,4 +1,4 @@
-import {Semestre} from "../Model/Types/Grades/Elements/Semestre";
+import { Semestre } from '../Model/Types/Grades/Elements/Semestre';
 
 /** Interface des classes s'occupant de l'affichage des resultats du semestre */
 export interface GradeDisplay {

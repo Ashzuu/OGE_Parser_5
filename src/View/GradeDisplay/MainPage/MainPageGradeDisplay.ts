@@ -1,11 +1,11 @@
-import {Semestre} from "../../../Model/Types/Grades/Elements/Semestre";
-import {GradeDisplay} from "../../GradeDisplay";
-import {ViewParser} from "../../../Model/LogicLayer/Parsing/ViewParser";
-import {MainPageGradeView} from "./MainPageGradeView";
+import { Semestre } from '../../../Model/Types/Grades/Elements/Semestre';
+import { GradeDisplay } from '../../GradeDisplay';
+import { ViewParser } from '../../../Model/LogicLayer/Parsing/ViewParser';
+import { MainPageGradeView } from './MainPageGradeView';
 
 /** Affichage des resultats sur la page principale */
 export class MainPageGradeDisplay implements GradeDisplay {
-    private readonly GRADE_WARNING_BASE_ID: string = "mainBilanForm:bilanAvantJuryMobilePanel1";
+    private readonly GRADE_WARNING_BASE_ID: string = 'mainBilanForm:bilanAvantJuryMobilePanel1';
     private readonly GRADE_WARNING_DATE_FORMAT: RegExp = new RegExp(/\d{1,2} .+ 20\d\d/);
     private readonly GRADE_WARNING_PATH: number[] = [0, 0, 1];
 
@@ -15,15 +15,19 @@ export class MainPageGradeDisplay implements GradeDisplay {
         let finalText: string | undefined = undefined;
         if (warningDiv && warningDiv.textContent != null) {
             let base: string = warningDiv.textContent;
-            base = base.replace(/\n/g, "");
-            base = base.trim()
+            base = base.replace(/\n/g, '');
+            base = base.trim();
 
-            let semesterEndDate: string | undefined = base.match(this.GRADE_WARNING_DATE_FORMAT)?.[0];
+            let semesterEndDate: string | undefined = base.match(
+                this.GRADE_WARNING_DATE_FORMAT,
+            )?.[0];
 
-            finalText = "Important : Les <b>vraies</b> moyennes et classements ne seront visibles qu'à partir du "
-                + semesterEndDate ?? ""
-                + ".</br>&emsp;&emsp;"
-                + "<b>Tout ce qui est produit par l'extension est une estimation et n'a aucune réélle valeur.</b>";
+            finalText =
+                "Important : Les <b>vraies</b> moyennes et classements ne seront visibles qu'à partir du " +
+                    semesterEndDate ??
+                '' +
+                    '.</br>&emsp;&emsp;' +
+                    "<b>Tout ce qui est produit par l'extension est une estimation et n'a aucune réélle valeur.</b>";
         }
 
         //Si le finalText n'est pas null warningDiv ne devrait pas l'etre non plus

@@ -1,5 +1,5 @@
-import {Element} from "../Element";
-import {Note} from "./Note";
+import { Element } from '../Element';
+import { Note } from './Note';
 
 /** Represente une Section */
 export class Section extends Element {

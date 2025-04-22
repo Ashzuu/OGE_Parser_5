@@ -1,4 +1,4 @@
-import {GradeCoefficientPair} from "../../Types/Grades/Elements/GradeCoefficientPair";
+import { GradeCoefficientPair } from '../../Types/Grades/Elements/GradeCoefficientPair';
 
 /**
  * Manager du format des titres
@@ -6,7 +6,7 @@ import {GradeCoefficientPair} from "../../Types/Grades/Elements/GradeCoefficient
  */
 export class StringParser {
     //#region Constantes
-    private static readonly GRADE_SPLIT_CHAR: string = "/";
+    private static readonly GRADE_SPLIT_CHAR: string = '/';
     private static readonly STANDARDIZED_SCORE_BASE: number = 20;
 
     //#endregion Constantes
@@ -19,8 +19,8 @@ export class StringParser {
     public static ClearCoefficient(coefficientText: string): number {
         let coef: number = 0;
         if (coefficientText) {
-            coefficientText = coefficientText.replace("(", "");
-            coefficientText = coefficientText.replace(")", "");
+            coefficientText = coefficientText.replace('(', '');
+            coefficientText = coefficientText.replace(')', '');
 
             coef = Number(coefficientText);
         }
@@ -34,8 +34,11 @@ export class StringParser {
      */
     public static GetNotesFromSectionInnerText(sectionText: string): GradeCoefficientPair[] {
         let pairs: GradeCoefficientPair[] = [];
-        if (sectionText != "") {
-            sectionText = sectionText.slice(sectionText.indexOf('[') + 2, sectionText.indexOf(']') - 1);
+        if (sectionText != '') {
+            sectionText = sectionText.slice(
+                sectionText.indexOf('[') + 2,
+                sectionText.indexOf(']') - 1,
+            );
             pairs = this.GetGradeCoefficientPairs(sectionText);
         }
         return pairs;
@@ -47,20 +50,19 @@ export class StringParser {
      * @returns Tableau d'objets contenant les notes et leur coefficient
      */
     private static GetGradeCoefficientPairs(sectionText: string): GradeCoefficientPair[] {
-        sectionText = sectionText.replace(/\s/g, "");
+        sectionText = sectionText.replace(/\s/g, '');
         let notes: string[] = sectionText.split(')');
         notes.pop();
 
         let pairs: GradeCoefficientPair[] = [];
         notes.forEach(n => {
-            let split = n.split("(");
-            if (split.length == 1) split.push("-1");
-            pairs.push(
-                {
-                    grade: this.NormalizeGrade(split[0]),
-                    coefficient: this.ClearCoefficient(split[1])
-                });
-        })
+            let split = n.split('(');
+            if (split.length == 1) split.push('-1');
+            pairs.push({
+                grade: this.NormalizeGrade(split[0]),
+                coefficient: this.ClearCoefficient(split[1]),
+            });
+        });
 
         return pairs;
     }
@@ -74,6 +76,6 @@ export class StringParser {
         const split: string[] = baseGrade.split(this.GRADE_SPLIT_CHAR);
         //Si la note donnée est sous un format valide elle aura forcément 2 éléments
         //Le premier est la note, le second est la base de la note
-        return Number(split[0]) / Number(split[1]) * this.STANDARDIZED_SCORE_BASE;
+        return (Number(split[0]) / Number(split[1])) * this.STANDARDIZED_SCORE_BASE;
     }
 }

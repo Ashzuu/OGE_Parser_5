@@ -1,5 +1,5 @@
-import {Element} from "../Element";
-import {GradeCoefficientPair} from "./GradeCoefficientPair";
+import { Element } from '../Element';
+import { GradeCoefficientPair } from './GradeCoefficientPair';
 
 /** Represente une Note */
 export class Note extends Element {
