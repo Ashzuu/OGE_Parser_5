@@ -1,7 +1,9 @@
-import { Semestre } from './Model/Types/Grades/Elements/Semestre';
+import Injector from './DependencyInjector';
+import './loader';
 import { SemesterFactory } from './Model/LogicLayer/Factories/SemesterFactory';
-import { Injector } from './DependencyInjector';
 import { Parser } from './Model/LogicLayer/Parsing/Parser';
+import { Semestre } from './Model/Types/Grades/Elements/Semestre';
+import { GradeDisplay } from './View/GradeDisplay';
 
 /** Gestion du contenu de la page principale */
 export class Content {
@@ -21,10 +23,12 @@ export class Content {
     }
 
     private Display(semester: Semestre) {
-        const gradeDisplay = Injector.GradeDisplay;
+        const gradeDisplay = Injector.resolve<GradeDisplay>('GradeDisplay');
         //Changement de la phrase Remarque
         gradeDisplay.DisplayWarning();
         //Affichage des moyennes
         gradeDisplay.DisplayGrades(semester);
     }
 }
+
+new Content().Setup();

@@ -47,6 +47,7 @@ export abstract class Parser {
     }
 
     public get AreGradesShown(): boolean {
+        return false;
         let childCount =
             this.Tables[0]?.querySelector(this.UE_SELECTOR)?.childElementCount ??
             this.MAX_COUNT_WHEN_GRADES_ARE_HIDDEN + 1;

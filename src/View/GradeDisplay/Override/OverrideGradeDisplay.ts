@@ -1,11 +1,11 @@
-import { Content } from '../../../Content';
+import { Content } from '../../../content';
 import { Semestre } from '../../../Model/Types/Grades/Elements/Semestre';
 import { GradeDisplay } from '../../GradeDisplay';
 import { MainPageGradeDisplay } from '../MainPage/MainPageGradeDisplay';
 
 export class OverrideGradeDisplay implements GradeDisplay {
     DisplayGrades(semester: Semestre): void {
-        this.mainPage.DisplayGrades(semester);
+        this.mainPageDisplay.DisplayGrades(semester);
         OverrideGradeDisplay.UEs.forEach(x => OverrideGradeDisplay.addListenerToUE(x));
         OverrideGradeDisplay.Ressources.forEach(x =>
             OverrideGradeDisplay.addListenerToRessource(x),
@@ -13,13 +13,13 @@ export class OverrideGradeDisplay implements GradeDisplay {
         OverrideGradeDisplay.Sections.forEach(x => OverrideGradeDisplay.addListenerToSection(x));
     }
     DisplayWarning(): void {
-        this.mainPage.DisplayWarning();
+        this.mainPageDisplay.DisplayWarning();
     }
 
     //#region Attributes
-    private mainPage: MainPageGradeDisplay;
+    private mainPageDisplay: MainPageGradeDisplay;
     public constructor() {
-        this.mainPage = new MainPageGradeDisplay();
+        this.mainPageDisplay = new MainPageGradeDisplay();
     }
     private static get Sections(): HTMLElement[] {
         return Array.from(document.querySelectorAll('tbody tr td div:has(sub)'));
@@ -107,16 +107,16 @@ export class OverrideGradeDisplay implements GradeDisplay {
             newElement.querySelectorAll('input'),
         ) as HTMLInputElement[];
 
-        //@ts-ignore
         inputs[0].onkeydown = e => {
+            //@ts-ignore
             onkeydown(e.key, e.target);
         };
         inputs[0].style.width = '5rem';
         inputs[0].type = 'text';
         inputs[0].placeholder = 'nom';
 
-        //@ts-ignore
         inputs[1].onkeydown = e => {
+            //@ts-ignore
             onkeydown(e.key, e.target, 1);
         };
         inputs[1].style.width = '5rem';
@@ -171,16 +171,16 @@ export class OverrideGradeDisplay implements GradeDisplay {
             newElement.querySelectorAll('input'),
         ) as HTMLInputElement[];
 
-        //@ts-ignore
         inputs[0].onkeydown = e => {
+            //@ts-ignore
             onkeydown(e.key, e.target);
         };
         inputs[0].style.width = '5rem';
         inputs[0].type = 'text';
         inputs[0].placeholder = 'nom';
 
-        //@ts-ignore
         inputs[1].onkeydown = e => {
+            //@ts-ignore
             onkeydown(e.key, e.target, 1);
         };
         inputs[1].style.width = '5rem';
